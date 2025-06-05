@@ -1,3 +1,4 @@
+import 'package:employee_management_system/core/app_exports.dart';
 import 'package:employee_management_system/views/screens/Auth/login.dart';
 import 'package:employee_management_system/config/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: Login(),
+        home: Splash(),
       ),
     );
   }

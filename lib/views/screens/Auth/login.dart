@@ -23,9 +23,13 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 0.5.sw,
-                  height: 0.2.sh,
-                  color: AppColors.darkGreen,
+                  margin: EdgeInsets.only(top: 0.1.sh),
+                  width: 0.3.sw,
+                  height: 0.1.sh,
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    fit: BoxFit.contain,
+                  ),
                 ),
                 SizedBox(height: 0.02.sh),
                 Text(
@@ -65,15 +69,46 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      print('Success');
-                    } else {
-                      print('Validation Failed, Check erros');
-                    }
-                  },
-                  child: Text('Sign In'),
+                SizedBox(height: 0.03.sh),
+                PrimaryButton(
+                  text: 'Sign In',
+                  bgColor: AppColors.lightGreen,
+                  ontap: () {},
+                ),
+                SizedBox(height: 0.02.sh),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        color: AppColors.gray,
+                        thickness: 0.3,
+                      ),
+                    ),
+                    SizedBox(width: 0.05.sw),
+                    Text(
+                      'Or Sign in with',
+                      style: AppTextStyles.bodyTextMedium,
+                    ),
+                    SizedBox(width: 0.05.sw),
+                    Expanded(
+                      child: Divider(
+                        color: AppColors.gray,
+                        thickness: 0.3,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 0.02.sh),
+                SocialButton(
+                  btnText: 'Connect with Google',
+                  img: 'assets/images/google.png',
+                ),
+                SizedBox(height: 0.02.sh),
+                SocialButton(
+                  btnText: 'Connect with Apple',
+                  img: 'assets/images/apple-logo.png',
                 ),
               ],
             ),

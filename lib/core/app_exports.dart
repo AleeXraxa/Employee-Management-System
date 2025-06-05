@@ -14,6 +14,8 @@ export 'package:employee_management_system/constant/app_typography.dart';
 
 // Custom Widgets
 export 'package:employee_management_system/views/widgets/text_field.dart';
+export 'package:employee_management_system/views/widgets/social_btn.dart';
+export 'package:employee_management_system/views/widgets/primary_btn.dart';
 
 // Validator
 export 'package:employee_management_system/utils/validator.dart';

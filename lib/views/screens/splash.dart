@@ -80,7 +80,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
               child: Container(
                 width: 0.5.sw,
                 height: 0.2.sh,
-                color: AppColors.darkGreen,
+                child: Image.asset('assets/images/logo.png'),
               ),
             ),
             SizedBox(height: 0.05.sh),

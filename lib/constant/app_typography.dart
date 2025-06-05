@@ -38,4 +38,10 @@ class AppTextStyles {
     fontFamily: 'Poppins',
     color: AppColors.gray,
   );
+  static TextStyle primaryButton = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'Poppins',
+    color: AppColors.gray,
+  );
 }
