@@ -12,10 +12,11 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
 
-  #core Packages
+  # core Packages
   get: ^4.7.2
+  font_awesome_flutter: ^10.8.0
 
-  # Screen Utls for Responsive 
+  # Screen Utils for Responsive 
   flutter_screenutil: ^5.9.0
 
   # firebase
@@ -28,3 +29,28 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/
+    # - assets/icons/  👈 Uncomment if using later
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Medium.ttf
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+        - asset: assets/fonts/Poppins-Black.ttf
+        - asset: assets/fonts/Poppins-Italic.ttf
+
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-Regular.ttf
+        - asset: assets/fonts/Montserrat-Medium.ttf
+        - asset: assets/fonts/Montserrat-SemiBold.ttf
+        - asset: assets/fonts/Montserrat-Bold.ttf
+        - asset: assets/fonts/Montserrat-ExtraBold.ttf
+        - asset: assets/fonts/Montserrat-Black.ttf
+        - asset: assets/fonts/Montserrat-Light.ttf
+        - asset: assets/fonts/Montserrat-Italic.ttf
