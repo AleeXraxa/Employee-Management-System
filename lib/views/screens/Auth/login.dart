@@ -53,7 +53,7 @@ class _LoginState extends State<Login> {
                         controller: _email,
                         validator: AppValidators.validateEmail,
                       ),
-                      SizedBox(height: 0.03.sh),
+                      SizedBox(height: 0.01.sh),
                       CustomTextField(
                         validator: AppValidators.validatePass,
                         labelText: 'Password',

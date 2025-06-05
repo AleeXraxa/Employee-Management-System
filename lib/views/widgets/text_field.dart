@@ -31,6 +31,7 @@ class CustomTextField extends StatelessWidget {
         enabledBorder: AppTextFieldStyles.enabledBorder,
         focusedBorder: AppTextFieldStyles.focusedBorder,
         errorBorder: AppTextFieldStyles.errorBorder,
+        focusedErrorBorder: AppTextFieldStyles.focusedBorder,
         contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 14),
         labelText: labelText,
         labelStyle: AppTextStyles.textField,
