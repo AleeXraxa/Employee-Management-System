@@ -9,6 +9,8 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final TextEditingController _email = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,18 +43,37 @@ class _LoginState extends State<Login> {
                   style: AppTextStyles.bodyTextMedium,
                 ),
                 SizedBox(height: 0.025.sh),
-                CustomTextField(
-                  labelText: 'Email/ Phone Number',
-                  type: TextInputType.emailAddress,
-                  controller: _email,
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        labelText: 'Email/ Phone Number',
+                        type: TextInputType.emailAddress,
+                        controller: _email,
+                        validator: AppValidators.validateEmail,
+                      ),
+                      SizedBox(height: 0.03.sh),
+                      CustomTextField(
+                        validator: AppValidators.validatePass,
+                        labelText: 'Password',
+                        type: TextInputType.emailAddress,
+                        controller: _email,
+                        suffix: Icons.visibility,
+                        isPass: true,
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 0.03.sh),
-                CustomTextField(
-                  labelText: 'Password',
-                  type: TextInputType.emailAddress,
-                  controller: _email,
-                  suffix: Icons.visibility,
-                  isPass: true,
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      print('Success');
+                    } else {
+                      print('Validation Failed, Check erros');
+                    }
+                  },
+                  child: Text('Sign In'),
                 ),
               ],
             ),

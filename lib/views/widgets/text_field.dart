@@ -7,6 +7,7 @@ class CustomTextField extends StatelessWidget {
   final IconData? suffix;
   final VoidCallback? onTap;
   final bool isPass;
+  final String? Function(String?)? validator;
 
   const CustomTextField({
     required this.labelText,
@@ -15,15 +16,17 @@ class CustomTextField extends StatelessWidget {
     this.suffix,
     this.onTap,
     this.isPass = false,
+    required this.validator,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       keyboardType: type,
       controller: controller,
       obscureText: isPass,
+      validator: validator,
       decoration: InputDecoration(
         enabledBorder: AppTextFieldStyles.enabledBorder,
         focusedBorder: AppTextFieldStyles.focusedBorder,
