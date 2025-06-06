@@ -5,6 +5,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType type;
   final TextEditingController controller;
   final IconData? suffix;
+  final IconData? prefix;
   final VoidCallback? onTap;
   final bool isPass;
   final String? Function(String?)? validator;
@@ -14,6 +15,7 @@ class CustomTextField extends StatelessWidget {
     required this.type,
     required this.controller,
     this.suffix,
+    this.prefix,
     this.onTap,
     this.isPass = false,
     required this.validator,
@@ -28,6 +30,13 @@ class CustomTextField extends StatelessWidget {
       obscureText: isPass,
       validator: validator,
       decoration: InputDecoration(
+        prefixIcon: prefix != null
+            ? Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+                child: FaIcon(prefix),
+              )
+            : null,
         enabledBorder: AppTextFieldStyles.enabledBorder,
         focusedBorder: AppTextFieldStyles.focusedBorder,
         errorBorder: AppTextFieldStyles.errorBorder,
@@ -35,7 +44,9 @@ class CustomTextField extends StatelessWidget {
         contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 14),
         labelText: labelText,
         labelStyle: AppTextStyles.textField,
-        suffixIcon: IconButton(onPressed: onTap, icon: Icon(suffix)),
+        suffixIcon: suffix != null
+            ? IconButton(onPressed: onTap, icon: FaIcon(suffix))
+            : null,
       ),
     );
   }

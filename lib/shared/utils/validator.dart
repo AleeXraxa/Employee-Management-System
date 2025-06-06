@@ -24,6 +24,9 @@ class AppValidators {
     if (value == null || value.isEmpty) {
       return '$field is Required';
     }
+    if (value.length < 6) {
+      return 'Username must be atleast 6 characters long';
+    }
     return null;
   }
 

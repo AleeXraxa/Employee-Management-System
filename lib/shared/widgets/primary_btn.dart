@@ -22,7 +22,7 @@ class PrimaryButton extends StatelessWidget {
         backgroundColor: bgColor,
         padding: EdgeInsets.symmetric(horizontal: 140.w, vertical: 15.h),
       ),
-      onPressed: () {},
+      onPressed: ontap,
       child: Text(
         text,
         style: TextStyle(

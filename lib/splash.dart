@@ -78,6 +78,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                 );
               },
               child: Container(
+                margin: EdgeInsets.only(top: 1),
                 width: 0.5.sw,
                 height: 0.2.sh,
                 child: Image.asset('assets/images/logo.png'),

@@ -8,7 +8,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final TextEditingController _email = TextEditingController();
+  final _passController = Get.find<PassController>();
+  final _authController = Get.find<AuthController>();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -33,11 +34,6 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 0.02.sh),
                 Text(
-                  'HR DASHBOARD',
-                  style: AppTextStyles.title,
-                ),
-                SizedBox(height: 0.01.sh),
-                Text(
                   'Login Account',
                   style: AppTextStyles.screentitle,
                 ),
@@ -47,33 +43,57 @@ class _LoginState extends State<Login> {
                   style: AppTextStyles.bodyTextMedium,
                 ),
                 SizedBox(height: 0.025.sh),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      CustomTextField(
-                        labelText: 'Email/ Phone Number',
-                        type: TextInputType.emailAddress,
-                        controller: _email,
-                        validator: AppValidators.validateEmail,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Form(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Column(
+                        children: [
+                          CustomTextField(
+                            prefix: FontAwesomeIcons.envelope,
+                            labelText: 'Email/ Phone Number',
+                            type: TextInputType.emailAddress,
+                            controller: _authController.emailController,
+                            validator: AppValidators.validateEmail,
+                          ),
+                          SizedBox(height: 0.01.sh),
+                          Obx(
+                            () => CustomTextField(
+                              prefix: FontAwesomeIcons.lock,
+                              validator: AppValidators.validatePass,
+                              labelText: 'Password',
+                              type: TextInputType.emailAddress,
+                              controller: _authController.passController,
+                              suffix: _passController.ispass.value
+                                  ? FontAwesomeIcons.eyeSlash
+                                  : FontAwesomeIcons.eye,
+                              isPass: _passController.ispass.value,
+                              onTap: () => _passController.togglePass(),
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 0.01.sh),
-                      CustomTextField(
-                        validator: AppValidators.validatePass,
-                        labelText: 'Password',
-                        type: TextInputType.emailAddress,
-                        controller: _email,
-                        suffix: Icons.visibility,
-                        isPass: true,
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Forgot Password?',
+                        style: AppTextStyles.bodyTextMedium,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 0.03.sh),
+                SizedBox(height: 0.02.sh),
                 PrimaryButton(
                   text: 'Sign In',
                   bgColor: AppColors.lightGreen,
-                  ontap: () {},
+                  ontap: () {
+                    if (_formKey.currentState!.validate()) {
+                      Get.snackbar('Success', 'working');
+                    }
+                  },
                 ),
                 SizedBox(height: 0.02.sh),
                 Row(
@@ -110,6 +130,25 @@ class _LoginState extends State<Login> {
                   btnText: 'Connect with Apple',
                   img: 'assets/images/apple-logo.png',
                 ),
+                SizedBox(height: 0.001.sh),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Don't have an account?",
+                      style: AppTextStyles.bodyTextMedium,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        _authController.clearFields();
+                        Get.offAll(Register());
+                      },
+                      child: Text(
+                        "Sign Up Now",
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),

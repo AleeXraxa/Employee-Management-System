@@ -1,10 +1,7 @@
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:employee_management_system/views/screens/Auth/login.dart';
 import 'package:employee_management_system/config/firebase_options.dart';
+import 'package:employee_management_system/shared/bindings/initial_binding.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +20,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) => GetMaterialApp(
+        initialBinding: InitialBinding(),
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
