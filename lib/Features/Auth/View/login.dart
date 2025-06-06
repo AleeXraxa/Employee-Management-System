@@ -52,7 +52,7 @@ class _LoginState extends State<Login> {
                       child: Column(
                         children: [
                           CustomTextField(
-                            prefix: FontAwesomeIcons.envelope,
+                            prefix: FontAwesomeIcons.solidEnvelope,
                             labelText: 'Email/ Phone Number',
                             type: TextInputType.emailAddress,
                             controller: _authController.emailController,
@@ -67,8 +67,8 @@ class _LoginState extends State<Login> {
                               type: TextInputType.emailAddress,
                               controller: _authController.passController,
                               suffix: _passController.ispass.value
-                                  ? FontAwesomeIcons.eyeSlash
-                                  : FontAwesomeIcons.eye,
+                                  ? FontAwesomeIcons.solidEyeSlash
+                                  : FontAwesomeIcons.solidEye,
                               isPass: _passController.ispass.value,
                               onTap: () => _passController.togglePass(),
                             ),
@@ -86,14 +86,20 @@ class _LoginState extends State<Login> {
                   ],
                 ),
                 SizedBox(height: 0.02.sh),
-                PrimaryButton(
-                  text: 'Sign In',
-                  bgColor: AppColors.lightGreen,
-                  ontap: () {
-                    if (_formKey.currentState!.validate()) {
-                      Get.snackbar('Success', 'working');
-                    }
-                  },
+                Obx(
+                  () => _authController.isloading.value
+                      ? CircularProgressIndicator(
+                          color: AppColors.primaryColor,
+                        )
+                      : PrimaryButton(
+                          text: 'Sign In',
+                          bgColor: AppColors.lightGreen,
+                          ontap: () {
+                            if (_formKey.currentState!.validate()) {
+                              _authController.loginUser();
+                            }
+                          },
+                        ),
                 ),
                 SizedBox(height: 0.02.sh),
                 Row(
@@ -124,6 +130,7 @@ class _LoginState extends State<Login> {
                 SocialButton(
                   btnText: 'Connect with Google',
                   img: 'assets/images/google.png',
+                  ontap: () {},
                 ),
                 SizedBox(height: 0.02.sh),
                 SocialButton(
