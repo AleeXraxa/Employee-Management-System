@@ -6,6 +6,7 @@ export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 export 'package:firebase_auth/firebase_auth.dart';
 export 'package:flutter/services.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
+export 'package:connectivity_plus/connectivity_plus.dart';
 
 // Views
 export 'package:employee_management_system/splash.dart';
@@ -29,6 +30,7 @@ export 'package:employee_management_system/shared/utils/validator.dart';
 
 // Controllers
 export 'package:employee_management_system/shared/controllers/pass_controller.dart';
+export 'package:employee_management_system/shared/controllers/internet_checker.dart';
 export 'package:employee_management_system/Features/Auth/Controller/auth_controller.dart';
 
 // Helper

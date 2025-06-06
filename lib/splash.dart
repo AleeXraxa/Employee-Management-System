@@ -12,11 +12,16 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   late Animation<double> logoFadeAnimation;
   late Animation<double> logoScaleAnimation;
   late Animation<double> textFadeAnimation;
+  final internetController = Get.find<InternetChecker>();
 
   @override
   void initState() {
     super.initState();
+    initAnimations();
+    checkAndStart();
+  }
 
+  void initAnimations() {
     animationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 5),
@@ -40,9 +45,27 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
         curve: const Interval(0.50, 0.70, curve: Curves.easeIn),
       ),
     );
+  }
 
-    animationController.forward();
-    navigate();
+  void checkAndStart() async {
+    Future.delayed(Duration.zero, () async {
+      await internetController.checkConnection();
+
+      if (!internetController.isConnected.value) {
+        showCustomDialog(
+            icon: FontAwesomeIcons.triangleExclamation,
+            title: 'No Internet Connection',
+            message: 'Please check your internet & try again',
+            buttonText: 'Retry',
+            onPressed: () {
+              Get.back();
+              checkAndStart();
+            });
+      } else {
+        animationController.forward();
+        navigate();
+      }
+    });
   }
 
   void navigate() async {
