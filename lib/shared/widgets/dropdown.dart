@@ -29,6 +29,10 @@ class CustomDropdown<T> extends StatelessWidget {
         focusedBorder: AppTextFieldStyles.focusedBorder,
         filled: true,
         fillColor: Colors.transparent,
+        prefixIcon: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+          child: FaIcon(FontAwesomeIcons.solidUser),
+        ),
       ),
       icon: const FaIcon(FontAwesomeIcons.circleChevronDown),
       style: AppTextStyles.bodyTextMedium,

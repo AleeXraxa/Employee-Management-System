@@ -19,6 +19,142 @@ class AuthController extends GetxController {
     super.dispose();
   }
 
+// Authentication Logics
+  final FirebaseAuth usersDB = FirebaseAuth.instance;
+  final AuthServices _authServices = AuthServices();
+  RxBool isloading = false.obs;
+
+// Create user
+  final RxnString selectedRole = RxnString();
+
+  Future<void> registerUser() async {
+    try {
+      isloading.value = true;
+
+      final email = emailController.text.trim();
+      final username = nameController.text;
+      final pass = passController.text;
+
+      UserCredential userCredential = await usersDB
+          .createUserWithEmailAndPassword(email: email, password: pass);
+
+      User? user = userCredential.user;
+
+      if (user != null) {
+        final newUser = UserModel(
+          uid: user.uid,
+          username: username,
+          fname: '',
+          lname: '',
+          email: email,
+          role: selectedRole.value!,
+          isApproved: selectedRole.value == 'Employee' ? false : true,
+        );
+
+        await _authServices.createUser(newUser);
+        await user.sendEmailVerification();
+
+        showCustomDialog(
+          icon: FontAwesomeIcons.solidCircleCheck,
+          title: 'Account Created',
+          message: 'Please check your mail to verify your account',
+          buttonText: 'Continue',
+          onPressed: () => Get.offAll(Login()),
+        );
+        clearFields();
+      }
+    } catch (e) {
+      handleFirebaseError(e);
+    } finally {
+      isloading.value = false;
+    }
+  }
+
+// Login User
+
+  Future<void> loginUser() async {
+    try {
+      isloading.value = true;
+      final email = emailController.text.trim();
+      final pass = passController.text.trim();
+
+      UserCredential userCredential = await usersDB.signInWithEmailAndPassword(
+          email: email, password: pass);
+
+      User? user = userCredential.user;
+
+      if (user != null && user.emailVerified) {
+        final userData = await _authServices.getUser(user.uid);
+        if (userData != null) {
+          if (userData.role == 'Admin') {
+            Get.snackbar('Login Success', 'Welcome Admin');
+          } else if (userData.role == 'Employee') {
+            if (userData.isApproved) {
+              Get.snackbar('Login Success', 'Welcome Employee');
+            } else {
+              showCustomDialog(
+                  icon: FontAwesomeIcons.solidCircleXmark,
+                  title: 'Approval Required',
+                  message: 'Your accout is pending for approval',
+                  buttonText: 'Continue',
+                  onPressed: () {
+                    Get.back();
+                  });
+            }
+          } else if (userData.role == 'Client') {
+            Get.snackbar('Login Success', 'Welcome Client');
+          } else {
+            showCustomDialog(
+                icon: FontAwesomeIcons.solidCircleXmark,
+                title: 'Invalid Role',
+                message: 'Your Role is Invalid',
+                buttonText: 'Resend',
+                onPressed: () {
+                  Get.back();
+                });
+          }
+        }
+      } else {
+        showCustomDialog(
+            icon: FontAwesomeIcons.solidCircleXmark,
+            title: 'Verification Required',
+            message: 'Please verify your email first',
+            buttonText: 'Continue',
+            onPressed: () async {
+              await user?.sendEmailVerification();
+              Get.back();
+            });
+      }
+    } catch (e) {
+      handleFirebaseError(e);
+    } finally {
+      isloading.value = false;
+    }
+  }
+
+// Forgot Password
+  Future<void> forgotPass() async {
+    try {
+      isloading.value = true;
+      final email = emailController.text.trim();
+
+      await usersDB.sendPasswordResetEmail(email: email);
+      showCustomDialog(
+          icon: FontAwesomeIcons.solidCircleCheck,
+          title: 'Email Sent',
+          message: 'Please check your Email for reset link.',
+          buttonText: 'Continue',
+          onPressed: () async {
+            Get.offAll(Login());
+          });
+      clearFields();
+    } catch (e) {
+      handleFirebaseError(e);
+    } finally {
+      isloading.value = false;
+    }
+  }
+
   // Firebase Error Handler
   void handleFirebaseError(dynamic error) {
     String message = 'An unexpected error occurred';
@@ -65,107 +201,5 @@ class AuthController extends GetxController {
       snackPosition: SnackPosition.BOTTOM,
       duration: const Duration(seconds: 3),
     );
-  }
-
-// Authentication Logics
-  final FirebaseAuth usersDatabase = FirebaseAuth.instance;
-  final FirebaseFirestore database = FirebaseFirestore.instance;
-  RxBool isloading = false.obs;
-
-// Create user
-  final RxnString selectedRole = RxnString();
-
-  Future<void> registerUser() async {
-    try {
-      var email = emailController.text.trim();
-      var username = nameController.text.toLowerCase();
-      var pass = passController.text.trim();
-      isloading.value = true;
-
-      UserCredential userCredential = await usersDatabase
-          .createUserWithEmailAndPassword(email: email, password: pass);
-
-      User? user = userCredential.user;
-
-      if (user != null && !user.emailVerified) {
-        await database.collection('users').doc(user.uid).set({
-          'username': username,
-          'email': user.email,
-          'role': selectedRole.value,
-          'isApproved': selectedRole.value == 'Client' ? true : false,
-        });
-        await user.sendEmailVerification();
-        showCustomDialog(
-          icon: FontAwesomeIcons.solidCircleCheck,
-          title: 'Account Created Successfully',
-          message: 'Please verify your email',
-          buttonText: 'Continue',
-          onPressed: () {
-            Get.offAll(() => Login());
-          },
-        );
-      }
-
-      clearFields();
-    } on FirebaseAuthException catch (e) {
-      handleFirebaseError(e);
-    } finally {
-      isloading.value = false;
-    }
-  }
-
-  // Login User with Email and Password
-
-  Future<void> loginUser() async {
-    try {
-      var email = emailController.text.trim();
-      var pass = passController.text.trim();
-      isloading.value = true;
-
-      UserCredential userCredential = await usersDatabase
-          .signInWithEmailAndPassword(email: email, password: pass);
-
-      User? user = userCredential.user;
-
-      if (user != null && user.emailVerified) {
-        final userDoc = await database.collection('users').doc(user.uid).get();
-
-        var role = userDoc['role'];
-        var isApproved = userDoc['isApproved'];
-
-        if (isApproved) {
-          if (role == 'admin') {
-            Get.snackbar('Admin', 'Welcome Admin');
-          } else if (role == 'Employee') {
-            Get.snackbar('Employee', 'Welcome Employee');
-          } else if (role == 'Client') {
-            Get.snackbar('Client', 'Welcome Client');
-          } else {
-            showCustomDialog(
-                icon: FontAwesomeIcons.exclamation,
-                title: 'Invalid Role',
-                message: 'Your role is invalid');
-          }
-          clearFields();
-        } else {
-          showCustomDialog(
-              icon: FontAwesomeIcons.solidCircleXmark,
-              title: 'Approval Required',
-              message: 'Waiting for Approval from HR');
-          clearFields();
-        }
-      } else {
-        user!.sendEmailVerification();
-        showCustomDialog(
-            icon: FontAwesomeIcons.solidCircleXmark,
-            title: 'Email Verification Required',
-            message: 'Please verify your email to login');
-        clearFields();
-      }
-    } on FirebaseAuthException catch (e) {
-      handleFirebaseError(e);
-    } finally {
-      isloading.value = false;
-    }
   }
 }

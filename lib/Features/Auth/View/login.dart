@@ -1,3 +1,4 @@
+import 'package:employee_management_system/Features/Auth/View/forgot_pass.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class Login extends StatefulWidget {
@@ -77,7 +78,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () => Get.to(ForgotPass()),
                       child: Text(
                         'Forgot Password?',
                         style: AppTextStyles.bodyTextMedium,
