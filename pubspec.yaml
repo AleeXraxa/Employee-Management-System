@@ -16,6 +16,7 @@ dependencies:
   get: ^4.7.2
   font_awesome_flutter: ^10.8.0
   connectivity_plus: ^6.1.4
+  google_sign_in: ^6.3.0
 
   # Screen Utils for Responsive 
   flutter_screenutil: ^5.9.0

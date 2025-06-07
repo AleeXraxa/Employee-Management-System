@@ -131,7 +131,9 @@ class _LoginState extends State<Login> {
                 SocialButton(
                   btnText: 'Connect with Google',
                   img: 'assets/images/google.png',
-                  ontap: () {},
+                  ontap: () {
+                    _authController.signInWithGoogle();
+                  },
                 ),
                 SizedBox(height: 0.02.sh),
                 SocialButton(

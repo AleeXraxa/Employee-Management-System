@@ -155,6 +155,47 @@ class AuthController extends GetxController {
     }
   }
 
+  // Login with Google
+  Future<void> signInWithGoogle() async {
+    try {
+      isloading.value = true;
+      final user = await _authServices.loginWithGoogle();
+      if (user != null) {
+        if (user.role == 'Admin') {
+          Get.snackbar('Login Success', 'Welcome Admin');
+        } else if (user.role == 'Employee') {
+          if (user.isApproved) {
+            Get.snackbar('Login Success', 'Welcome Employee');
+          } else {
+            showCustomDialog(
+                icon: FontAwesomeIcons.solidCircleXmark,
+                title: 'Approval Required',
+                message: 'Your accout is pending for approval',
+                buttonText: 'Continue',
+                onPressed: () {
+                  Get.back();
+                });
+          }
+        } else if (user.role == 'Client') {
+          Get.snackbar('Login Success', 'Welcome Client');
+        } else {
+          showCustomDialog(
+              icon: FontAwesomeIcons.solidCircleXmark,
+              title: 'Invalid Role',
+              message: 'Your Role is Invalid',
+              buttonText: 'Resend',
+              onPressed: () {
+                Get.back();
+              });
+        }
+      }
+    } catch (e) {
+      handleFirebaseError(e);
+    } finally {
+      isloading.value = false;
+    }
+  }
+
   // Firebase Error Handler
   void handleFirebaseError(dynamic error) {
     String message = 'An unexpected error occurred';
