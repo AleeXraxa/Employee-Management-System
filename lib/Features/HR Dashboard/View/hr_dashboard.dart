@@ -1,4 +1,6 @@
+import 'package:employee_management_system/Features/HR%20Dashboard/View/emp_details.dart';
 import 'package:employee_management_system/core/app_exports.dart';
+import 'package:employee_management_system/shared/widgets/secondary_btn.dart';
 
 class HRDashboard extends StatefulWidget {
   const HRDashboard({super.key});
@@ -122,23 +124,12 @@ class _HRDashboardState extends State<HRDashboard> {
                                   ),
                                 ),
                                 // Select Button
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 18,
-                                      vertical: 10,
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    'Select',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
+                                secondaryBtn(
+                                    btnText: 'Select',
+                                    bgcolor: AppColors.primaryColor,
+                                    onTap: () {
+                                      Get.offAll(EmpDetails(employee: emp));
+                                    }),
                               ],
                             ),
                           );
