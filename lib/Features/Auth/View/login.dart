@@ -1,4 +1,3 @@
-import 'package:employee_management_system/Features/Auth/View/forgot_pass.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class Login extends StatefulWidget {
@@ -24,15 +23,7 @@ class _LoginState extends State<Login> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  margin: EdgeInsets.only(top: 0.1.sh),
-                  width: 0.3.sw,
-                  height: 0.1.sh,
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    fit: BoxFit.contain,
-                  ),
-                ),
+                Logo(),
                 SizedBox(height: 0.02.sh),
                 Text(
                   'Login Account',

@@ -12,6 +12,8 @@ export 'package:connectivity_plus/connectivity_plus.dart';
 export 'package:employee_management_system/splash.dart';
 export 'package:employee_management_system/Features/Auth/View/login.dart';
 export 'package:employee_management_system/Features/Auth/View/register.dart';
+export 'package:employee_management_system/Features/Auth/View/forgot_pass.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/View/hr_dashboard.dart';
 
 // Constants
 export 'package:employee_management_system/constant/app_colors.dart';
@@ -24,6 +26,7 @@ export 'package:employee_management_system/shared/widgets/social_btn.dart';
 export 'package:employee_management_system/shared/widgets/primary_btn.dart';
 export 'package:employee_management_system/shared/widgets/custom_dialog.dart';
 export 'package:employee_management_system/shared/widgets/dropdown.dart';
+export 'package:employee_management_system/shared/widgets/logo.dart';
 
 // Validator
 export 'package:employee_management_system/shared/utils/validator.dart';
@@ -32,12 +35,14 @@ export 'package:employee_management_system/shared/utils/validator.dart';
 export 'package:employee_management_system/shared/controllers/pass_controller.dart';
 export 'package:employee_management_system/shared/controllers/internet_checker.dart';
 export 'package:employee_management_system/Features/Auth/Controller/auth_controller.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/controllers/emp_controller.dart';
 
 // Models
 export 'package:employee_management_system/Features/Auth/Model/auth_model.dart';
 
 // Services
 export 'package:employee_management_system/Features/Auth/services/auth_services.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/Services/hr_services.dart';
 
 // Helper
 export 'package:employee_management_system/shared/utils/dialog_helper.dart';

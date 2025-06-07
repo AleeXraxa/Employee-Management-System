@@ -1,3 +1,4 @@
+import 'package:employee_management_system/Features/HR%20Dashboard/View/hr_dashboard.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class AuthController extends GetxController {
@@ -87,7 +88,7 @@ class AuthController extends GetxController {
         final userData = await _authServices.getUser(user.uid);
         if (userData != null) {
           if (userData.role == 'Admin') {
-            Get.snackbar('Login Success', 'Welcome Admin');
+            Get.offAll(HRDashboard());
           } else if (userData.role == 'Employee') {
             if (userData.isApproved) {
               Get.snackbar('Login Success', 'Welcome Employee');
@@ -162,7 +163,7 @@ class AuthController extends GetxController {
       final user = await _authServices.loginWithGoogle();
       if (user != null) {
         if (user.role == 'Admin') {
-          Get.snackbar('Login Success', 'Welcome Admin');
+          Get.offAll(HRDashboard());
         } else if (user.role == 'Employee') {
           if (user.isApproved) {
             Get.snackbar('Login Success', 'Welcome Employee');

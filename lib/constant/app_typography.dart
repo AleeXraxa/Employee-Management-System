@@ -12,7 +12,7 @@ class AppTextStyles {
     fontSize: 18.sp,
     fontWeight: FontWeight.w600,
     fontFamily: 'Montserrat',
-    color: AppColors.lightGreen,
+    color: AppColors.darkGreen,
   );
   static TextStyle screentitle = TextStyle(
     fontSize: 24.sp,
@@ -43,5 +43,11 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     fontFamily: 'Poppins',
     color: AppColors.gray,
+  );
+  static TextStyle cardTitle = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'Poppins',
+    color: AppColors.primaryColor,
   );
 }
