@@ -7,6 +7,7 @@ export 'package:firebase_auth/firebase_auth.dart';
 export 'package:flutter/services.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';
+export 'package:google_sign_in/google_sign_in.dart';
 
 // Views
 export 'package:employee_management_system/splash.dart';
@@ -14,6 +15,7 @@ export 'package:employee_management_system/Features/Auth/View/login.dart';
 export 'package:employee_management_system/Features/Auth/View/register.dart';
 export 'package:employee_management_system/Features/Auth/View/forgot_pass.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/View/hr_dashboard.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/View/emp_details.dart';
 
 // Constants
 export 'package:employee_management_system/constant/app_colors.dart';
@@ -27,6 +29,8 @@ export 'package:employee_management_system/shared/widgets/primary_btn.dart';
 export 'package:employee_management_system/shared/widgets/custom_dialog.dart';
 export 'package:employee_management_system/shared/widgets/dropdown.dart';
 export 'package:employee_management_system/shared/widgets/logo.dart';
+export 'package:employee_management_system/shared/widgets/secondary_btn.dart';
+export 'package:employee_management_system/shared/widgets/task_card.dart';
 
 // Validator
 export 'package:employee_management_system/shared/utils/validator.dart';
@@ -39,10 +43,12 @@ export 'package:employee_management_system/Features/HR%20Dashboard/controllers/e
 
 // Models
 export 'package:employee_management_system/Features/Auth/Model/auth_model.dart';
+export 'package:employee_management_system/Features/HR Dashboard/model/task_model.dart';
 
 // Services
 export 'package:employee_management_system/Features/Auth/services/auth_services.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/Services/hr_services.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/Services/task_service.dart';
 
 // Helper
 export 'package:employee_management_system/shared/utils/dialog_helper.dart';

@@ -1,5 +1,4 @@
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:employee_management_system/shared/widgets/secondary_btn.dart';
 
 class EmpDetails extends StatelessWidget {
   final UserModel employee;
@@ -10,6 +9,9 @@ class EmpDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _empController = Get.find<EmpController>();
+    final _authController = Get.find<AuthController>();
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -19,13 +21,28 @@ class EmpDetails extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 0.03.sh),
-                Text(
-                  'Good Morning, HR!',
-                  style: AppTextStyles.bodyTextMedium,
-                ),
-                Text(
-                  "Let's Start Your Day",
-                  style: AppTextStyles.bodyText,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Good Morning, HR!',
+                          style: AppTextStyles.bodyTextMedium,
+                        ),
+                        Text(
+                          "Let's Start Your Day",
+                          style: AppTextStyles.bodyText,
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          _authController.logout();
+                        },
+                        icon: FaIcon(FontAwesomeIcons.rightToBracket))
+                  ],
                 ),
                 SizedBox(height: 0.02.sh),
                 Container(
@@ -37,6 +54,7 @@ class EmpDetails extends StatelessWidget {
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
                         padding: const EdgeInsets.all(3),
@@ -55,6 +73,7 @@ class EmpDetails extends StatelessWidget {
                       // Name and Role
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             '${employee.username.toUpperCase()}',
@@ -93,15 +112,36 @@ class EmpDetails extends StatelessWidget {
                             secondaryBtn(
                                 btnText: 'Approve',
                                 bgcolor: AppColors.primaryColor,
-                                onTap: () {}),
+                                onTap: () {
+                                  _empController.approveReject(
+                                      employee.uid, true);
+                                }),
                             SizedBox(width: 0.05.sw),
                             secondaryBtn(
                                 btnText: 'Reject',
                                 bgcolor: AppColors.red,
-                                onTap: () {}),
+                                onTap: () {
+                                  _empController.approveReject(
+                                      employee.uid, false);
+                                }),
                           ],
                         ),
-                      )
+                      ),
+                SizedBox(height: 0.02.sh),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Employee's Taks",
+                      style: AppTextStyles.bodyText,
+                    ),
+                    secondaryBtn(
+                        btnText: 'View All',
+                        bgcolor: AppColors.primaryColor,
+                        onTap: () {}),
+                  ],
+                ),
+                TaskCard(),
               ],
             ),
           ),

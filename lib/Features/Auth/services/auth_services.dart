@@ -1,5 +1,4 @@
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthServices {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

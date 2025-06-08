@@ -1,4 +1,3 @@
-import 'package:employee_management_system/Features/HR%20Dashboard/View/hr_dashboard.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class AuthController extends GetxController {
@@ -126,6 +125,7 @@ class AuthController extends GetxController {
               Get.back();
             });
       }
+      clearFields();
     } catch (e) {
       handleFirebaseError(e);
     } finally {
@@ -195,6 +195,12 @@ class AuthController extends GetxController {
     } finally {
       isloading.value = false;
     }
+  }
+
+  Future<void> logout() async {
+    await usersDB.signOut();
+    await GoogleSignIn().signOut();
+    Get.offAll(Login());
   }
 
   // Firebase Error Handler

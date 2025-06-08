@@ -27,8 +27,8 @@ class AppTextStyles {
     color: AppColors.gray,
   );
   static TextStyle bodyText = TextStyle(
-    fontSize: 16.sp,
-    fontWeight: FontWeight.w500,
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w600,
     fontFamily: 'Poppins',
     color: AppColors.black,
   );

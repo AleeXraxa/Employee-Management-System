@@ -1,6 +1,4 @@
-import 'package:employee_management_system/Features/HR%20Dashboard/View/emp_details.dart';
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:employee_management_system/shared/widgets/secondary_btn.dart';
 
 class HRDashboard extends StatefulWidget {
   const HRDashboard({super.key});
