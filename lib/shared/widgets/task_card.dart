@@ -1,7 +1,14 @@
 import 'package:employee_management_system/core/app_exports.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({super.key});
+  final TaskModel task;
+  final VoidCallback onEdit;
+
+  const TaskCard({
+    super.key,
+    required this.task,
+    required this.onEdit,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,51 +20,65 @@ class TaskCard extends StatelessWidget {
       elevation: 2,
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Day and Time
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: Color(0xFFD6FFE0),
+                color: const Color(0xFFD6FFE0),
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Text(
-                'Monday, 09:00 Am–05:00 PM',
-                style: TextStyle(
+                '${task.day}, ${task.startTime} – ${task.endTime}',
+                style: const TextStyle(
                   color: Color(0xFF00B44D),
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                 ),
               ),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
+
+            // Task title and status
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Task',
-                  style: TextStyle(
+                  task.taskTitle,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Icon(Icons.check_circle, color: Color(0xFF00B44D)),
+                Icon(
+                  task.status == 'completed'
+                      ? Icons.check_circle
+                      : Icons.pending_actions,
+                  color: task.status == 'completed'
+                      ? const Color(0xFF00B44D)
+                      : Colors.orange,
+                ),
               ],
             ),
-            SizedBox(height: 4),
+
+            const SizedBox(height: 4),
             Text(
-              'Transport solar panels & equipment to Site 1',
-              style: TextStyle(fontSize: 14, color: Colors.black87),
+              task.description,
+              style: const TextStyle(fontSize: 14, color: Colors.black87),
             ),
-            SizedBox(height: 20),
+
+            const SizedBox(height: 20),
+
+            // Edit Button
             Center(
               child: secondaryBtn(
-                  btnText: 'Edit Taks',
-                  bgcolor: AppColors.primaryColor,
-                  onTap: () {}),
+                btnText: 'Edit Task',
+                bgcolor: AppColors.primaryColor,
+                onTap: onEdit,
+              ),
             ),
           ],
         ),

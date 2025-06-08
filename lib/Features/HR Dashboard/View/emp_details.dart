@@ -1,3 +1,4 @@
+import 'package:employee_management_system/Features/HR%20Dashboard/controllers/task_controller.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class EmpDetails extends StatelessWidget {
@@ -11,6 +12,7 @@ class EmpDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final _empController = Get.find<EmpController>();
     final _authController = Get.find<AuthController>();
+    final _taskController = Get.put(TaskController(empId: employee.uid));
 
     return Scaffold(
       body: SafeArea(
@@ -128,20 +130,48 @@ class EmpDetails extends StatelessWidget {
                         ),
                       ),
                 SizedBox(height: 0.02.sh),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Employee's Taks",
-                      style: AppTextStyles.bodyText,
-                    ),
-                    secondaryBtn(
-                        btnText: 'View All',
-                        bgcolor: AppColors.primaryColor,
-                        onTap: () {}),
-                  ],
-                ),
-                TaskCard(),
+                Obx(() {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (_taskController.completedTask != null) ...[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Employee's Taks",
+                              style: AppTextStyles.bodyText,
+                            ),
+                            secondaryBtn(
+                                btnText: 'View All',
+                                bgcolor: AppColors.primaryColor,
+                                onTap: () {}),
+                          ],
+                        ),
+                        TaskCard(
+                            task: _taskController.completedTask!,
+                            onEdit: () {}),
+                      ],
+                      if (_taskController.tomorrowTask != null) ...[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Tommorow's Taks",
+                              style: AppTextStyles.bodyText,
+                            ),
+                            secondaryBtn(
+                                btnText: 'View All',
+                                bgcolor: AppColors.primaryColor,
+                                onTap: () {}),
+                          ],
+                        ),
+                        TaskCard(
+                            task: _taskController.tomorrowTask!, onEdit: () {}),
+                      ],
+                    ],
+                  );
+                }),
               ],
             ),
           ),
