@@ -6,6 +6,7 @@ class InitialBinding extends Bindings {
     Get.put(PassController());
     Get.put(AuthController());
     Get.put(EmpController());
+    Get.put(BottomNavBarController());
 
     Get.put<InternetChecker>(InternetChecker(), permanent: true);
   }

@@ -30,7 +30,7 @@ export 'package:employee_management_system/shared/widgets/custom_dialog.dart';
 export 'package:employee_management_system/shared/widgets/dropdown.dart';
 export 'package:employee_management_system/shared/widgets/logo.dart';
 export 'package:employee_management_system/shared/widgets/secondary_btn.dart';
-export 'package:employee_management_system/shared/widgets/task_card.dart';
+export 'package:employee_management_system/shared/widgets/navbar.dart';
 
 // Validator
 export 'package:employee_management_system/shared/utils/validator.dart';
@@ -40,15 +40,13 @@ export 'package:employee_management_system/shared/controllers/pass_controller.da
 export 'package:employee_management_system/shared/controllers/internet_checker.dart';
 export 'package:employee_management_system/Features/Auth/Controller/auth_controller.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/controllers/emp_controller.dart';
-
+export 'package:employee_management_system/shared/controllers/navbar_controller.dart';
 // Models
 export 'package:employee_management_system/Features/Auth/Model/auth_model.dart';
-export 'package:employee_management_system/Features/HR Dashboard/model/task_model.dart';
 
 // Services
 export 'package:employee_management_system/Features/Auth/services/auth_services.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/Services/hr_services.dart';
-export 'package:employee_management_system/Features/HR%20Dashboard/Services/task_service.dart';
 
 // Helper
 export 'package:employee_management_system/shared/utils/dialog_helper.dart';

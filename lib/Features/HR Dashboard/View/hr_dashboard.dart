@@ -1,3 +1,4 @@
+import 'package:employee_management_system/Features/HR%20Dashboard/View/dashboard.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class HRDashboard extends StatefulWidget {
@@ -126,7 +127,7 @@ class _HRDashboardState extends State<HRDashboard> {
                                     btnText: 'Select',
                                     bgcolor: AppColors.primaryColor,
                                     onTap: () {
-                                      Get.offAll(EmpDetails(employee: emp));
+                                      Get.offAll(Dashboard(employee: emp));
                                     }),
                               ],
                             ),

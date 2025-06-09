@@ -50,4 +50,10 @@ class AppTextStyles {
     fontFamily: 'Poppins',
     color: AppColors.primaryColor,
   );
+  static TextStyle screenName = TextStyle(
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w600,
+    fontFamily: 'Poppins',
+    color: AppColors.white,
+  );
 }
