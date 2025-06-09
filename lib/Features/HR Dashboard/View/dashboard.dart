@@ -13,7 +13,9 @@ class Dashboard extends StatelessWidget {
           body: _getScreen(controller.selectedIndex.value),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              Get.to(AddTaskScreen());
+              Get.to(AddTaskScreen(
+                emp: employee,
+              ));
             },
             backgroundColor: Colors.green,
             shape: const CircleBorder(),

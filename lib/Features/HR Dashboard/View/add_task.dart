@@ -2,13 +2,15 @@ import 'package:employee_management_system/core/app_exports.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({super.key});
+  final UserModel emp;
+  const AddTaskScreen({super.key, required this.emp});
 
   @override
   State<AddTaskScreen> createState() => _AddTaskScreenState();
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
+  final _taskController = Get.find<TaskController>();
   DateTime _selectedDate = DateTime.now();
 
   final TextEditingController _titleController = TextEditingController();
@@ -18,6 +20,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       TextEditingController(text: "Site 1");
   final TextEditingController _statusController =
       TextEditingController(text: "Routine event");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,84 +45,78 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               ),
             ),
 
-            // Body Content
             Expanded(
-              child: Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
-                  ),
-                ),
-                child: SingleChildScrollView(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Calendar
-                      SizedBox(
-                        height: 360,
-                        child: CalendarCarousel(
-                          onDayPressed: (date, _) {
-                            setState(() => _selectedDate = date);
-                          },
-                          selectedDateTime: _selectedDate,
-                          weekendTextStyle:
-                              const TextStyle(color: Colors.black),
-                          thisMonthDayBorderColor: Colors.transparent,
-                          daysHaveCircularBorder: true,
-                          todayButtonColor: Colors.transparent,
-                          selectedDayButtonColor: const Color(0xFF00C853),
-                          selectedDayBorderColor: Colors.transparent,
-                          selectedDayTextStyle:
-                              const TextStyle(color: Colors.white),
-                          todayTextStyle: const TextStyle(color: Colors.black),
-                          daysTextStyle: const TextStyle(color: Colors.black),
-                          weekdayTextStyle:
-                              const TextStyle(fontWeight: FontWeight.w500),
-                          headerTextStyle: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                          leftButtonIcon: const Icon(Icons.chevron_left,
-                              color: Colors.black),
-                          rightButtonIcon: const Icon(Icons.chevron_right,
-                              color: Colors.black),
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // Information Section
-                      Text("Information", style: AppTextStyles.title),
-                      const SizedBox(height: 16),
-                      _buildInputField("Title", _titleController),
-                      _buildInputField("Time", _timeController),
-                      _buildInputField("Location", _locationController),
-                      _buildInputField("Status", _statusController),
-
-                      const SizedBox(height: 40),
-
-                      // Add Task Button
-                      SizedBox(
-                        width: double.infinity,
-                        height: 52,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF00C853),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+              child: ClipPath(
+                clipper: TopRoundedClipper(),
+                child: Container(
+                  color: Colors.white,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Calendar
+                        SizedBox(
+                          height: 360,
+                          child: CalendarCarousel(
+                            onDayPressed: (date, _) {
+                              setState(() => _selectedDate = date);
+                            },
+                            selectedDateTime: _selectedDate,
+                            weekendTextStyle:
+                                const TextStyle(color: Colors.black),
+                            thisMonthDayBorderColor: Colors.transparent,
+                            daysHaveCircularBorder: true,
+                            todayButtonColor: Colors.transparent,
+                            selectedDayButtonColor: const Color(0xFF00C853),
+                            selectedDayBorderColor: Colors.transparent,
+                            selectedDayTextStyle:
+                                const TextStyle(color: Colors.white),
+                            todayTextStyle:
+                                const TextStyle(color: Colors.black),
+                            daysTextStyle: const TextStyle(color: Colors.black),
+                            weekdayTextStyle:
+                                const TextStyle(fontWeight: FontWeight.w500),
+                            headerTextStyle: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
                             ),
+                            leftButtonIcon: const Icon(Icons.chevron_left,
+                                color: Colors.black),
+                            rightButtonIcon: const Icon(Icons.chevron_right,
+                                color: Colors.black),
                           ),
-                          onPressed: () {
-                            // Add your backend logic here later
-                          },
-                          child: Text("Add Task", style: AppTextStyles.title),
                         ),
-                      ),
-                    ],
+
+                        const SizedBox(height: 20),
+
+                        Text("Information", style: AppTextStyles.title),
+                        const SizedBox(height: 16),
+                        _buildInputField("Title", _titleController),
+                        _buildInputField("Time", _timeController),
+                        _buildInputField("Location", _locationController),
+                        _buildInputField("Status", _statusController),
+
+                        const SizedBox(height: 40),
+
+                        PrimaryButton(
+                            text: 'Add Task',
+                            bgColor: AppColors.primaryColor,
+                            ontap: () {
+                              final task = TaskModel(
+                                  title: _titleController.text,
+                                  time: _timeController.text,
+                                  location: _locationController.text,
+                                  status: _statusController.text,
+                                  date: _selectedDate,
+                                  createdBy: 'HR',
+                                  assignedTo: widget.emp.uid);
+                              _taskController.addTask(task);
+                            }),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -140,7 +137,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           const SizedBox(height: 4),
           TextField(
             controller: controller,
-            style: AppTextStyles.title,
+            style: AppTextStyles.field,
             decoration: const InputDecoration(
               isDense: true,
               contentPadding: EdgeInsets.symmetric(vertical: 10),
@@ -151,4 +148,23 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       ),
     );
   }
+}
+
+class TopRoundedClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    const radius = 32.0;
+    final path = Path();
+    path.moveTo(0, radius);
+    path.quadraticBezierTo(0, 0, radius, 0);
+    path.lineTo(size.width - radius, 0);
+    path.quadraticBezierTo(size.width, 0, size.width, radius);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

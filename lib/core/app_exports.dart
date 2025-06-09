@@ -41,8 +41,11 @@ export 'package:employee_management_system/shared/controllers/internet_checker.d
 export 'package:employee_management_system/Features/Auth/Controller/auth_controller.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/controllers/emp_controller.dart';
 export 'package:employee_management_system/shared/controllers/navbar_controller.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/controllers/task_controller.dart';
+
 // Models
 export 'package:employee_management_system/Features/Auth/Model/auth_model.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/model/task_model.dart';
 
 // Services
 export 'package:employee_management_system/Features/Auth/services/auth_services.dart';

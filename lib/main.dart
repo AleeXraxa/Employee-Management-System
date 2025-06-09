@@ -1,4 +1,3 @@
-import 'package:employee_management_system/Features/HR%20Dashboard/View/add_task.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 import 'package:employee_management_system/config/firebase_options.dart';
 import 'package:employee_management_system/shared/bindings/initial_binding.dart';
@@ -27,7 +26,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: AddTaskScreen(),
+        home: Splash(),
       ),
     );
   }

@@ -56,4 +56,10 @@ class AppTextStyles {
     fontFamily: 'Poppins',
     color: AppColors.white,
   );
+  static TextStyle field = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+    fontFamily: 'Poppins',
+    color: AppColors.black,
+  );
 }
