@@ -16,6 +16,7 @@ export 'package:employee_management_system/Features/Auth/View/register.dart';
 export 'package:employee_management_system/Features/Auth/View/forgot_pass.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/View/hr_dashboard.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/View/emp_details.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/View/add_task.dart';
 
 // Constants
 export 'package:employee_management_system/constant/app_colors.dart';

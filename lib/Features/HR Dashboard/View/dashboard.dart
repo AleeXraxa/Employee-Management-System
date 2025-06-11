@@ -1,4 +1,3 @@
-import 'package:employee_management_system/Features/HR%20Dashboard/View/add_task.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class Dashboard extends StatelessWidget {
@@ -13,8 +12,8 @@ class Dashboard extends StatelessWidget {
           body: _getScreen(controller.selectedIndex.value),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              Get.to(AddTaskScreen(
-                emp: employee,
+              Get.to(AddTask(
+                employee: employee,
               ));
             },
             backgroundColor: Colors.green,

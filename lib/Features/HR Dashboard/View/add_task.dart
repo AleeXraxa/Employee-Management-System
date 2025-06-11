@@ -1,170 +1,223 @@
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
+import 'package:table_calendar/table_calendar.dart';
 
-class AddTaskScreen extends StatefulWidget {
-  final UserModel emp;
-  const AddTaskScreen({super.key, required this.emp});
+class AddTask extends StatefulWidget {
+  final UserModel employee;
+  const AddTask({super.key, required this.employee});
 
   @override
-  State<AddTaskScreen> createState() => _AddTaskScreenState();
+  State<AddTask> createState() => _AddTaskState();
 }
 
-class _AddTaskScreenState extends State<AddTaskScreen> {
+class _AddTaskState extends State<AddTask> {
   final _taskController = Get.find<TaskController>();
-  DateTime _selectedDate = DateTime.now();
-
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _timeController =
-      TextEditingController(text: "01:30 - 03:30 PM");
-  final TextEditingController _locationController =
-      TextEditingController(text: "Site 1");
-  final TextEditingController _statusController =
-      TextEditingController(text: "Routine event");
+  var _focusedDay = DateTime.now();
+  DateTime? _selectedDate;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        toolbarHeight: 0.1.sh,
+        backgroundColor: AppColors.primaryColor,
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: FaIcon(
+            FontAwesomeIcons.circleChevronLeft,
+            color: Colors.white,
+          ),
+        ),
+        title: Text(
+          'Add Task',
+          style: AppTextStyles.screenName,
+        ),
+        centerTitle: true,
+      ),
       body: SafeArea(
-        child: Column(
-          children: [
-            // Header
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              decoration: const BoxDecoration(color: Color(0xFF00C853)),
-              child: Row(
+        child: SingleChildScrollView(
+          child: Container(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child:
-                        const Icon(Icons.arrow_back_ios, color: Colors.white),
-                  ),
-                  const SizedBox(width: 10),
-                  Text("Add Task", style: AppTextStyles.screenName),
-                ],
-              ),
-            ),
-
-            Expanded(
-              child: ClipPath(
-                clipper: TopRoundedClipper(),
-                child: Container(
-                  color: Colors.white,
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Calendar
-                        SizedBox(
-                          height: 360,
-                          child: CalendarCarousel(
-                            onDayPressed: (date, _) {
-                              setState(() => _selectedDate = date);
-                            },
-                            selectedDateTime: _selectedDate,
-                            weekendTextStyle:
-                                const TextStyle(color: Colors.black),
-                            thisMonthDayBorderColor: Colors.transparent,
-                            daysHaveCircularBorder: true,
-                            todayButtonColor: Colors.transparent,
-                            selectedDayButtonColor: const Color(0xFF00C853),
-                            selectedDayBorderColor: Colors.transparent,
-                            selectedDayTextStyle:
-                                const TextStyle(color: Colors.white),
-                            todayTextStyle:
-                                const TextStyle(color: Colors.black),
-                            daysTextStyle: const TextStyle(color: Colors.black),
-                            weekdayTextStyle:
-                                const TextStyle(fontWeight: FontWeight.w500),
-                            headerTextStyle: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                            leftButtonIcon: const Icon(Icons.chevron_left,
-                                color: Colors.black),
-                            rightButtonIcon: const Icon(Icons.chevron_right,
-                                color: Colors.black),
-                          ),
+                  Container(
+                    child: TableCalendar(
+                      firstDay: DateTime.utc(2000, 1, 1),
+                      lastDay: DateTime.utc(2100, 12, 31),
+                      focusedDay: _focusedDay,
+                      selectedDayPredicate: (day) {
+                        return isSameDay(_selectedDate, day);
+                      },
+                      onDaySelected: (selectedDay, focusedDay) {
+                        setState(() {
+                          _selectedDate = selectedDay;
+                          _focusedDay = focusedDay;
+                        });
+                      },
+                      calendarStyle: CalendarStyle(
+                        selectedDecoration: BoxDecoration(
+                          color: const Color(0xFF00C853),
+                          shape: BoxShape.circle,
                         ),
-
-                        const SizedBox(height: 20),
-
-                        Text("Information", style: AppTextStyles.title),
-                        const SizedBox(height: 16),
-                        _buildInputField("Title", _titleController),
-                        _buildInputField("Time", _timeController),
-                        _buildInputField("Location", _locationController),
-                        _buildInputField("Status", _statusController),
-
-                        const SizedBox(height: 40),
-
+                        todayDecoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          shape: BoxShape.circle,
+                        ),
+                        weekendTextStyle: const TextStyle(color: Colors.black),
+                        defaultTextStyle: const TextStyle(color: Colors.black),
+                        todayTextStyle: const TextStyle(color: Colors.black),
+                        selectedTextStyle: const TextStyle(color: Colors.white),
+                      ),
+                      headerStyle: HeaderStyle(
+                        titleTextStyle: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                        formatButtonVisible: false,
+                        titleCentered: true,
+                        leftChevronIcon:
+                            const Icon(Icons.chevron_left, color: Colors.black),
+                        rightChevronIcon: const Icon(Icons.chevron_right,
+                            color: Colors.black),
+                      ),
+                      daysOfWeekStyle: const DaysOfWeekStyle(
+                        weekdayStyle: TextStyle(fontWeight: FontWeight.w500),
+                        weekendStyle: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ),
+                  Divider(),
+                  SizedBox(height: 0.02.sh),
+                  Text(
+                    'Information',
+                    style: AppTextStyles.bodyText,
+                  ),
+                  SizedBox(height: 0.02.sh),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        CustomTextField(
+                          labelText: 'Title',
+                          type: TextInputType.text,
+                          controller: _taskController.titleController,
+                          validator: (value) =>
+                              AppValidators.validateName(value, 'Title'),
+                        ),
+                        SizedBox(height: 0.02.sh),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomTextField(
+                                isReadOnly: true,
+                                labelText: 'Start Time',
+                                type: TextInputType.datetime,
+                                controller: _taskController.startController,
+                                validator: (value) =>
+                                    AppValidators.validateTimeField(
+                                  value: value,
+                                  label: 'Start Time',
+                                  startTimeText: null,
+                                ),
+                                onTapField: () async {
+                                  final TimeOfDay? pickedTime =
+                                      await showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now(),
+                                  );
+                                  if (pickedTime != null) {
+                                    _taskController.startController.text =
+                                        pickedTime.format(context);
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(width: 0.02.sw),
+                            Expanded(
+                              child: CustomTextField(
+                                isReadOnly: true,
+                                labelText: 'End Time',
+                                type: TextInputType.datetime,
+                                controller: _taskController.endController,
+                                validator: (value) =>
+                                    AppValidators.validateTimeField(
+                                  value: value,
+                                  label: 'End Time',
+                                  startTimeText:
+                                      _taskController.startController.text,
+                                ),
+                                onTapField: () async {
+                                  final TimeOfDay? pickedTime =
+                                      await showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now(),
+                                  );
+                                  if (pickedTime != null) {
+                                    _taskController.endController.text =
+                                        pickedTime.format(context);
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(height: 0.02.sh),
+                          ],
+                        ),
+                        SizedBox(height: 0.02.sh),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomTextField(
+                                labelText: 'Location',
+                                type: TextInputType.text,
+                                controller: _taskController.locationController,
+                                validator: (value) =>
+                                    AppValidators.validateName(
+                                        value, 'Location'),
+                              ),
+                            ),
+                            SizedBox(width: 0.02.sw),
+                            Expanded(
+                              child: CustomTextField(
+                                labelText: 'Status',
+                                type: TextInputType.text,
+                                controller: _taskController.statusController,
+                                validator: (value) =>
+                                    AppValidators.validateName(value, 'Status'),
+                              ),
+                            ),
+                            SizedBox(height: 0.02.sh),
+                          ],
+                        ),
+                        SizedBox(height: 0.03.sh),
                         PrimaryButton(
                             text: 'Add Task',
                             bgColor: AppColors.primaryColor,
                             ontap: () {
-                              final task = TaskModel(
-                                  title: _titleController.text,
-                                  time: _timeController.text,
-                                  location: _locationController.text,
-                                  status: _statusController.text,
-                                  date: _selectedDate,
-                                  createdBy: 'HR',
-                                  assignedTo: widget.emp.uid);
-                              _taskController.addTask(task);
+                              if (_formKey.currentState!.validate()) {
+                                if (_selectedDate == null) {
+                                  Get.snackbar('Date Missing',
+                                      'Please Select a date for the Task.');
+                                  return;
+                                }
+                                _taskController.addTask(
+                                    selectedDate: _selectedDate!,
+                                    employeeID: widget.employee.uid);
+                              }
                             }),
                       ],
                     ),
                   ),
-                ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
-
-  Widget _buildInputField(String label, TextEditingController controller) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: AppTextStyles.title),
-          const SizedBox(height: 4),
-          TextField(
-            controller: controller,
-            style: AppTextStyles.field,
-            decoration: const InputDecoration(
-              isDense: true,
-              contentPadding: EdgeInsets.symmetric(vertical: 10),
-              border: UnderlineInputBorder(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class TopRoundedClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    const radius = 32.0;
-    final path = Path();
-    path.moveTo(0, radius);
-    path.quadraticBezierTo(0, 0, radius, 0);
-    path.lineTo(size.width - radius, 0);
-    path.quadraticBezierTo(size.width, 0, size.width, radius);
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

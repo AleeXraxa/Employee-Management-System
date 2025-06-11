@@ -9,7 +9,8 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onTap;
   final bool isPass;
   final String? Function(String?)? validator;
-
+  final VoidCallback? onTapField;
+  final bool isReadOnly;
   const CustomTextField({
     required this.labelText,
     required this.type,
@@ -19,12 +20,16 @@ class CustomTextField extends StatelessWidget {
     this.onTap,
     this.isPass = false,
     required this.validator,
+    this.onTapField,
+    this.isReadOnly = false,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: isReadOnly,
+      onTap: onTapField,
       keyboardType: type,
       controller: controller,
       obscureText: isPass,
