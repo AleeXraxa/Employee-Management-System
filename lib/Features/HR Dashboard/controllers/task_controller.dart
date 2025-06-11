@@ -1,7 +1,7 @@
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class TaskController extends GetxController {
+  final _authController = Get.find<AuthController>();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   var isLoading = false.obs;
 
@@ -40,11 +40,51 @@ class TaskController extends GetxController {
       );
 
       await _db.collection('tasks').add(task.toMap());
-      Get.snackbar("Success", 'Added');
+      showCustomDialog(
+        icon: FontAwesomeIcons.solidCircleCheck,
+        title: 'Task Added',
+        message: 'New ${titleController.text} has been added successfully',
+        buttonText: 'Continue',
+        onPressed: () {
+          Get.back();
+          Get.back();
+        },
+      );
+      clearFields();
     } catch (e) {
-      Get.snackbar("Error", e.toString());
+      _authController.handleFirebaseError(e);
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  var taskList = <TaskModel>[].obs;
+  var isTaskLoading = true.obs;
+  var taskError = ''.obs;
+
+  void fetchTasksForEmployee(String employeeID) {
+    try {
+      isTaskLoading.value = true;
+      taskError.value = '';
+
+      _db
+          .collection('tasks')
+          .where('assignedTo', isEqualTo: employeeID)
+          .orderBy('date', descending: false)
+          .snapshots()
+          .listen((snapshot) {
+        taskList.value = snapshot.docs
+            .map((doc) => TaskModel.fromMap(doc.id, doc.data()))
+            .toList();
+        isTaskLoading.value = false;
+      }, onError: (e) {
+        taskError.value = 'Something went wrong $e';
+        print(e);
+        isTaskLoading.value = false;
+      });
+    } catch (e) {
+      taskError.value = e.toString();
+      isTaskLoading.value = false;
     }
   }
 }

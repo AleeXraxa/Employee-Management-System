@@ -1,4 +1,5 @@
 import 'package:employee_management_system/core/app_exports.dart';
+import 'package:intl/intl.dart';
 
 class EmpDetails extends StatelessWidget {
   final UserModel employee;
@@ -11,6 +12,8 @@ class EmpDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final _empController = Get.find<EmpController>();
     final _authController = Get.find<AuthController>();
+    final _taskController = Get.find<TaskController>();
+    _taskController.fetchTasksForEmployee(employee.uid);
 
     return Scaffold(
       body: SafeArea(
@@ -128,48 +131,49 @@ class EmpDetails extends StatelessWidget {
                         ),
                       ),
                 SizedBox(height: 0.02.sh),
-                // Obx(() {
-                //   return Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       if (_taskController.completedTask != null) ...[
-                //         Row(
-                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //           children: [
-                //             Text(
-                //               "Employee's Taks",
-                //               style: AppTextStyles.bodyText,
-                //             ),
-                //             secondaryBtn(
-                //                 btnText: 'View All',
-                //                 bgcolor: AppColors.primaryColor,
-                //                 onTap: () {}),
-                //           ],
-                //         ),
-                //         TaskCard(
-                //             task: _taskController.completedTask!,
-                //             onEdit: () {}),
-                //       ],
-                //       if (_taskController.tomorrowTask != null) ...[
-                //         Row(
-                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //           children: [
-                //             Text(
-                //               "Tommorow's Taks",
-                //               style: AppTextStyles.bodyText,
-                //             ),
-                //             secondaryBtn(
-                //                 btnText: 'View All',
-                //                 bgcolor: AppColors.primaryColor,
-                //                 onTap: () {}),
-                //           ],
-                //         ),
-                //         TaskCard(
-                //             task: _taskController.tomorrowTask!, onEdit: () {}),
-                //       ],
-                //     ],
-                //   );
-                // }),
+                Container(
+                  height: 0.6.sh,
+                  child: Obx(() {
+                    if (_taskController.isTaskLoading.value) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (_taskController.taskError.value.isNotEmpty) {
+                      return Center(
+                          child: Text(_taskController.taskError.value));
+                    }
+
+                    if (_taskController.taskList.isEmpty) {
+                      return const Center(child: Text("No tasks found"));
+                    }
+
+                    return ListView.builder(
+                      itemCount: _taskController.taskList.length,
+                      itemBuilder: (context, index) {
+                        final task = _taskController.taskList[index];
+                        return Card(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 16),
+                          child: ListTile(
+                            leading: const Icon(Icons.task,
+                                color: AppColors.primaryColor),
+                            title: Text(task.title),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    "Date: ${DateFormat.yMMMd().format(task.date)}"),
+                                Text("Time: ${task.time}"),
+                                Text("Location: ${task.location}"),
+                                Text("Status: ${task.status}"),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }),
+                )
               ],
             ),
           ),

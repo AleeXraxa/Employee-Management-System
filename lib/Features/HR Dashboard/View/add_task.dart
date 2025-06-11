@@ -194,21 +194,27 @@ class _AddTaskState extends State<AddTask> {
                           ],
                         ),
                         SizedBox(height: 0.03.sh),
-                        PrimaryButton(
-                            text: 'Add Task',
-                            bgColor: AppColors.primaryColor,
-                            ontap: () {
-                              if (_formKey.currentState!.validate()) {
-                                if (_selectedDate == null) {
-                                  Get.snackbar('Date Missing',
-                                      'Please Select a date for the Task.');
-                                  return;
-                                }
-                                _taskController.addTask(
-                                    selectedDate: _selectedDate!,
-                                    employeeID: widget.employee.uid);
-                              }
-                            }),
+                        Obx(
+                          () => _taskController.isLoading.value
+                              ? CircularProgressIndicator(
+                                  color: AppColors.primaryColor,
+                                )
+                              : PrimaryButton(
+                                  text: 'Add Task',
+                                  bgColor: AppColors.primaryColor,
+                                  ontap: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      if (_selectedDate == null) {
+                                        Get.snackbar('Date Missing',
+                                            'Please Select a date for the Task.');
+                                        return;
+                                      }
+                                      _taskController.addTask(
+                                          selectedDate: _selectedDate!,
+                                          employeeID: widget.employee.uid);
+                                    }
+                                  }),
+                        ),
                       ],
                     ),
                   ),
