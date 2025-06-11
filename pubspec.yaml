@@ -19,6 +19,7 @@ dependencies:
   google_sign_in: ^6.3.0
   intl: 
   table_calendar: ^3.2.0
+  collection: 1.19.0
 
   # Screen Utils for Responsive 
   flutter_screenutil: ^5.9.0

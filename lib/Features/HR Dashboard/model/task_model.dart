@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:employee_management_system/core/app_exports.dart';
 
 class TaskModel {
   final String? id;
@@ -9,6 +9,7 @@ class TaskModel {
   final DateTime date;
   final String createdBy;
   final String assignedTo;
+  final String progressStatus;
 
   TaskModel({
     this.id,
@@ -19,6 +20,7 @@ class TaskModel {
     required this.date,
     required this.createdBy,
     required this.assignedTo,
+    this.progressStatus = 'pending',
   });
 
   Map<String, dynamic> toMap() {
@@ -30,6 +32,7 @@ class TaskModel {
       'date': Timestamp.fromDate(date),
       'createdBy': createdBy,
       'assignedTo': assignedTo,
+      'progressStatus': progressStatus,
     };
   }
 
@@ -43,6 +46,7 @@ class TaskModel {
       date: (map['date'] as Timestamp).toDate(),
       createdBy: map['createdBy'],
       assignedTo: map['assignedTo'],
+      progressStatus: map['progressStatus'] ?? 'pending',
     );
   }
 }

@@ -37,6 +37,7 @@ class TaskController extends GetxController {
         date: selectedDate,
         createdBy: FirebaseAuth.instance.currentUser!.uid,
         assignedTo: employeeID,
+        progressStatus: 'pending',
       );
 
       await _db.collection('tasks').add(task.toMap());
@@ -59,6 +60,8 @@ class TaskController extends GetxController {
   }
 
   var taskList = <TaskModel>[].obs;
+  var singleCompletedTask = Rxn<TaskModel>();
+  var singleTomorrowPendingTask = Rxn<TaskModel>();
   var isTaskLoading = true.obs;
   var taskError = ''.obs;
 
@@ -79,12 +82,36 @@ class TaskController extends GetxController {
         isTaskLoading.value = false;
       }, onError: (e) {
         taskError.value = 'Something went wrong $e';
-        print(e);
         isTaskLoading.value = false;
       });
     } catch (e) {
       taskError.value = e.toString();
       isTaskLoading.value = false;
+    }
+  }
+
+  TaskModel? get oneCompletedTask {
+    try {
+      return taskList.firstWhere(
+        (task) => task.progressStatus == 'completed',
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  TaskModel? get oneTomorrowPendingTask {
+    try {
+      final tomorrow = DateTime.now().add(Duration(days: 1));
+      return taskList.firstWhereOrNull(
+        (task) =>
+            task.progressStatus == 'pending' &&
+            task.date.year == tomorrow.year &&
+            task.date.month == tomorrow.month &&
+            task.date.day == tomorrow.day,
+      );
+    } catch (_) {
+      return null;
     }
   }
 }

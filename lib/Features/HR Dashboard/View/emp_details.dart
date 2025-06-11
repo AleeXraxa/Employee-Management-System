@@ -1,5 +1,5 @@
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:intl/intl.dart';
+import 'package:employee_management_system/shared/widgets/task_card.dart';
 
 class EmpDetails extends StatelessWidget {
   final UserModel employee;
@@ -68,12 +68,10 @@ class EmpDetails extends StatelessWidget {
                         ),
                         child: CircleAvatar(
                           radius: 25,
-                          backgroundImage: AssetImage(
-                              'assets/images/logo.png'), // Update your image path
+                          backgroundImage: AssetImage('assets/images/logo.png'),
                         ),
                       ),
                       const SizedBox(width: 12),
-                      // Name and Role
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -131,49 +129,56 @@ class EmpDetails extends StatelessWidget {
                         ),
                       ),
                 SizedBox(height: 0.02.sh),
-                Container(
-                  height: 0.6.sh,
-                  child: Obx(() {
-                    if (_taskController.isTaskLoading.value) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
+                Container(child: Obx(() {
+                  final completedTask = _taskController.oneCompletedTask;
+                  final tomorrowTask = _taskController.oneTomorrowPendingTask;
 
-                    if (_taskController.taskError.value.isNotEmpty) {
-                      return Center(
-                          child: Text(_taskController.taskError.value));
-                    }
+                  if (_taskController.isTaskLoading.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                    if (_taskController.taskList.isEmpty) {
-                      return const Center(child: Text("No tasks found"));
-                    }
-
-                    return ListView.builder(
-                      itemCount: _taskController.taskList.length,
-                      itemBuilder: (context, index) {
-                        final task = _taskController.taskList[index];
-                        return Card(
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 16),
-                          child: ListTile(
-                            leading: const Icon(Icons.task,
-                                color: AppColors.primaryColor),
-                            title: Text(task.title),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                    "Date: ${DateFormat.yMMMd().format(task.date)}"),
-                                Text("Time: ${task.time}"),
-                                Text("Location: ${task.location}"),
-                                Text("Status: ${task.status}"),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
+                  if (_taskController.taskError.value.isNotEmpty) {
+                    return Center(child: Text(_taskController.taskError.value));
+                  }
+                  if (completedTask == null && tomorrowTask == null) {
+                    return Center(
+                      child: Text(
+                        'No Task yet',
+                        style: AppTextStyles.bodyText,
+                      ),
                     );
-                  }),
-                )
+                  }
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (completedTask != null) ...[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Completed Task",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            secondaryBtn(
+                                btnText: 'View All',
+                                bgcolor: AppColors.primaryColor,
+                                onTap: () {}),
+                          ],
+                        ),
+                        TaskCard(task: completedTask),
+                      ],
+                      const SizedBox(height: 16),
+                      if (tomorrowTask != null) ...[
+                        Text("Tomorrow's Pending Task",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        TaskCard(task: tomorrowTask),
+                      ]
+                    ],
+                  );
+                }))
               ],
             ),
           ),
