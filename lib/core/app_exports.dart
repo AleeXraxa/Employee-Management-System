@@ -17,6 +17,8 @@ export 'package:employee_management_system/Features/Auth/View/forgot_pass.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/View/hr_dashboard.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/View/emp_details.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/View/task/add_task.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/View/dashboard.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/View/task/update_task.dart';
 
 // Constants
 export 'package:employee_management_system/constant/app_colors.dart';
@@ -32,6 +34,7 @@ export 'package:employee_management_system/shared/widgets/dropdown.dart';
 export 'package:employee_management_system/shared/widgets/logo.dart';
 export 'package:employee_management_system/shared/widgets/secondary_btn.dart';
 export 'package:employee_management_system/shared/widgets/navbar.dart';
+export 'package:employee_management_system/shared/widgets/task_card.dart';
 
 // Validator
 export 'package:employee_management_system/shared/utils/validator.dart';

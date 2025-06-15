@@ -3,7 +3,10 @@ import 'package:employee_management_system/core/app_exports.dart';
 class TaskController extends GetxController {
   final _authController = Get.find<AuthController>();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  var isLoading = false.obs;
+
+  final isLoading = false.obs;
+  final isTaskLoading = true.obs;
+  final taskError = ''.obs;
 
   final titleController = TextEditingController();
   final startController = TextEditingController();
@@ -11,6 +14,9 @@ class TaskController extends GetxController {
   final locationController = TextEditingController();
   final statusController = TextEditingController();
   final searchController = TextEditingController();
+
+  final taskList = <TaskModel>[].obs;
+  final filteredTasks = <TaskModel>[].obs;
 
   void clearFields() {
     titleController.clear();
@@ -28,14 +34,11 @@ class TaskController extends GetxController {
     try {
       isLoading.value = true;
 
-      final String timeRange =
-          "${startController.text.trim()} - ${endController.text.trim()}";
-
       final task = TaskModel(
-        title: titleController.text,
-        time: timeRange,
-        location: locationController.text,
-        status: statusController.text,
+        title: titleController.text.trim(),
+        time: "${startController.text.trim()} - ${endController.text.trim()}",
+        location: locationController.text.trim(),
+        status: statusController.text.trim(),
         date: selectedDate,
         createdBy: FirebaseAuth.instance.currentUser!.uid,
         assignedTo: employeeID,
@@ -43,16 +46,18 @@ class TaskController extends GetxController {
       );
 
       await _db.collection('tasks').add(task.toMap());
+
       showCustomDialog(
         icon: FontAwesomeIcons.solidCircleCheck,
         title: 'Task Added',
-        message: 'New ${titleController.text} has been added successfully',
+        message: 'New "${task.title}" has been added successfully',
         buttonText: 'Continue',
         onPressed: () {
           Get.back();
           Get.back();
         },
       );
+
       clearFields();
     } catch (e) {
       _authController.handleFirebaseError(e);
@@ -64,21 +69,21 @@ class TaskController extends GetxController {
   Future<void> updateTask(String taskID, DateTime selectedDate) async {
     try {
       isLoading.value = true;
-      final String timeRange =
-          '${startController.text.trim()} - ${endController.text.trim()}';
 
       final updatedTask = {
         'title': titleController.text.trim(),
-        'time': timeRange,
+        'time': "${startController.text.trim()} - ${endController.text.trim()}",
         'location': locationController.text.trim(),
         'status': statusController.text.trim(),
         'date': selectedDate,
       };
+
       await _db.collection('tasks').doc(taskID).update(updatedTask);
+
       showCustomDialog(
         icon: FontAwesomeIcons.solidCircleCheck,
         title: 'Task Updated',
-        message: '${titleController.text} has been updated successfully',
+        message: 'Task "${titleController.text}" has been updated successfully',
         buttonText: 'Back',
         onPressed: () {
           Get.back();
@@ -92,12 +97,6 @@ class TaskController extends GetxController {
     }
   }
 
-  var taskList = <TaskModel>[].obs;
-  var singleCompletedTask = Rxn<TaskModel>();
-  var singleTomorrowPendingTask = Rxn<TaskModel>();
-  var isTaskLoading = true.obs;
-  var taskError = ''.obs;
-
   void fetchTasks({String? employeeID}) {
     try {
       isTaskLoading.value = true;
@@ -109,14 +108,16 @@ class TaskController extends GetxController {
         query = query.where('assignedTo', isEqualTo: employeeID);
       }
 
-      query.orderBy('date', descending: false).snapshots().listen((snapshot) {
+      query.orderBy('date').snapshots().listen((snapshot) {
         taskList.value = snapshot.docs
             .map((doc) =>
                 TaskModel.fromMap(doc.id, doc.data() as Map<String, dynamic>))
             .toList();
+
+        filteredTasks.assignAll(taskList);
         isTaskLoading.value = false;
       }, onError: (e) {
-        taskError.value = 'Something went wrong $e';
+        taskError.value = 'Something went wrong: $e';
         isTaskLoading.value = false;
       });
     } catch (e) {
@@ -125,29 +126,27 @@ class TaskController extends GetxController {
     }
   }
 
-  TaskModel? get oneCompletedTask {
+  TaskModel? get mostRecentTask {
+    if (taskList.isEmpty) return null;
+
     try {
-      return taskList.firstWhere(
-        (task) => task.progressStatus == 'completed',
-      );
+      final sortedList = [...taskList]
+        ..sort((a, b) => b.date.compareTo(a.date));
+      return sortedList.first;
     } catch (_) {
       return null;
     }
   }
 
   TaskModel? get oneTomorrowPendingTask {
-    try {
-      final tomorrow = DateTime.now().add(Duration(days: 1));
-      return taskList.firstWhereOrNull(
-        (task) =>
-            task.progressStatus == 'pending' &&
-            task.date.year == tomorrow.year &&
-            task.date.month == tomorrow.month &&
-            task.date.day == tomorrow.day,
-      );
-    } catch (_) {
-      return null;
-    }
+    final tomorrow = DateTime.now().add(Duration(days: 1));
+    return taskList.firstWhereOrNull(
+      (task) =>
+          task.progressStatus == 'pending' &&
+          task.date.year == tomorrow.year &&
+          task.date.month == tomorrow.month &&
+          task.date.day == tomorrow.day,
+    );
   }
 
   Map<String, List<TaskModel>> getWeekdayWiseTasks(List<TaskModel> tasks) {
@@ -160,8 +159,7 @@ class TaskController extends GetxController {
     };
 
     for (final task in tasks) {
-      final weekday = task.date.weekday;
-      final String? dayName = switch (weekday) {
+      final String? dayName = switch (task.date.weekday) {
         1 => 'Monday',
         2 => 'Tuesday',
         3 => 'Wednesday',
@@ -176,5 +174,19 @@ class TaskController extends GetxController {
     }
 
     return groupedTasks;
+  }
+
+  void filterTasksByName() {
+    final query = searchController.text.toLowerCase().trim();
+
+    if (query.isEmpty) {
+      filteredTasks.assignAll(taskList);
+    } else {
+      filteredTasks.assignAll(
+        taskList
+            .where((task) => task.title.toLowerCase().contains(query))
+            .toList(),
+      );
+    }
   }
 }

@@ -132,7 +132,7 @@ class EmpDetails extends StatelessWidget {
                       ),
                 SizedBox(height: 0.02.sh),
                 Container(child: Obx(() {
-                  final completedTask = _taskController.oneCompletedTask;
+                  final completedTask = _taskController.mostRecentTask;
                   final tomorrowTask = _taskController.oneTomorrowPendingTask;
 
                   if (_taskController.isTaskLoading.value) {
@@ -159,7 +159,7 @@ class EmpDetails extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Completed Task",
+                              "Employee's Task",
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),

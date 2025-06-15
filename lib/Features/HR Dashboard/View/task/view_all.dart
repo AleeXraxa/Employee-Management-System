@@ -1,6 +1,4 @@
-import 'package:employee_management_system/Features/HR%20Dashboard/View/task/update_task.dart';
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:employee_management_system/shared/widgets/task_card.dart';
 
 class ViewAllTasks extends StatefulWidget {
   const ViewAllTasks({super.key});
@@ -13,20 +11,27 @@ class _ViewAllTasksState extends State<ViewAllTasks> {
   final _taskController = Get.find<TaskController>();
 
   @override
+  void initState() {
+    super.initState();
+    _taskController.searchController.addListener(() {
+      _taskController.filterTasksByName();
+    });
+    _taskController.filteredTasks.assignAll(_taskController.taskList);
+  }
+
+  @override
+  void dispose() {
+    _taskController.searchController.removeListener(() {});
+    _taskController.searchController.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 0.1.sh,
           backgroundColor: AppColors.primaryColor,
-          leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: FaIcon(
-              FontAwesomeIcons.circleChevronLeft,
-              color: Colors.white,
-            ),
-          ),
           title: Text(
             "Employee's Tasks",
             style: AppTextStyles.screenName,
@@ -35,8 +40,8 @@ class _ViewAllTasksState extends State<ViewAllTasks> {
         ),
         body: SafeArea(
           child: Obx(() {
-            final groupedTasks =
-                _taskController.getWeekdayWiseTasks(_taskController.taskList);
+            final groupedTasks = _taskController
+                .getWeekdayWiseTasks(_taskController.filteredTasks);
             return SingleChildScrollView(
               child: Container(
                 child: Padding(
@@ -69,7 +74,7 @@ class _ViewAllTasksState extends State<ViewAllTasks> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 12, horizontal: 16),
-                                  child: Text('${day} :',
+                                  child: Text('$day Task:',
                                       style: AppTextStyles.bodyText),
                                 ),
                                 ListView.builder(
