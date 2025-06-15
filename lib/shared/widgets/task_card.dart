@@ -2,8 +2,13 @@ import 'package:employee_management_system/core/app_exports.dart';
 
 class TaskCard extends StatelessWidget {
   final TaskModel task;
+  final VoidCallback onTap;
 
-  const TaskCard({super.key, required this.task});
+  const TaskCard({
+    super.key,
+    required this.task,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +70,7 @@ class TaskCard extends StatelessWidget {
               secondaryBtn(
                 btnText: 'Edit Task',
                 bgcolor: AppColors.primaryColor,
-                onTap: () {},
+                onTap: onTap,
               ),
             ],
           ),

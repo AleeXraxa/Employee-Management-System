@@ -17,7 +17,7 @@ class BottomNavBar extends StatelessWidget {
               children: [
                 _buildNavItem(icon: FontAwesomeIcons.house, index: 0),
                 _buildNavItem(icon: FontAwesomeIcons.listCheck, index: 1),
-                const SizedBox(width: 40), // space for FAB
+                const SizedBox(width: 40),
                 _buildNavItem(icon: FontAwesomeIcons.clipboardUser, index: 2),
                 _buildNavItem(icon: FontAwesomeIcons.moneyCheck, index: 3),
               ],

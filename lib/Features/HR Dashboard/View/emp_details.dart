@@ -1,3 +1,4 @@
+import 'package:employee_management_system/Features/HR%20Dashboard/View/task/update_task.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 import 'package:employee_management_system/shared/widgets/task_card.dart';
 
@@ -167,14 +168,20 @@ class EmpDetails extends StatelessWidget {
                                 onTap: () {}),
                           ],
                         ),
-                        TaskCard(task: completedTask),
+                        TaskCard(
+                          task: completedTask,
+                          onTap: () {},
+                        ),
                       ],
                       const SizedBox(height: 16),
                       if (tomorrowTask != null) ...[
                         Text("Tomorrow's Pending Task",
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold)),
-                        TaskCard(task: tomorrowTask),
+                        TaskCard(
+                          task: tomorrowTask,
+                          onTap: () {},
+                        ),
                       ]
                     ],
                   );
