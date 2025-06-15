@@ -1,4 +1,5 @@
 import 'package:employee_management_system/Features/HR%20Dashboard/View/task/update_task.dart';
+import 'package:employee_management_system/Features/HR%20Dashboard/View/task/view_all.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 import 'package:employee_management_system/shared/widgets/task_card.dart';
 
@@ -14,7 +15,7 @@ class EmpDetails extends StatelessWidget {
     final _empController = Get.find<EmpController>();
     final _authController = Get.find<AuthController>();
     final _taskController = Get.find<TaskController>();
-    _taskController.fetchTasksForEmployee(employee.uid);
+    _taskController.fetchTasks(employeeID: employee.uid);
 
     return Scaffold(
       body: SafeArea(
@@ -165,12 +166,16 @@ class EmpDetails extends StatelessWidget {
                             secondaryBtn(
                                 btnText: 'View All',
                                 bgcolor: AppColors.primaryColor,
-                                onTap: () {}),
+                                onTap: () {
+                                  Get.to(ViewAllTasks());
+                                }),
                           ],
                         ),
                         TaskCard(
                           task: completedTask,
-                          onTap: () {},
+                          onTap: () {
+                            Get.to(UpdateTask(tasks: completedTask));
+                          },
                         ),
                       ],
                       const SizedBox(height: 16),
@@ -180,7 +185,9 @@ class EmpDetails extends StatelessWidget {
                                 fontSize: 18, fontWeight: FontWeight.bold)),
                         TaskCard(
                           task: tomorrowTask,
-                          onTap: () {},
+                          onTap: () {
+                            Get.to(UpdateTask(tasks: tomorrowTask));
+                          },
                         ),
                       ]
                     ],

@@ -1,3 +1,4 @@
+import 'package:employee_management_system/Features/HR%20Dashboard/View/task/view_all.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class Dashboard extends StatelessWidget {
@@ -31,7 +32,7 @@ class Dashboard extends StatelessWidget {
       case 0:
         return EmpDetails(employee: employee);
       case 1:
-        return Center(child: Text("Tasks", style: TextStyle(fontSize: 24)));
+        return ViewAllTasks();
       case 2:
         return Center(child: Text("Users", style: TextStyle(fontSize: 24)));
       case 3:

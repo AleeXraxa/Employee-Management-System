@@ -10,6 +10,7 @@ class TaskController extends GetxController {
   final endController = TextEditingController();
   final locationController = TextEditingController();
   final statusController = TextEditingController();
+  final searchController = TextEditingController();
 
   void clearFields() {
     titleController.clear();
@@ -17,6 +18,7 @@ class TaskController extends GetxController {
     endController.clear();
     locationController.clear();
     statusController.clear();
+    searchController.clear();
   }
 
   Future<void> addTask({
@@ -59,25 +61,58 @@ class TaskController extends GetxController {
     }
   }
 
+  Future<void> updateTask(String taskID, DateTime selectedDate) async {
+    try {
+      isLoading.value = true;
+      final String timeRange =
+          '${startController.text.trim()} - ${endController.text.trim()}';
+
+      final updatedTask = {
+        'title': titleController.text.trim(),
+        'time': timeRange,
+        'location': locationController.text.trim(),
+        'status': statusController.text.trim(),
+        'date': selectedDate,
+      };
+      await _db.collection('tasks').doc(taskID).update(updatedTask);
+      showCustomDialog(
+        icon: FontAwesomeIcons.solidCircleCheck,
+        title: 'Task Updated',
+        message: '${titleController.text} has been updated successfully',
+        buttonText: 'Back',
+        onPressed: () {
+          Get.back();
+          Get.back();
+        },
+      );
+    } catch (e) {
+      _authController.handleFirebaseError(e);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   var taskList = <TaskModel>[].obs;
   var singleCompletedTask = Rxn<TaskModel>();
   var singleTomorrowPendingTask = Rxn<TaskModel>();
   var isTaskLoading = true.obs;
   var taskError = ''.obs;
 
-  void fetchTasksForEmployee(String employeeID) {
+  void fetchTasks({String? employeeID}) {
     try {
       isTaskLoading.value = true;
       taskError.value = '';
 
-      _db
-          .collection('tasks')
-          .where('assignedTo', isEqualTo: employeeID)
-          .orderBy('date', descending: false)
-          .snapshots()
-          .listen((snapshot) {
+      Query query = _db.collection('tasks');
+
+      if (employeeID != null) {
+        query = query.where('assignedTo', isEqualTo: employeeID);
+      }
+
+      query.orderBy('date', descending: false).snapshots().listen((snapshot) {
         taskList.value = snapshot.docs
-            .map((doc) => TaskModel.fromMap(doc.id, doc.data()))
+            .map((doc) =>
+                TaskModel.fromMap(doc.id, doc.data() as Map<String, dynamic>))
             .toList();
         isTaskLoading.value = false;
       }, onError: (e) {
@@ -113,5 +148,33 @@ class TaskController extends GetxController {
     } catch (_) {
       return null;
     }
+  }
+
+  Map<String, List<TaskModel>> getWeekdayWiseTasks(List<TaskModel> tasks) {
+    final Map<String, List<TaskModel>> groupedTasks = {
+      'Monday': [],
+      'Tuesday': [],
+      'Wednesday': [],
+      'Thursday': [],
+      'Friday': [],
+    };
+
+    for (final task in tasks) {
+      final weekday = task.date.weekday;
+      final String? dayName = switch (weekday) {
+        1 => 'Monday',
+        2 => 'Tuesday',
+        3 => 'Wednesday',
+        4 => 'Thursday',
+        5 => 'Friday',
+        _ => null,
+      };
+
+      if (dayName != null) {
+        groupedTasks[dayName]!.add(task);
+      }
+    }
+
+    return groupedTasks;
   }
 }
