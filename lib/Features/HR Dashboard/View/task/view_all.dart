@@ -40,12 +40,6 @@ class _ViewAllTasksState extends State<ViewAllTasks> {
         ),
         body: SafeArea(
           child: Obx(() {
-            if (_taskController.filteredTasks.isEmpty) {
-              return Center(
-                child: Text('No Task'),
-              );
-            }
-
             final groupedTasks = _taskController
                 .getWeekdayWiseTasks(_taskController.filteredTasks);
             return SingleChildScrollView(
@@ -63,58 +57,72 @@ class _ViewAllTasksState extends State<ViewAllTasks> {
                         validator: (value) =>
                             AppValidators.validateName(value, 'Search'),
                       ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: groupedTasks.keys.length,
-                          itemBuilder: (context, index) {
-                            final day = groupedTasks.keys.elementAt(index);
-                            final tasksForDay = groupedTasks[day]!;
-
-                            if (tasksForDay.isEmpty) return SizedBox();
-
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 0.02.sh),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 12, horizontal: 16),
-                                  child: Text('$day Task:',
-                                      style: AppTextStyles.bodyText),
+                      _taskController.filteredTasks.isEmpty
+                          ? Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Center(
+                                child: Text(
+                                  'No Tasks',
+                                  style: AppTextStyles.bodyText,
                                 ),
-                                ListView.builder(
-                                  itemCount: tasksForDay.length,
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, taskIndex) {
-                                    final task = tasksForDay[taskIndex];
-                                    return TaskCard(
-                                      task: task,
-                                      onTap: () {
-                                        Get.to(() => UpdateTask(tasks: task));
-                                      },
-                                      onDelete: () {
-                                        showCustomDialog(
-                                          icon:
-                                              FontAwesomeIcons.solidCircleCheck,
-                                          title: 'Confirm Delete',
-                                          message:
-                                              'Do you want to Delete this Task?',
-                                          buttonText: 'Delete',
-                                          onPressed: () {
-                                            _taskController
-                                                .deleteTask(task.id!);
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      )
+                              ),
+                            )
+                          : Container(
+                              height: 0.7.sh,
+                              child: ListView.builder(
+                                itemCount: groupedTasks.keys.length,
+                                itemBuilder: (context, index) {
+                                  final day =
+                                      groupedTasks.keys.elementAt(index);
+                                  final tasksForDay = groupedTasks[day]!;
+
+                                  if (tasksForDay.isEmpty) return SizedBox();
+
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 0.02.sh),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 16),
+                                        child: Text('$day Task:',
+                                            style: AppTextStyles.bodyText),
+                                      ),
+                                      ListView.builder(
+                                        itemCount: tasksForDay.length,
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemBuilder: (context, taskIndex) {
+                                          final task = tasksForDay[taskIndex];
+                                          return TaskCard(
+                                            task: task,
+                                            onTap: () {
+                                              Get.to(() =>
+                                                  UpdateTask(tasks: task));
+                                            },
+                                            onDelete: () {
+                                              showCustomDialog(
+                                                icon: FontAwesomeIcons
+                                                    .solidCircleCheck,
+                                                title: 'Confirm Delete',
+                                                message:
+                                                    'Do you want to Delete this Task?',
+                                                buttonText: 'Delete',
+                                                onPressed: () {
+                                                  _taskController
+                                                      .deleteTask(task.id!);
+                                                },
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
                     ],
                   ),
                 ),
