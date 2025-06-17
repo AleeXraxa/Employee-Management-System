@@ -3,11 +3,13 @@ import 'package:employee_management_system/core/app_exports.dart';
 class TaskCard extends StatelessWidget {
   final TaskModel task;
   final VoidCallback onTap;
+  final VoidCallback onDelete;
 
   const TaskCard({
     super.key,
     required this.task,
     required this.onTap,
+    required this.onDelete,
   });
 
   @override
@@ -67,11 +69,21 @@ class TaskCard extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 0.01.sh),
-              secondaryBtn(
-                btnText: 'Edit Task',
-                bgcolor: AppColors.primaryColor,
-                onTap: onTap,
-              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  secondaryBtn(
+                    btnText: 'Edit Task',
+                    bgcolor: AppColors.primaryColor,
+                    onTap: onTap,
+                  ),
+                  secondaryBtn(
+                    btnText: 'Delete Task',
+                    bgcolor: AppColors.red,
+                    onTap: onDelete,
+                  ),
+                ],
+              )
             ],
           ),
         ),

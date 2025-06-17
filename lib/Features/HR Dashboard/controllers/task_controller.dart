@@ -189,4 +189,15 @@ class TaskController extends GetxController {
       );
     }
   }
+
+  void deleteTask(String id) {
+    try {
+      _db.collection('tasks').doc(id).delete();
+      Get.back();
+    } catch (e) {
+      _authController.handleFirebaseError(e);
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }

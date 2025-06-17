@@ -40,6 +40,12 @@ class _ViewAllTasksState extends State<ViewAllTasks> {
         ),
         body: SafeArea(
           child: Obx(() {
+            if (_taskController.filteredTasks.isEmpty) {
+              return Center(
+                child: Text('No Task'),
+              );
+            }
+
             final groupedTasks = _taskController
                 .getWeekdayWiseTasks(_taskController.filteredTasks);
             return SingleChildScrollView(
@@ -57,8 +63,7 @@ class _ViewAllTasksState extends State<ViewAllTasks> {
                         validator: (value) =>
                             AppValidators.validateName(value, 'Search'),
                       ),
-                      Container(
-                        height: 0.7.sh,
+                      Expanded(
                         child: ListView.builder(
                           itemCount: groupedTasks.keys.length,
                           itemBuilder: (context, index) {
@@ -87,6 +92,20 @@ class _ViewAllTasksState extends State<ViewAllTasks> {
                                       task: task,
                                       onTap: () {
                                         Get.to(() => UpdateTask(tasks: task));
+                                      },
+                                      onDelete: () {
+                                        showCustomDialog(
+                                          icon:
+                                              FontAwesomeIcons.solidCircleCheck,
+                                          title: 'Confirm Delete',
+                                          message:
+                                              'Do you want to Delete this Task?',
+                                          buttonText: 'Delete',
+                                          onPressed: () {
+                                            _taskController
+                                                .deleteTask(task.id!);
+                                          },
+                                        );
                                       },
                                     );
                                   },

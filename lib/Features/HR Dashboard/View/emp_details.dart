@@ -176,6 +176,17 @@ class EmpDetails extends StatelessWidget {
                           onTap: () {
                             Get.to(UpdateTask(tasks: completedTask));
                           },
+                          onDelete: () {
+                            showCustomDialog(
+                              icon: FontAwesomeIcons.solidCircleCheck,
+                              title: 'Confirm Delete',
+                              message: 'Do you want to Delete this Task?',
+                              buttonText: 'Delete',
+                              onPressed: () {
+                                _taskController.deleteTask(completedTask.id!);
+                              },
+                            );
+                          },
                         ),
                       ],
                       const SizedBox(height: 16),
@@ -187,6 +198,17 @@ class EmpDetails extends StatelessWidget {
                           task: tomorrowTask,
                           onTap: () {
                             Get.to(UpdateTask(tasks: tomorrowTask));
+                          },
+                          onDelete: () {
+                            showCustomDialog(
+                              icon: FontAwesomeIcons.solidCircleCheck,
+                              title: 'Confirm Delete',
+                              message: 'Do you want to Delete this Task?',
+                              buttonText: 'Delete',
+                              onPressed: () {
+                                _taskController.deleteTask(tomorrowTask.id!);
+                              },
+                            );
                           },
                         ),
                       ]
