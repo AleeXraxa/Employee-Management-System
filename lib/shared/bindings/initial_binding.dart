@@ -1,4 +1,3 @@
-import 'package:employee_management_system/Features/HR%20Dashboard/controllers/task_controller.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class InitialBinding extends Bindings {

@@ -15,14 +15,14 @@ export 'package:employee_management_system/splash.dart';
 export 'package:employee_management_system/Features/Auth/View/login.dart';
 export 'package:employee_management_system/Features/Auth/View/register.dart';
 export 'package:employee_management_system/Features/Auth/View/forgot_pass.dart';
-export 'package:employee_management_system/Features/HR%20Dashboard/View/hr_dashboard.dart';
-export 'package:employee_management_system/Features/HR%20Dashboard/View/emp_details.dart';
-export 'package:employee_management_system/Features/HR%20Dashboard/View/task/add_task.dart';
-export 'package:employee_management_system/Features/HR%20Dashboard/View/dashboard.dart';
-export 'package:employee_management_system/Features/HR%20Dashboard/View/task/update_task.dart';
-export 'package:employee_management_system/Features/HR%20Dashboard/View/task/view_all.dart';
-export 'package:employee_management_system/Features/HR%20Dashboard/View/attendance/attendance_all.dart';
-export 'package:employee_management_system/Features/HR%20Dashboard/View/payroll/payroll.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/view/hr_dashboard.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/view/emp_details.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/task/view/add_task.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/view/navbar.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/task/view/update_task.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/task/view/view_all.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/attendance/view/attendance_all.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/payroll/view/payroll.dart';
 
 // Constants
 export 'package:employee_management_system/constant/app_colors.dart';
@@ -51,17 +51,17 @@ export 'package:employee_management_system/shared/utils/validator.dart';
 export 'package:employee_management_system/shared/controllers/pass_controller.dart';
 export 'package:employee_management_system/shared/controllers/internet_checker.dart';
 export 'package:employee_management_system/Features/Auth/Controller/auth_controller.dart';
-export 'package:employee_management_system/Features/HR%20Dashboard/controllers/emp_controller.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/controller/emp_controller.dart';
 export 'package:employee_management_system/shared/controllers/navbar_controller.dart';
-export 'package:employee_management_system/Features/HR%20Dashboard/controllers/task_controller.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/task/controller/task_controller.dart';
 
 // Models
 export 'package:employee_management_system/Features/Auth/Model/auth_model.dart';
-export 'package:employee_management_system/Features/HR%20Dashboard/model/task_model.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/task/model/task_model.dart';
 
 // Services
 export 'package:employee_management_system/Features/Auth/services/auth_services.dart';
-export 'package:employee_management_system/Features/HR%20Dashboard/Services/hr_services.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/Services/hr_services.dart';
 
 // Helper
 export 'package:employee_management_system/shared/utils/dialog_helper.dart';
