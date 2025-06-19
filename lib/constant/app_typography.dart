@@ -26,6 +26,12 @@ class AppTextStyles {
     fontFamily: 'Montserrat',
     color: AppColors.gray,
   );
+  static TextStyle bodyTextMediumB = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+    fontFamily: 'Montserrat',
+    color: AppColors.black,
+  );
   static TextStyle bodyText = TextStyle(
     fontSize: 18.sp,
     fontWeight: FontWeight.w600,

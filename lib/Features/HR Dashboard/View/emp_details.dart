@@ -1,7 +1,4 @@
-import 'package:employee_management_system/Features/HR%20Dashboard/View/task/update_task.dart';
-import 'package:employee_management_system/Features/HR%20Dashboard/View/task/view_all.dart';
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:employee_management_system/shared/widgets/task_card.dart';
 
 class EmpDetails extends StatelessWidget {
   final UserModel employee;
