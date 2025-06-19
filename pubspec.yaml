@@ -20,6 +20,7 @@ dependencies:
   intl: 
   table_calendar: ^3.2.0
   collection: 1.19.0
+  percent_indicator: ^4.2.5
 
   # Screen Utils for Responsive 
   flutter_screenutil: ^5.9.0

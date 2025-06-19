@@ -8,6 +8,7 @@ export 'package:flutter/services.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';
 export 'package:google_sign_in/google_sign_in.dart';
+export 'package:percent_indicator/percent_indicator.dart';
 
 // Views
 export 'package:employee_management_system/splash.dart';
@@ -39,6 +40,9 @@ export 'package:employee_management_system/shared/widgets/secondary_btn.dart';
 export 'package:employee_management_system/shared/widgets/navbar.dart';
 export 'package:employee_management_system/shared/widgets/task_card.dart';
 export 'package:employee_management_system/shared/widgets/attendace_card.dart';
+export 'package:employee_management_system/shared/widgets/small_card.dart';
+export 'package:employee_management_system/shared/widgets/time_progress.dart';
+export 'package:employee_management_system/shared/widgets/attendance_pcard.dart';
 
 // Validator
 export 'package:employee_management_system/shared/utils/validator.dart';

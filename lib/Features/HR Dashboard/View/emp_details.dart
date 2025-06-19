@@ -211,7 +211,30 @@ class EmpDetails extends StatelessWidget {
                       ]
                     ],
                   );
-                }))
+                })),
+                Container(
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Employee's Attendance",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          secondaryBtn(
+                              btnText: 'View All',
+                              bgcolor: AppColors.primaryColor,
+                              onTap: () {
+                                Get.to(ViewAllAttendance());
+                              })
+                        ],
+                      ),
+                      Attendance_pcard(employee: employee),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
