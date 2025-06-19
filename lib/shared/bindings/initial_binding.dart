@@ -8,6 +8,7 @@ class InitialBinding extends Bindings {
     Get.put(EmpController());
     Get.put(TaskController());
     Get.put(BottomNavBarController());
+    Get.put(AttendanceController());
 
     Get.put<InternetChecker>(InternetChecker(), permanent: true);
   }

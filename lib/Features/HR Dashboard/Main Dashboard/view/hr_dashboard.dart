@@ -1,4 +1,3 @@
-import 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/view/navbar.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class HRDashboard extends StatefulWidget {
@@ -10,6 +9,7 @@ class HRDashboard extends StatefulWidget {
 
 class _HRDashboardState extends State<HRDashboard> {
   final _empController = Get.find<EmpController>();
+  final authController = Get.find<AuthController>();
   @override
   void initState() {
     super.initState();
@@ -138,6 +138,10 @@ class _HRDashboardState extends State<HRDashboard> {
                   },
                 ),
               ),
+              secondaryBtn(
+                  btnText: 'Logout',
+                  bgcolor: AppColors.primaryColor,
+                  onTap: authController.logout),
             ],
           ),
         ),

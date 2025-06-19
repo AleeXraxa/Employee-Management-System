@@ -12,7 +12,10 @@ class EmpDetails extends StatelessWidget {
     final _empController = Get.find<EmpController>();
     final _authController = Get.find<AuthController>();
     final _taskController = Get.find<TaskController>();
+    final attendanceController = Get.find<AttendanceController>();
+
     _taskController.fetchTasks(employeeID: employee.uid);
+    attendanceController.bindTodayAttendanceStream();
 
     return Scaffold(
       body: SafeArea(
@@ -212,29 +215,45 @@ class EmpDetails extends StatelessWidget {
                     ],
                   );
                 })),
-                Container(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                Obx(() {
+                  final attendance =
+                      attendanceController.todayAttendanceList.firstWhereOrNull(
+                    (a) => a.employeeId == employee.uid,
+                  );
+                  return Container(
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Employee's Attendance",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            secondaryBtn(
+                                btnText: 'View All',
+                                bgcolor: AppColors.primaryColor,
+                                onTap: () {
+                                  // Get.to(ViewAllAttendance());
+                                  attendanceController.addDummyAttendance(
+                                      userId: employee.uid);
+                                }),
+                          ],
+                        ),
+                        SizedBox(height: 0.02.sh),
+                        if (attendance != null)
+                          Attendancepcard(
+                              employee: employee, attendance: attendance)
+                        else
                           Text(
-                            "Employee's Attendance",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                            'No attendance Marked today.',
+                            style: AppTextStyles.bodyText,
                           ),
-                          secondaryBtn(
-                              btnText: 'View All',
-                              bgcolor: AppColors.primaryColor,
-                              onTap: () {
-                                Get.to(ViewAllAttendance());
-                              })
-                        ],
-                      ),
-                      Attendance_pcard(employee: employee),
-                    ],
-                  ),
-                ),
+                      ],
+                    ),
+                  );
+                }),
               ],
             ),
           ),

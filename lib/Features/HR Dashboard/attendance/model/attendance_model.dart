@@ -2,43 +2,43 @@ import 'package:employee_management_system/core/app_exports.dart';
 
 class AttendanceModel {
   final String id;
-  final String employeeID;
+  final String employeeId;
   final DateTime date;
+  final DateTime? checkIn;
+  final DateTime? checkOut;
   final String status;
-  final String? checkIn;
-  final String? checkOut;
-  final String markedBy;
 
   AttendanceModel({
     required this.id,
-    required this.employeeID,
+    required this.employeeId,
     required this.date,
-    required this.status,
     this.checkIn,
     this.checkOut,
-    required this.markedBy,
+    required this.status,
   });
 
-  factory AttendanceModel.fromMap(String id, Map<String, dynamic> data) {
+  factory AttendanceModel.fromMap(String id, Map<String, dynamic> map) {
     return AttendanceModel(
       id: id,
-      employeeID: data['employeeID'],
-      date: (data['date'] as Timestamp).toDate(),
-      status: data['status'],
-      checkIn: data['checkIn'],
-      checkOut: data['checkOut'],
-      markedBy: data['markedBy'],
+      employeeId: map['employeeId'],
+      date: (map['date'] as Timestamp).toDate(),
+      checkIn: map['checkIn'] != null
+          ? (map['checkIn'] as Timestamp).toDate()
+          : null,
+      checkOut: map['checkOut'] != null
+          ? (map['checkOut'] as Timestamp).toDate()
+          : null,
+      status: map['status'] ?? 'present',
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'employeeID': employeeID,
-      'date': date,
+      'employeeId': employeeId,
+      'date': Timestamp.fromDate(date),
+      'checkIn': checkIn != null ? Timestamp.fromDate(checkIn!) : null,
+      'checkOut': checkOut != null ? Timestamp.fromDate(checkOut!) : null,
       'status': status,
-      'checkIn': checkIn,
-      'checkOut': checkOut,
-      'markedBy': markedBy,
     };
   }
 }

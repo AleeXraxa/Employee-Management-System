@@ -1,15 +1,34 @@
 import 'package:employee_management_system/core/app_exports.dart';
 
-class Attendance_pcard extends StatelessWidget {
-  const Attendance_pcard({
+class Attendancepcard extends StatelessWidget {
+  const Attendancepcard({
     super.key,
     required this.employee,
+    required this.attendance,
   });
 
   final UserModel employee;
+  final AttendanceModel attendance;
 
   @override
   Widget build(BuildContext context) {
+    final attendanceController = Get.find<AttendanceController>();
+
+    final dateStr = attendanceController.formatDate(attendance.date);
+    final checkInStr = attendanceController.formatTime(attendance.checkIn!);
+    final checkOutStr = attendance.checkOut != null
+        ? attendanceController.formatTime(attendance.checkOut!)
+        : 'Pending';
+
+    final workedDuration = attendanceController.getWorkedDuration(
+      attendance.checkIn,
+      attendance.checkOut,
+    );
+
+    final String name = (employee.fname.isEmpty && employee.lname.isEmpty)
+        ? employee.username
+        : '${employee.fname} ${employee.lname}';
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -33,7 +52,7 @@ class Attendance_pcard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${employee.fname} ${employee.lname}',
+                      name,
                       style: AppTextStyles.title,
                     ),
                     Text(
@@ -42,25 +61,15 @@ class Attendance_pcard extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 0.02.sh),
               ],
             ),
             SizedBox(height: 0.02.sh),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SmallCard(
-                  title: 'Date',
-                  value: '03 Feb 2025',
-                ),
-                SmallCard(
-                  title: 'In Time',
-                  value: '09: 00 AM',
-                ),
-                SmallCard(
-                  title: 'Out Time',
-                  value: '05:00 PM',
-                ),
+                SmallCard(title: 'Date', value: dateStr),
+                SmallCard(title: 'In Time', value: checkInStr),
+                SmallCard(title: 'Out Time', value: checkOutStr),
               ],
             ),
             SizedBox(height: 0.03.sh),
@@ -75,7 +84,7 @@ class Attendance_pcard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '4h 12m 44s',
+                          workedDuration,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontFamily: 'Poppins',
@@ -94,11 +103,13 @@ class Attendance_pcard extends StatelessWidget {
                     ),
                   ],
                 ),
-                secondaryBtn(
-                  btnText: 'Present',
-                  bgcolor: AppColors.primaryColor,
-                  onTap: () {},
-                ),
+                attendance.status == 'present'
+                    ? SizedBox.shrink()
+                    : secondaryBtn(
+                        btnText: 'Present',
+                        bgcolor: AppColors.primaryColor,
+                        onTap: () {},
+                      ),
               ],
             )
           ],

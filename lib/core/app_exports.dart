@@ -54,10 +54,12 @@ export 'package:employee_management_system/Features/Auth/Controller/auth_control
 export 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/controller/emp_controller.dart';
 export 'package:employee_management_system/shared/controllers/navbar_controller.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/task/controller/task_controller.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/attendance/controller/attendance_controller.dart';
 
 // Models
 export 'package:employee_management_system/Features/Auth/Model/auth_model.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/task/model/task_model.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/attendance/model/attendance_model.dart';
 
 // Services
 export 'package:employee_management_system/Features/Auth/services/auth_services.dart';
