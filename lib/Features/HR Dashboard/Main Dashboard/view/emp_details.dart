@@ -235,9 +235,8 @@ class EmpDetails extends StatelessWidget {
                                 btnText: 'View All',
                                 bgcolor: AppColors.primaryColor,
                                 onTap: () {
-                                  // Get.to(ViewAllAttendance());
-                                  attendanceController.addDummyAttendance(
-                                      userId: employee.uid);
+                                  Get.to(() => ViewAllAttendance(
+                                      employeeID: employee.uid));
                                 }),
                           ],
                         ),
@@ -246,10 +245,7 @@ class EmpDetails extends StatelessWidget {
                           Attendancepcard(
                               employee: employee, attendance: attendance)
                         else
-                          Text(
-                            'No attendance Marked today.',
-                            style: AppTextStyles.bodyText,
-                          ),
+                          Text('No Attendance for today yet.'),
                       ],
                     ),
                   );

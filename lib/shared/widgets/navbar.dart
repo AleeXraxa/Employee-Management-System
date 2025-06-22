@@ -1,6 +1,12 @@
 import 'package:employee_management_system/core/app_exports.dart';
 
 class BottomNavBar extends StatelessWidget {
+  final List<IconData> icons;
+
+  BottomNavBar({
+    required this.icons,
+  });
+
   final BottomNavBarController controller = Get.find();
 
   @override
@@ -15,11 +21,11 @@ class BottomNavBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildNavItem(icon: FontAwesomeIcons.house, index: 0),
-                _buildNavItem(icon: FontAwesomeIcons.listCheck, index: 1),
-                const SizedBox(width: 40),
-                _buildNavItem(icon: FontAwesomeIcons.clipboardUser, index: 2),
-                _buildNavItem(icon: FontAwesomeIcons.moneyCheck, index: 3),
+                _buildNavItem(icon: icons[0], index: 0),
+                _buildNavItem(icon: icons[1], index: 1),
+                const SizedBox(width: 40), // notch space
+                _buildNavItem(icon: icons[2], index: 2),
+                _buildNavItem(icon: icons[3], index: 3),
               ],
             ),
           ),

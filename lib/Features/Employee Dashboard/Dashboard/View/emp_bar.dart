@@ -1,8 +1,8 @@
 import 'package:employee_management_system/core/app_exports.dart';
 
-class Dashboard extends StatelessWidget {
+class EmployeeDashboard extends StatelessWidget {
   final UserModel employee;
-  Dashboard({required this.employee, super.key});
+  EmployeeDashboard({required this.employee, super.key});
 
   final BottomNavBarController controller = Get.put(BottomNavBarController());
 
@@ -12,9 +12,9 @@ class Dashboard extends StatelessWidget {
           body: _getScreen(controller.selectedIndex.value),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              Get.to(AddTask(
-                employee: employee,
-              ));
+              // Get.to(AddTask(
+              //   employee: employee,
+              // ));
             },
             backgroundColor: Colors.green,
             shape: const CircleBorder(),

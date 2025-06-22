@@ -1,3 +1,4 @@
+import 'package:employee_management_system/Features/Employee%20Dashboard/Dashboard/View/emp_bar.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class AuthController extends GetxController {
@@ -23,6 +24,8 @@ class AuthController extends GetxController {
   final FirebaseAuth usersDB = FirebaseAuth.instance;
   final AuthServices _authServices = AuthServices();
   RxBool isloading = false.obs;
+
+  final Rxn<UserModel> currentUser = Rxn<UserModel>();
 
 // Create user
   final RxnString selectedRole = RxnString();
@@ -86,11 +89,16 @@ class AuthController extends GetxController {
       if (user != null && user.emailVerified) {
         final userData = await _authServices.getUser(user.uid);
         if (userData != null) {
+          currentUser.value = userData;
           if (userData.role == 'Admin') {
             Get.offAll(HRDashboard());
           } else if (userData.role == 'Employee') {
             if (userData.isApproved) {
-              Get.snackbar('Login Success', 'Welcome Employee');
+              await Get.find<AttendanceController>()
+                  .addTodayAttendance(userData);
+              Get.offAll(() => EmployeeDashboard(
+                    employee: userData,
+                  ));
             } else {
               showCustomDialog(
                   icon: FontAwesomeIcons.solidCircleXmark,
@@ -162,11 +170,15 @@ class AuthController extends GetxController {
       isloading.value = true;
       final user = await _authServices.loginWithGoogle();
       if (user != null) {
+        currentUser.value = user;
         if (user.role == 'Admin') {
           Get.offAll(HRDashboard());
         } else if (user.role == 'Employee') {
           if (user.isApproved) {
-            Get.snackbar('Login Success', 'Welcome Employee');
+            await Get.find<AttendanceController>().addTodayAttendance(user);
+            Get.offAll(() => EmployeeDashboard(
+                  employee: user,
+                ));
           } else {
             showCustomDialog(
                 icon: FontAwesomeIcons.solidCircleXmark,

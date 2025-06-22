@@ -6,6 +6,72 @@ import 'package:intl/intl.dart';
 class AttendanceController extends GetxController {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  Future<void> addTodayAttendance(UserModel user) async {
+    final now = DateTime.now();
+    final docId = DateFormat('yyyy-MM-dd').format(now);
+
+    final docRef = _db
+        .collection('users')
+        .doc(user.uid)
+        .collection('attendance')
+        .doc(docId);
+
+    final snapshot = await docRef.get();
+
+    if (!snapshot.exists) {
+      await docRef.set({
+        'date': Timestamp.fromDate(DateTime(now.year, now.month, now.day)),
+        'checkIn': null,
+        'checkOut': null,
+        'status': 'present',
+        'employeeId': user.uid,
+      });
+      print('Attendance Marked');
+    } else {
+      await docRef.update({
+        'status': 'present',
+      });
+    }
+  }
+
+  Future<void> markAbsent(UserModel user) async {
+    final now = DateTime.now();
+    final docId = DateFormat('yyyy-MM-dd').format(now);
+
+    final docRef = _db
+        .collection('users')
+        .doc(user.uid)
+        .collection('attendance')
+        .doc(docId);
+
+    final snapshot = await docRef.get();
+
+    if (!snapshot.exists) {
+      await docRef.set({
+        'date': Timestamp.fromDate(DateTime(now.year, now.month, now.day)),
+        'checkIn': null,
+        'checkOut': null,
+        'status': 'absent',
+        'employeeId': user.uid,
+      });
+      Get.snackbar('Marked Absent', '${user.username} marked as absent');
+    } else {
+      await docRef.update({
+        'status': 'absent',
+        'checkIn': null,
+        'checkOut': null,
+      });
+      showCustomDialog(
+          icon: FontAwesomeIcons.solidCircleCheck,
+          title: 'Absent Marked',
+          message: '${user.username} is Marked absent for Today',
+          buttonText: 'Continue',
+          onPressed: () {
+            Get.back();
+          });
+    }
+  }
+
   Future<void> markCheckIn() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
     final now = DateTime.now();
@@ -15,18 +81,43 @@ class AttendanceController extends GetxController {
         _db.collection('users').doc(userId).collection('attendance').doc(docId);
 
     final snapshot = await docRef.get();
+    final data = snapshot.data();
 
-    if (!snapshot.exists) {
-      await docRef.set({
-        'date': Timestamp.fromDate(DateTime(now.year, now.month, now.day)),
-        'checkIn': Timestamp.fromDate(now),
-        'checkOut': null,
-        'status': 'present',
-      });
-      Get.snackbar('Success', 'Check-in recorded');
-    } else {
-      Get.snackbar('Already Checked In', 'You have already checked in today.');
+    if (!snapshot.exists || data == null) {
+      Get.snackbar('Error', 'Attendance record not found');
+      return;
     }
+
+    if (data['status'] == 'absent') {
+      showCustomDialog(
+          icon: FontAwesomeIcons.solidCircleXmark,
+          title: 'Restricted',
+          message: 'You are marked absent for today by HR',
+          buttonText: 'Continue',
+          onPressed: () {
+            Get.back();
+          });
+      return;
+    }
+
+    if (data['checkIn'] != null) {
+      Get.snackbar('Already Checked In', 'You have already checked in today');
+      return;
+    }
+
+    await docRef.update({
+      'checkIn': Timestamp.fromDate(now),
+      'status': 'present',
+    });
+
+    showCustomDialog(
+        icon: FontAwesomeIcons.solidCircleCheck,
+        title: 'CheckIn Recorded',
+        message: 'You have succesffuly checkedIn',
+        buttonText: 'Continue',
+        onPressed: () {
+          Get.back();
+        });
   }
 
   Future<void> markCheckOut() async {
@@ -38,16 +129,35 @@ class AttendanceController extends GetxController {
         _db.collection('users').doc(userId).collection('attendance').doc(docId);
 
     final snapshot = await docRef.get();
+    final data = snapshot.data();
 
-    if (snapshot.exists && snapshot.data()?['checkOut'] == null) {
-      await docRef.update({
-        'checkOut': Timestamp.fromDate(now),
-      });
-      Get.snackbar('Success', 'Check-out recorded');
-    } else {
-      Get.snackbar(
-          'Already Checked Out', 'You have already checked out today.');
+    if (!snapshot.exists || data == null) {
+      Get.snackbar('Error', 'Attendance record not found');
+      return;
     }
+
+    if (data['status'] == 'absent') {
+      Get.snackbar('Restricted', 'You are marked absent today');
+      return;
+    }
+
+    if (data['checkOut'] != null) {
+      Get.snackbar('Already Checked Out', 'You have already checked out today');
+      return;
+    }
+
+    await docRef.update({
+      'checkOut': Timestamp.fromDate(now),
+    });
+
+    showCustomDialog(
+        icon: FontAwesomeIcons.solidCircleCheck,
+        title: 'CheckOut Recorded',
+        message: 'You have succesffuly checkedOut',
+        buttonText: 'Continue',
+        onPressed: () {
+          Get.back();
+        });
   }
 
   var attendanceList = <AttendanceModel>[].obs;
@@ -113,32 +223,6 @@ class AttendanceController extends GetxController {
     final result = '$hoursStr ${minutesStr.trim()}'.trim();
 
     return result;
-  }
-
-  // dummy record adding
-  Future<void> addDummyAttendance({required String userId}) async {
-    try {
-      final now = DateTime.now();
-      final todayKey = DateFormat('yyyy-MM-dd').format(now); // Used as doc ID
-
-      final attendance = AttendanceModel(
-        id: todayKey,
-        employeeId: userId,
-        date: now,
-        checkIn: now, // ✅ Correct type (DateTime)
-        checkOut: null,
-        status: 'present',
-      );
-
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .collection('attendance')
-          .doc(todayKey)
-          .set(attendance.toMap());
-    } catch (e) {
-      print('❌ Error: $e');
-    }
   }
 
   String formatDate(DateTime date) {
