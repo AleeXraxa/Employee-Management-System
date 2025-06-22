@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:employee_management_system/core/app_exports.dart';
 import 'package:intl/intl.dart';
 
@@ -50,20 +52,6 @@ class AttendanceController extends GetxController {
 
   var attendanceList = <AttendanceModel>[].obs;
 
-  void bindAttendanceStreamForEmployee(String employeeId) {
-    final attendanceRef = _db
-        .collection('users')
-        .doc(employeeId)
-        .collection('attendance')
-        .orderBy('date', descending: true);
-
-    attendanceRef.snapshots().listen((snapshot) {
-      attendanceList.value = snapshot.docs
-          .map((doc) => AttendanceModel.fromMap(doc.id, doc.data()))
-          .toList();
-    });
-  }
-
   var todayAttendanceList = <AttendanceModel>[].obs;
 
   void bindTodayAttendanceStream() {
@@ -104,9 +92,6 @@ class AttendanceController extends GetxController {
   }
 
   String getWorkedDuration(DateTime? checkIn, DateTime? checkOut) {
-    print('📍 checkIn: $checkIn');
-    print('📍 checkOut: $checkOut');
-
     if (checkIn == null) return '–';
 
     final endTime = checkOut ?? DateTime.now();
@@ -119,8 +104,6 @@ class AttendanceController extends GetxController {
     final hours = duration.inHours;
     final minutes = duration.inMinutes.remainder(60);
 
-    print('⏱ Duration: $hours hrs, $minutes mins');
-
     if (hours == 0 && minutes == 0) return '0 mins';
 
     final hoursStr = hours > 0 ? '$hours hr${hours > 1 ? 's' : ''}' : '';
@@ -128,7 +111,7 @@ class AttendanceController extends GetxController {
         minutes > 0 ? '$minutes min${minutes > 1 ? 's' : ''}' : '';
 
     final result = '$hoursStr ${minutesStr.trim()}'.trim();
-    print('🟢 Final duration string: "$result"');
+
     return result;
   }
 
@@ -153,7 +136,6 @@ class AttendanceController extends GetxController {
           .collection('attendance')
           .doc(todayKey)
           .set(attendance.toMap());
-      print("✅ Dummy attendance added for user: $userId");
     } catch (e) {
       print('❌ Error: $e');
     }
@@ -179,9 +161,47 @@ class AttendanceController extends GetxController {
     return duration;
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    bindTodayAttendanceStream();
+  final isLoading = true.obs;
+
+  void fetchAttendance(String employeeId) {
+    isLoading.value = true;
+
+    _db
+        .collection('users')
+        .doc(employeeId)
+        .collection('attendance')
+        .orderBy('date', descending: true)
+        .snapshots()
+        .listen((snapshot) {
+      final data = snapshot.docs
+          .map((doc) => AttendanceModel.fromMap(doc.id, doc.data()))
+          .toList();
+
+      attendanceList.value = data;
+      filteredAttendanceList.assignAll(data);
+      isLoading.value = false;
+    });
+  }
+
+  final searchController = TextEditingController();
+  final filteredAttendanceList = <AttendanceModel>[].obs;
+
+  void filterAttendanceByDate() {
+    final query = searchController.text.trim().toLowerCase();
+
+    if (query.isEmpty) {
+      filteredAttendanceList.assignAll(attendanceList);
+      return;
+    }
+
+    filteredAttendanceList.assignAll(
+      attendanceList.where((att) {
+        final formattedDate =
+            DateFormat('dd MMM yyyy').format(att.date).toLowerCase();
+        final altFormat =
+            DateFormat('dd MMMM yyyy').format(att.date).toLowerCase();
+        return formattedDate.contains(query) || altFormat.contains(query);
+      }).toList(),
+    );
   }
 }

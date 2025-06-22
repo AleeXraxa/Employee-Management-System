@@ -11,6 +11,7 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final VoidCallback? onTapField;
   final bool isReadOnly;
+  final void Function(String)? onChange;
   const CustomTextField({
     required this.labelText,
     required this.type,
@@ -22,6 +23,7 @@ class CustomTextField extends StatelessWidget {
     required this.validator,
     this.onTapField,
     this.isReadOnly = false,
+    this.onChange,
     super.key,
   });
 
@@ -34,6 +36,7 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       obscureText: isPass,
       validator: validator,
+      onChanged: onChange,
       decoration: InputDecoration(
         prefixIcon: prefix != null
             ? Padding(

@@ -52,24 +52,26 @@ class AttendaceCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            timeIn,
+                            'Check In:',
                             style: AppTextStyles.bodyTextMedium,
                           ),
+                          SizedBox(width: 0.01.sw),
                           Text(
-                            timeOut,
+                            timeIn,
                             style: AppTextStyles.bodyTextMediumB,
                           ),
                         ],
                       ),
-                      SizedBox(width: 0.05.sw),
+                      SizedBox(width: 0.02.sw),
                       Row(
                         children: [
                           Text(
-                            'Clock In',
+                            'Check Out:',
                             style: AppTextStyles.bodyTextMedium,
                           ),
+                          SizedBox(width: 0.01.sw),
                           Text(
-                            '05: 02 PM',
+                            timeOut,
                             style: AppTextStyles.bodyTextMediumB,
                           ),
                         ],

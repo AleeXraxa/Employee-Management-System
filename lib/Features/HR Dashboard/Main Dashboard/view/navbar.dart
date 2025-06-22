@@ -33,7 +33,9 @@ class Dashboard extends StatelessWidget {
       case 1:
         return ViewAllTasks();
       case 2:
-        return ViewAllAttendance();
+        return ViewAllAttendance(
+          employeeID: employee.uid,
+        );
       case 3:
         return Payroll();
       default:
