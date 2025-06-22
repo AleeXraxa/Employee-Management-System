@@ -10,6 +10,8 @@ class ViewAllTasks extends StatefulWidget {
 class _ViewAllTasksState extends State<ViewAllTasks> {
   final _taskController = Get.find<TaskController>();
 
+  final _authController = Get.find<AuthController>();
+
   @override
   void initState() {
     super.initState();
@@ -28,6 +30,7 @@ class _ViewAllTasksState extends State<ViewAllTasks> {
 
   @override
   Widget build(BuildContext context) {
+    final user = _authController.currentUser;
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 0.1.sh,
@@ -96,6 +99,7 @@ class _ViewAllTasksState extends State<ViewAllTasks> {
                                         itemBuilder: (context, taskIndex) {
                                           final task = tasksForDay[taskIndex];
                                           return TaskCard(
+                                            user: user,
                                             task: task,
                                             onTap: () {
                                               Get.to(() =>

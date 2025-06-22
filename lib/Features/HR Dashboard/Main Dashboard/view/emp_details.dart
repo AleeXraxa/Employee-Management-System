@@ -17,6 +17,8 @@ class EmpDetails extends StatelessWidget {
     _taskController.fetchTasks(employeeID: employee.uid);
     attendanceController.bindTodayAttendanceStream();
 
+    final user = _authController.currentUser;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -33,7 +35,9 @@ class EmpDetails extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Good Morning, HR!',
+                          user.value?.role == 'Admin'
+                              ? 'Good Morning, HR'
+                              : 'Good Morning, Employee',
                           style: AppTextStyles.bodyTextMedium,
                         ),
                         Text(
@@ -159,7 +163,9 @@ class EmpDetails extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Employee's Task",
+                              user.value?.role == 'Admin'
+                                  ? "Employee's Tasks"
+                                  : "Your Task's",
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
@@ -172,6 +178,7 @@ class EmpDetails extends StatelessWidget {
                           ],
                         ),
                         TaskCard(
+                          user: user,
                           task: completedTask,
                           onTap: () {
                             Get.to(UpdateTask(tasks: completedTask));
@@ -195,6 +202,7 @@ class EmpDetails extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold)),
                         TaskCard(
+                          user: user,
                           task: tomorrowTask,
                           onTap: () {
                             Get.to(UpdateTask(tasks: tomorrowTask));
@@ -227,7 +235,9 @@ class EmpDetails extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Employee's Attendance",
+                              user.value?.role == 'Admin'
+                                  ? "Employee's Attendance"
+                                  : "Your Attendance",
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),

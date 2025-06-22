@@ -4,12 +4,14 @@ class TaskCard extends StatelessWidget {
   final TaskModel task;
   final VoidCallback onTap;
   final VoidCallback onDelete;
+  final Rxn<UserModel> user;
 
   const TaskCard({
     super.key,
     required this.task,
     required this.onTap,
     required this.onDelete,
+    required this.user,
   });
 
   @override
@@ -70,18 +72,21 @@ class TaskCard extends StatelessWidget {
               ),
               SizedBox(height: 0.01.sh),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: user.value?.role == 'Admin'
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.center,
                 children: [
                   secondaryBtn(
                     btnText: 'Edit Task',
                     bgcolor: AppColors.primaryColor,
                     onTap: onTap,
                   ),
-                  secondaryBtn(
-                    btnText: 'Delete Task',
-                    bgcolor: AppColors.red,
-                    onTap: onDelete,
-                  ),
+                  if (user.value?.role == 'Admin')
+                    secondaryBtn(
+                      btnText: 'Delete Task',
+                      bgcolor: AppColors.red,
+                      onTap: onDelete,
+                    ),
                 ],
               )
             ],
