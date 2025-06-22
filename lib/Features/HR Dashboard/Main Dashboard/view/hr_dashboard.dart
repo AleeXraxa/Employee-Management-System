@@ -54,86 +54,83 @@ class _HRDashboardState extends State<HRDashboard> {
                     if (_empController.employeeList.isEmpty) {
                       return Center(child: Text('No employees found'));
                     }
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: _empController.employeeList.length,
-                        itemBuilder: (context, index) {
-                          final emp = _empController.employeeList[index];
-                          return Container(
-                            margin: EdgeInsets.symmetric(vertical: 10),
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: AppColors.cardColor,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 10,
-                                  offset: Offset(0, 4),
+                    return ListView.builder(
+                      itemCount: _empController.employeeList.length,
+                      itemBuilder: (context, index) {
+                        final emp = _empController.employeeList[index];
+                        return Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: AppColors.cardColor,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 10,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          width: 350,
+                          height: 120,
+                          child: Row(
+                            children: [
+                              // Profile Image
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.asset(
+                                  'assets/images/logo.png', // Replace with your image path
+                                  width: 70,
+                                  height: 70,
+                                  fit: BoxFit.cover,
                                 ),
-                              ],
-                            ),
-                            width: 350,
-                            height: 120,
-                            child: Row(
-                              children: [
-                                // Profile Image
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image.asset(
-                                    'assets/images/logo.png', // Replace with your image path
-                                    width: 70,
-                                    height: 70,
-                                    fit: BoxFit.cover,
-                                  ),
+                              ),
+                              const SizedBox(width: 15),
+                              // Text Info
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Employee ${index + 1} ',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      '${emp.username.toUpperCase()}',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      'Contact : 03030286354',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 15),
-                                // Text Info
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Employee ${index + 1} ',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        '${emp.username.toUpperCase()}',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        'Contact : 03030286354',
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                // Select Button
-                                secondaryBtn(
-                                    btnText: 'Select',
-                                    bgcolor: AppColors.primaryColor,
-                                    onTap: () {
-                                      Get.offAll(Dashboard(employee: emp));
-                                    }),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                              ),
+                              // Select Button
+                              secondaryBtn(
+                                  btnText: 'Select',
+                                  bgcolor: AppColors.primaryColor,
+                                  onTap: () {
+                                    Get.offAll(Dashboard(employee: emp));
+                                  }),
+                            ],
+                          ),
+                        );
+                      },
                     );
                   },
                 ),

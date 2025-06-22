@@ -78,7 +78,10 @@ class Attendancepcard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    WorkProgressIndicator(),
+                    WorkProgressIndicator(
+                      timeSpent: attendanceController.getWorkedDurationRaw(
+                          attendance.checkIn, attendance.checkOut),
+                    ),
                     SizedBox(width: 0.02.sw),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

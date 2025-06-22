@@ -167,6 +167,18 @@ class AttendanceController extends GetxController {
     return DateFormat('hh:mm a').format(time);
   }
 
+  Duration getWorkedDurationRaw(DateTime? checkIn, DateTime? checkOut) {
+    if (checkIn == null) return Duration.zero;
+
+    final endTime = checkOut ?? DateTime.now();
+    Duration duration = endTime.difference(checkIn);
+
+    if (duration > Duration(hours: 8)) {
+      duration = Duration(hours: 8);
+    }
+    return duration;
+  }
+
   @override
   void onInit() {
     super.onInit();

@@ -1,12 +1,12 @@
 import 'package:employee_management_system/core/app_exports.dart';
 
 class WorkProgressIndicator extends StatelessWidget {
-  const WorkProgressIndicator({super.key});
+  final Duration timeSpent;
+  const WorkProgressIndicator({super.key, required this.timeSpent});
 
   @override
   Widget build(BuildContext context) {
     const shiftDuration = Duration(hours: 8);
-    const timeSpent = Duration(hours: 5, minutes: 30);
 
     final percent = timeSpent.inSeconds / shiftDuration.inSeconds;
     final hours = timeSpent.inHours;
