@@ -74,7 +74,7 @@ class _ViewAllAttendanceState extends State<ViewAllAttendance> {
                         final att =
                             attendanceController.filteredAttendanceList[index];
                         return AttendaceCard(
-                          status: att.status?.capitalizeFirst ?? '-',
+                          status: att.status.capitalizeFirst ?? '-',
                           dateDay: attendanceController.formatDate(att.date),
                           timeIn: att.checkIn != null
                               ? attendanceController.formatTime(att.checkIn!)
