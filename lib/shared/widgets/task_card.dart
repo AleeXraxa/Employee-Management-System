@@ -76,17 +76,43 @@ class TaskCard extends StatelessWidget {
                     ? MainAxisAlignment.spaceBetween
                     : MainAxisAlignment.center,
                 children: [
-                  secondaryBtn(
-                    btnText: 'Edit Task',
-                    bgcolor: AppColors.primaryColor,
-                    onTap: onTap,
-                  ),
-                  if (user.value?.role == 'Admin')
+                  if (task.progressStatus.toLowerCase() == 'completed')
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        'Task Completed',
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )
+                  else if (user.value?.role == 'Employee')
+                    secondaryBtn(
+                      btnText: 'Complete Your Task',
+                      bgcolor: AppColors.red,
+                      onTap: () {
+                        final _taskController = Get.find<TaskController>();
+                        _taskController.markTaskCompleted(task.id!);
+                      },
+                    )
+                  else if (user.value?.role == 'Admin') ...[
+                    secondaryBtn(
+                      btnText: 'Edit Task',
+                      bgcolor: AppColors.primaryColor,
+                      onTap: onTap,
+                    ),
                     secondaryBtn(
                       btnText: 'Delete Task',
                       bgcolor: AppColors.red,
                       onTap: onDelete,
                     ),
+                  ]
                 ],
               )
             ],

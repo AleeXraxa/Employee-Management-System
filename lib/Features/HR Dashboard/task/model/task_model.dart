@@ -10,6 +10,7 @@ class TaskModel {
   final String createdBy;
   final String assignedTo;
   final String progressStatus;
+  final List<String>? imgUrls;
 
   TaskModel({
     this.id,
@@ -21,6 +22,7 @@ class TaskModel {
     required this.createdBy,
     required this.assignedTo,
     this.progressStatus = 'pending',
+    this.imgUrls,
   });
 
   Map<String, dynamic> toMap() {
@@ -33,6 +35,7 @@ class TaskModel {
       'createdBy': createdBy,
       'assignedTo': assignedTo,
       'progressStatus': progressStatus,
+      'imgUrls': imgUrls ?? [],
     };
   }
 
@@ -47,6 +50,15 @@ class TaskModel {
       createdBy: map['createdBy'],
       assignedTo: map['assignedTo'],
       progressStatus: map['progressStatus'] ?? 'pending',
+      imgUrls: List<String>.from(map['imgUrls'] ?? []),
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TaskModel && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

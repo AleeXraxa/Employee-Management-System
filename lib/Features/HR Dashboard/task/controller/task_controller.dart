@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:employee_management_system/Features/HR%20Dashboard/task/services/img_upload_service.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class TaskController extends GetxController {
@@ -30,6 +33,7 @@ class TaskController extends GetxController {
   Future<void> addTask({
     required DateTime selectedDate,
     required String employeeID,
+    String? imageURL,
   }) async {
     try {
       isLoading.value = true;
@@ -43,6 +47,7 @@ class TaskController extends GetxController {
         createdBy: FirebaseAuth.instance.currentUser!.uid,
         assignedTo: employeeID,
         progressStatus: 'pending',
+        // imgUrl: imageURL,
       );
 
       await _db.collection('tasks').add(task.toMap());
@@ -66,7 +71,8 @@ class TaskController extends GetxController {
     }
   }
 
-  Future<void> updateTask(String taskID, DateTime selectedDate) async {
+  Future<void> updateTask(String taskID, DateTime selectedDate,
+      {String? imgURL}) async {
     try {
       isLoading.value = true;
 
@@ -76,6 +82,7 @@ class TaskController extends GetxController {
         'location': locationController.text.trim(),
         'status': statusController.text.trim(),
         'date': selectedDate,
+        if (imgURL != null) 'imageUrl': imgURL,
       };
 
       await _db.collection('tasks').doc(taskID).update(updatedTask);
@@ -199,5 +206,76 @@ class TaskController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  Future<void> markTaskCompleted(String taskId) async {
+    await FirebaseFirestore.instance.collection('tasks').doc(taskId).update({
+      'progressStatus': 'completed',
+    });
+    Get.snackbar('Task Completed', 'You marked your task as completed');
+  }
+
+  Future<void> uploadSingleImage(TaskModel task, File image) async {
+    isLoading.value = true;
+
+    final url = await CloudinaryService.uploadImage(image);
+    if (url != null) {
+      final updatedList = [...(task.imgUrls ?? []), url];
+
+      await FirebaseFirestore.instance
+          .collection('tasks')
+          .doc(task.id)
+          .update({'imgUrls': updatedList});
+
+      final index = taskList.indexWhere((t) => t.id == task.id);
+      if (index != -1) {
+        taskList[index] = TaskModel(
+          id: task.id,
+          title: task.title,
+          time: task.time,
+          location: task.location,
+          status: task.status,
+          date: task.date,
+          createdBy: task.createdBy,
+          assignedTo: task.assignedTo,
+          progressStatus: task.progressStatus,
+          imgUrls: List<String>.from(updatedList),
+        );
+
+        taskList.refresh();
+      }
+
+      Get.snackbar('Image Uploaded', 'Image uploaded and task updated');
+    } else {
+      Get.snackbar('Failed', 'Image upload failed');
+    }
+
+    isLoading.value = false;
+  }
+
+  Future<void> deleteImageFromTask(TaskModel task, String url) async {
+    final updatedList = (task.imgUrls ?? [])..remove(url);
+    await FirebaseFirestore.instance
+        .collection('tasks')
+        .doc(task.id)
+        .update({'imgUrls': updatedList});
+
+    final index = taskList.indexWhere((t) => t.id == task.id);
+    if (index != -1) {
+      taskList[index] = TaskModel(
+        id: task.id,
+        title: task.title,
+        time: task.time,
+        location: task.location,
+        status: task.status,
+        date: task.date,
+        createdBy: task.createdBy,
+        assignedTo: task.assignedTo,
+        progressStatus: task.progressStatus,
+        imgUrls: updatedList,
+      );
+    }
+
+    Get.snackbar('Deleted', 'Image removed from task');
   }
 }
