@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 import 'package:employee_management_system/shared/utils/img_picker.dart';
+import 'package:employee_management_system/shared/widgets/delete_dialog.dart';
 
 class UploadBox extends StatelessWidget {
   final TaskModel task;
@@ -19,38 +20,57 @@ class UploadBox extends StatelessWidget {
           strokeWidth: 1,
           dashPattern: [6, 3],
           borderType: BorderType.RRect,
-          radius: const Radius.circular(12),
+          radius: const Radius.circular(8),
           child: Container(
             padding: const EdgeInsets.all(16),
             width: double.infinity,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
             child: Column(
               children: [
-                const Icon(Icons.upload_file, size: 48, color: Colors.grey),
-                const SizedBox(height: 8),
-                const Text("Choose Image to Upload",
-                    style: TextStyle(fontSize: 16)),
-                const SizedBox(height: 12),
-                Obx(() => controller.isLoading.value
-                    ? const CircularProgressIndicator()
-                    : ElevatedButton(
-                        onPressed: () async {
-                          final file = await ImageHelper.pickImage();
-                          if (file != null) {
-                            await controller.uploadSingleImage(task, file);
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primaryColor),
-                        child: const Text("Choose Image"),
-                      )),
+                SizedBox(height: 0.03.sh),
+                const FaIcon(
+                  FontAwesomeIcons.upload,
+                  size: 30,
+                ),
+                SizedBox(height: 0.03.sh),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Choose Images to ",
+                      style: AppTextStyles.bodyText,
+                    ),
+                    Text(
+                      "Upload",
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Poppins',
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 0.03.sh),
+                Obx(
+                  () => controller.isLoading.value
+                      ? const CircularProgressIndicator()
+                      : secondaryBtn(
+                          btnText: 'Choose Image',
+                          bgcolor: AppColors.primaryColor,
+                          onTap: () async {
+                            final file = await ImageHelper.pickImage();
+                            if (file != null) {
+                              await controller.uploadSingleImage(task, file);
+                            }
+                          },
+                        ),
+                ),
               ],
             ),
           ),
         ),
         const SizedBox(height: 16),
-
-        // Live updated images
         Obx(() {
           final updatedTask = controller.taskList
               .firstWhere((t) => t.id == task.id, orElse: () => task);
@@ -75,8 +95,19 @@ class UploadBox extends StatelessWidget {
                     top: 2,
                     right: 2,
                     child: GestureDetector(
-                      onTap: () async {
-                        await controller.deleteImageFromTask(task, url);
+                      onTap: () {
+                        Get.dialog(
+                          DeleteDialog(
+                            icon: FontAwesomeIcons.circleXmark,
+                            title: 'Are You Sure?',
+                            message: "This action can't be undone",
+                            confirmText: 'Delete',
+                            onConfirmed: () async {
+                              await controller.deleteImageFromTask(task, url);
+                              Get.back();
+                            },
+                          ),
+                        );
                       },
                       child: Container(
                         decoration: const BoxDecoration(

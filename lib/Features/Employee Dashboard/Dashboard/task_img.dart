@@ -1,21 +1,37 @@
-import 'dart:io';
 import 'package:employee_management_system/core/app_exports.dart';
 import 'package:employee_management_system/shared/widgets/upload_box.dart';
 
-class UploadTaskImagesScreen extends StatelessWidget {
-  final TaskController controller = Get.find<TaskController>();
-  final Rx<TaskModel?> selectedTask = Rx<TaskModel?>(null);
+class UploadTaskImagesScreen extends StatefulWidget {
+  UploadTaskImagesScreen({super.key});
 
-  UploadTaskImagesScreen({super.key}) {
-    controller.fetchTasks(); // Fetch tasks on screen init
+  @override
+  State<UploadTaskImagesScreen> createState() => _UploadTaskImagesScreenState();
+}
+
+class _UploadTaskImagesScreenState extends State<UploadTaskImagesScreen> {
+  final TaskController controller = Get.find<TaskController>();
+
+  final Rx<TaskModel?> selectedTask = Rx<TaskModel?>(null);
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchTasks();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Upload Task Images'),
+        toolbarHeight: 0.1.sh,
         backgroundColor: AppColors.primaryColor,
+        foregroundColor: AppColors.white,
+        title: Text(
+          'Upload Task Images',
+          style: AppTextStyles.screenName,
+        ),
+        centerTitle: true,
       ),
       body: Obx(() {
         final pendingTasks = controller.taskList
@@ -31,28 +47,24 @@ class UploadTaskImagesScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DropdownButtonFormField<TaskModel>(
+              SizedBox(height: 0.03.sh),
+              Text(
+                'Add new Images',
+                style: AppTextStyles.bodyText,
+              ),
+              SizedBox(height: 0.02.sh),
+              CustomDropdown<TaskModel>(
+                label: 'Select a Task',
                 value: selectedTask.value,
-                isExpanded: true,
-                hint: const Text("Select a Task"),
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                ),
-                items: pendingTasks.map((task) {
-                  return DropdownMenuItem<TaskModel>(
-                    value: task,
-                    child: Text(task.title),
-                  );
-                }).toList(),
+                items: pendingTasks,
+                getLabel: (task) => task.title,
                 onChanged: (value) {
-                  selectedTask.value = value;
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    selectedTask.value = value as TaskModel?;
+                  });
                 },
               ),
               const SizedBox(height: 20),
-
-              // UploadBox only shown if a task is selected
               Obx(() {
                 final currentTask = controller.taskList.firstWhereOrNull(
                   (t) => t.id == selectedTask.value?.id,

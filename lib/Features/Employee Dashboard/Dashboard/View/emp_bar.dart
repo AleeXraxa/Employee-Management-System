@@ -13,9 +13,7 @@ class EmployeeDashboard extends StatelessWidget {
           body: _getScreen(controller.selectedIndex.value),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              // Get.to(AddTask(
-              //   employee: employee,
-              // ));
+              Get.to(() => UploadTaskImagesScreen());
             },
             backgroundColor: Colors.green,
             shape: const CircleBorder(),
