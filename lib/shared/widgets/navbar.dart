@@ -4,6 +4,7 @@ class BottomNavBar extends StatelessWidget {
   final List<IconData> icons;
 
   BottomNavBar({
+    super.key,
     required this.icons,
   });
 

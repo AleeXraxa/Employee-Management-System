@@ -9,6 +9,8 @@ class AttendancePayrollWidget extends StatelessWidget {
   final TextStyle greenStyle =
       TextStyle(color: Colors.green, fontSize: 14, fontWeight: FontWeight.w600);
 
+  AttendancePayrollWidget({super.key});
+
   Widget buildInfoBox(String number, String label,
       {bool applyTransform = false}) {
     final boxContent = Container(

@@ -1,6 +1,5 @@
 import 'package:employee_management_system/Features/HR%20Dashboard/payroll/view/weekly_chart.dart';
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:employee_management_system/shared/widgets/attendanc_tracker.dart';
 import 'package:employee_management_system/shared/widgets/cards.dart';
 
 class Payroll extends StatefulWidget {
@@ -112,12 +111,12 @@ class _Payroll extends State<Payroll> {
                                 childAspectRatio: 1.6,
                                 shrinkWrap: true,
                                 children: [
-                                  payroll_card(title: 'Present', value: '34'),
-                                  payroll_card(title: 'Absent', value: '03'),
-                                  payroll_card(title: 'Holiday', value: '02'),
-                                  payroll_card(title: 'Half Day', value: '07'),
-                                  payroll_card(title: 'Week Off', value: '03'),
-                                  payroll_card(title: 'Leave', value: '05'),
+                                  PayrollCard(title: 'Present', value: '34'),
+                                  PayrollCard(title: 'Absent', value: '03'),
+                                  PayrollCard(title: 'Holiday', value: '02'),
+                                  PayrollCard(title: 'Half Day', value: '07'),
+                                  PayrollCard(title: 'Week Off', value: '03'),
+                                  PayrollCard(title: 'Leave', value: '05'),
                                 ],
                               )
                             ],
@@ -141,10 +140,10 @@ class _Payroll extends State<Payroll> {
                                 childAspectRatio: 1.6,
                                 shrinkWrap: true,
                                 children: [
-                                  payroll_card(title: '50,000', value: 'Basic'),
-                                  payroll_card(
+                                  PayrollCard(title: '50,000', value: 'Basic'),
+                                  PayrollCard(
                                       title: '20,000', value: 'Extra Bonus'),
-                                  payroll_card(title: '70,000', value: 'Total'),
+                                  PayrollCard(title: '70,000', value: 'Total'),
                                 ],
                               ),
                               SizedBox(height: 0.08.sh),

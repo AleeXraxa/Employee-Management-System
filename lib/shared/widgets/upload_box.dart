@@ -55,7 +55,7 @@ class UploadBox extends StatelessWidget {
                 Obx(
                   () => controller.isLoading.value
                       ? const CircularProgressIndicator()
-                      : secondaryBtn(
+                      : SecondaryBtn(
                           btnText: 'Choose Image',
                           bgcolor: AppColors.primaryColor,
                           onTap: () async {

@@ -43,6 +43,7 @@ class _HRDashboardState extends State<HRDashboard> {
               ),
               SizedBox(height: 0.025.sh),
               Container(
+                margin: EdgeInsets.only(top: 1),
                 height: 0.5.sh,
                 child: Obx(
                   () {
@@ -102,7 +103,7 @@ class _HRDashboardState extends State<HRDashboard> {
                                     ),
                                     SizedBox(height: 4),
                                     Text(
-                                      '${emp.username.toUpperCase()}',
+                                      emp.username.toUpperCase(),
                                       style: TextStyle(
                                         fontSize: 15,
                                         color: Colors.green,
@@ -121,7 +122,7 @@ class _HRDashboardState extends State<HRDashboard> {
                                 ),
                               ),
                               // Select Button
-                              secondaryBtn(
+                              SecondaryBtn(
                                   btnText: 'Select',
                                   bgcolor: AppColors.primaryColor,
                                   onTap: () {
@@ -135,7 +136,7 @@ class _HRDashboardState extends State<HRDashboard> {
                   },
                 ),
               ),
-              secondaryBtn(
+              SecondaryBtn(
                   btnText: 'Logout',
                   bgcolor: AppColors.primaryColor,
                   onTap: authController.logout),

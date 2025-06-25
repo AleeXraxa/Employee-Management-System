@@ -9,15 +9,15 @@ class EmpDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _empController = Get.find<EmpController>();
-    final _authController = Get.find<AuthController>();
-    final _taskController = Get.find<TaskController>();
+    final empController = Get.find<EmpController>();
+    final authController = Get.find<AuthController>();
+    final taskController = Get.find<TaskController>();
     final attendanceController = Get.find<AttendanceController>();
 
-    _taskController.fetchTasks(employeeID: employee.uid);
+    taskController.fetchTasks(employeeID: employee.uid);
     attendanceController.bindTodayAttendanceStream();
 
-    final user = _authController.currentUser;
+    final user = authController.currentUser;
 
     return Scaffold(
       body: SafeArea(
@@ -48,7 +48,7 @@ class EmpDetails extends StatelessWidget {
                     ),
                     IconButton(
                         onPressed: () {
-                          _authController.logout();
+                          authController.logout();
                         },
                         icon: FaIcon(FontAwesomeIcons.rightToBracket))
                   ],
@@ -83,7 +83,7 @@ class EmpDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${employee.username.toUpperCase()}',
+                            employee.username.toUpperCase(),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -116,19 +116,19 @@ class EmpDetails extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            secondaryBtn(
+                            SecondaryBtn(
                                 btnText: 'Approve',
                                 bgcolor: AppColors.primaryColor,
                                 onTap: () {
-                                  _empController.approveReject(
+                                  empController.approveReject(
                                       employee.uid, true);
                                 }),
                             SizedBox(width: 0.05.sw),
-                            secondaryBtn(
+                            SecondaryBtn(
                                 btnText: 'Reject',
                                 bgcolor: AppColors.red,
                                 onTap: () {
-                                  _empController.approveReject(
+                                  empController.approveReject(
                                       employee.uid, false);
                                 }),
                           ],
@@ -136,15 +136,15 @@ class EmpDetails extends StatelessWidget {
                       ),
                 SizedBox(height: 0.02.sh),
                 Container(child: Obx(() {
-                  final completedTask = _taskController.mostRecentTask;
-                  final tomorrowTask = _taskController.oneTomorrowPendingTask;
+                  final completedTask = taskController.mostRecentTask;
+                  final tomorrowTask = taskController.oneTomorrowPendingTask;
 
-                  if (_taskController.isTaskLoading.value) {
+                  if (taskController.isTaskLoading.value) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (_taskController.taskError.value.isNotEmpty) {
-                    return Center(child: Text(_taskController.taskError.value));
+                  if (taskController.taskError.value.isNotEmpty) {
+                    return Center(child: Text(taskController.taskError.value));
                   }
                   if (completedTask == null && tomorrowTask == null) {
                     return Center(
@@ -169,7 +169,7 @@ class EmpDetails extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
-                            secondaryBtn(
+                            SecondaryBtn(
                                 btnText: 'View All',
                                 bgcolor: AppColors.primaryColor,
                                 onTap: () {
@@ -190,7 +190,7 @@ class EmpDetails extends StatelessWidget {
                               message: 'Do you want to Delete this Task?',
                               buttonText: 'Delete',
                               onPressed: () {
-                                _taskController.deleteTask(completedTask.id!);
+                                taskController.deleteTask(completedTask.id!);
                               },
                             );
                           },
@@ -214,7 +214,7 @@ class EmpDetails extends StatelessWidget {
                               message: 'Do you want to Delete this Task?',
                               buttonText: 'Delete',
                               onPressed: () {
-                                _taskController.deleteTask(tomorrowTask.id!);
+                                taskController.deleteTask(tomorrowTask.id!);
                               },
                             );
                           },
@@ -241,7 +241,7 @@ class EmpDetails extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
-                            secondaryBtn(
+                            SecondaryBtn(
                                 btnText: 'View All',
                                 bgcolor: AppColors.primaryColor,
                                 onTap: () {

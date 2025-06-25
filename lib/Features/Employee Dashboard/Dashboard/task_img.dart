@@ -1,7 +1,7 @@
 import 'package:employee_management_system/core/app_exports.dart';
 
 class UploadTaskImagesScreen extends StatefulWidget {
-  UploadTaskImagesScreen({super.key});
+  const UploadTaskImagesScreen({super.key});
 
   @override
   State<UploadTaskImagesScreen> createState() => _UploadTaskImagesScreenState();

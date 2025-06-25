@@ -71,6 +71,7 @@ class _ViewAllTasksState extends State<ViewAllTasks> {
                               ),
                             )
                           : Container(
+                              margin: EdgeInsets.only(top: 1),
                               height: 0.7.sh,
                               child: ListView.builder(
                                 itemCount: groupedTasks.keys.length,

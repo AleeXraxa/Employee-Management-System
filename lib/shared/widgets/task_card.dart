@@ -41,7 +41,7 @@ class TaskCard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        '${task.time}',
+                        task.time,
                         style: TextStyle(
                           color: AppColors.primaryColor,
                         ),
@@ -65,7 +65,7 @@ class TaskCard extends StatelessWidget {
                   ),
                   SizedBox(height: 0.01.sh),
                   Text(
-                    '${task.title}',
+                    task.title,
                     style: AppTextStyles.bodyTextMedium,
                   ),
                 ],
@@ -93,21 +93,21 @@ class TaskCard extends StatelessWidget {
                       ),
                     )
                   else if (user.value?.role == 'Employee')
-                    secondaryBtn(
+                    SecondaryBtn(
                       btnText: 'Complete Your Task',
                       bgcolor: AppColors.red,
                       onTap: () {
-                        final _taskController = Get.find<TaskController>();
-                        _taskController.markTaskCompleted(task.id!);
+                        final taskController = Get.find<TaskController>();
+                        taskController.markTaskCompleted(task.id!);
                       },
                     )
                   else if (user.value?.role == 'Admin') ...[
-                    secondaryBtn(
+                    SecondaryBtn(
                       btnText: 'Edit Task',
                       bgcolor: AppColors.primaryColor,
                       onTap: onTap,
                     ),
-                    secondaryBtn(
+                    SecondaryBtn(
                       btnText: 'Delete Task',
                       bgcolor: AppColors.red,
                       onTap: onDelete,

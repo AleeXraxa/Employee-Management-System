@@ -35,8 +35,8 @@ class Attendancepcard extends StatelessWidget {
     final isPending = attendance.checkIn == null && attendance.checkOut == null;
     final isCheckedIn =
         attendance.checkIn != null && attendance.checkOut == null;
-    final isCheckedOut =
-        attendance.checkIn != null && attendance.checkOut != null;
+    // final isCheckedOut =
+    //     attendance.checkIn != null && attendance.checkOut != null;
 
     final isAdmin = authController.currentUser.value?.role == 'Admin';
     final isAbsent = attendance.status == 'absent';
@@ -65,8 +65,7 @@ class Attendancepcard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(name, style: AppTextStyles.title),
-                    Text('${employee.role}',
-                        style: AppTextStyles.bodyTextMedium),
+                    Text(employee.role, style: AppTextStyles.bodyTextMedium),
                   ],
                 ),
               ],
@@ -126,7 +125,7 @@ class Attendancepcard extends StatelessWidget {
                   builder: (_) {
                     if (isAdmin) {
                       if (isPending && !isAbsent) {
-                        return secondaryBtn(
+                        return SecondaryBtn(
                           btnText: 'Mark Absent',
                           bgcolor: Colors.red,
                           onTap: () {
@@ -134,7 +133,7 @@ class Attendancepcard extends StatelessWidget {
                           },
                         );
                       } else if (isAbsent) {
-                        return secondaryBtn(
+                        return SecondaryBtn(
                           btnText: 'Present',
                           bgcolor: AppColors.primaryColor,
                           onTap: () {
@@ -148,7 +147,7 @@ class Attendancepcard extends StatelessWidget {
                       if (isAbsent) {
                         return const SizedBox(); // 🔒 No Check In or Out
                       } else if (isPending) {
-                        return secondaryBtn(
+                        return SecondaryBtn(
                           btnText: 'Check In',
                           bgcolor: AppColors.primaryColor,
                           onTap: () {
@@ -156,7 +155,7 @@ class Attendancepcard extends StatelessWidget {
                           },
                         );
                       } else if (isCheckedIn) {
-                        return secondaryBtn(
+                        return SecondaryBtn(
                           btnText: 'Check Out',
                           bgcolor: AppColors.primaryColor,
                           onTap: () {

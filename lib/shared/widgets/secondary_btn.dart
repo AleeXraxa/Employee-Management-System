@@ -1,11 +1,11 @@
 import 'package:employee_management_system/core/app_exports.dart';
 
-class secondaryBtn extends StatelessWidget {
+class SecondaryBtn extends StatelessWidget {
   final String btnText;
   final Color bgcolor;
   final VoidCallback onTap;
 
-  const secondaryBtn(
+  const SecondaryBtn(
       {super.key,
       required this.btnText,
       required this.bgcolor,

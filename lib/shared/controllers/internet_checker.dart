@@ -6,6 +6,7 @@ class InternetChecker extends GetxController {
 
   Future<void> checkConnection() async {
     final connectionResult = await Connectivity().checkConnectivity();
+    // ignore: unrelated_type_equality_checks
     isConnected.value = connectionResult != ConnectivityResult.none;
   }
 
@@ -14,6 +15,7 @@ class InternetChecker extends GetxController {
     super.onInit();
 
     _connectivity.onConnectivityChanged.listen((status) {
+      // ignore: unrelated_type_equality_checks
       isConnected.value = status != ConnectivityResult.none;
     });
   }

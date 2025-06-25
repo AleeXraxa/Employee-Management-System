@@ -1,19 +1,19 @@
 import 'package:employee_management_system/core/app_exports.dart';
 
-class payroll_card extends StatefulWidget {
+class PayrollCard extends StatefulWidget {
   final String value;
   final String title;
-  const payroll_card({
+  const PayrollCard({
     super.key,
     required this.title,
     required this.value,
   });
 
   @override
-  State<payroll_card> createState() => _payroll_cardState();
+  State<PayrollCard> createState() => _PayrollCardState();
 }
 
-class _payroll_cardState extends State<payroll_card> {
+class _PayrollCardState extends State<PayrollCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
