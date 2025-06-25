@@ -1,5 +1,6 @@
 import 'dart:io';
-import 'package:image_picker/image_picker.dart';
+
+import 'package:employee_management_system/core/app_exports.dart';
 
 class ImageHelper {
   static Future<File?> pickImage() async {

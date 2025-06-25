@@ -9,6 +9,9 @@ export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';
 export 'package:google_sign_in/google_sign_in.dart';
 export 'package:percent_indicator/percent_indicator.dart';
+export 'package:table_calendar/table_calendar.dart';
+export 'package:image_picker/image_picker.dart';
+export 'package:fl_chart/fl_chart.dart';
 
 // Views
 export 'package:employee_management_system/splash.dart';
@@ -23,6 +26,7 @@ export 'package:employee_management_system/Features/HR%20Dashboard/task/view/upd
 export 'package:employee_management_system/Features/HR%20Dashboard/task/view/view_all.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/attendance/view/attendance_all.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/payroll/view/payroll.dart';
+export 'package:employee_management_system/Features/Employee%20Dashboard/Dashboard/task_img.dart';
 
 // Constants
 export 'package:employee_management_system/constant/app_colors.dart';
@@ -43,6 +47,8 @@ export 'package:employee_management_system/shared/widgets/attendace_card.dart';
 export 'package:employee_management_system/shared/widgets/small_card.dart';
 export 'package:employee_management_system/shared/widgets/time_progress.dart';
 export 'package:employee_management_system/shared/widgets/attendance_pcard.dart';
+export 'package:employee_management_system/Features/Employee%20Dashboard/Dashboard/View/emp_bar.dart';
+export 'package:employee_management_system/shared/widgets/upload_box.dart';
 
 // Validator
 export 'package:employee_management_system/shared/utils/validator.dart';
@@ -64,6 +70,7 @@ export 'package:employee_management_system/Features/HR%20Dashboard/attendance/mo
 // Services
 export 'package:employee_management_system/Features/Auth/services/auth_services.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/Services/hr_services.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/task/services/img_upload_service.dart';
 
 // Helper
 export 'package:employee_management_system/shared/utils/dialog_helper.dart';

@@ -1,4 +1,3 @@
-import 'package:employee_management_system/Features/Employee%20Dashboard/Dashboard/View/emp_bar.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class AuthController extends GetxController {
