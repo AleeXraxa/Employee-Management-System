@@ -46,10 +46,13 @@ class TaskController extends GetxController {
         createdBy: FirebaseAuth.instance.currentUser!.uid,
         assignedTo: employeeID,
         progressStatus: 'pending',
-        // imgUrl: imageURL,
       );
 
-      await _db.collection('tasks').add(task.toMap());
+      await _db
+          .collection('users')
+          .doc(employeeID)
+          .collection('tasks')
+          .add(task.toMap());
 
       showCustomDialog(
         icon: FontAwesomeIcons.solidCircleCheck,
@@ -70,8 +73,12 @@ class TaskController extends GetxController {
     }
   }
 
-  Future<void> updateTask(String taskID, DateTime selectedDate,
-      {String? imgURL}) async {
+  Future<void> updateTask(
+    String employeeID,
+    String taskID,
+    DateTime selectedDate, {
+    String? imgURL,
+  }) async {
     try {
       isLoading.value = true;
 
@@ -80,11 +87,16 @@ class TaskController extends GetxController {
         'time': "${startController.text.trim()} - ${endController.text.trim()}",
         'location': locationController.text.trim(),
         'status': statusController.text.trim(),
-        'date': selectedDate,
+        'date': Timestamp.fromDate(selectedDate),
         if (imgURL != null) 'imageUrl': imgURL,
       };
 
-      await _db.collection('tasks').doc(taskID).update(updatedTask);
+      await _db
+          .collection('users')
+          .doc(employeeID)
+          .collection('tasks')
+          .doc(taskID)
+          .update(updatedTask);
 
       showCustomDialog(
         icon: FontAwesomeIcons.solidCircleCheck,
@@ -96,6 +108,7 @@ class TaskController extends GetxController {
           Get.back();
         },
       );
+      clearFields();
     } catch (e) {
       _authController.handleFirebaseError(e);
     } finally {
@@ -103,18 +116,18 @@ class TaskController extends GetxController {
     }
   }
 
-  void fetchTasks({String? employeeID}) {
+  void fetchTasks({required String employeeID}) {
     try {
       isTaskLoading.value = true;
       taskError.value = '';
 
-      Query query = _db.collection('tasks');
+      final query = _db
+          .collection('users')
+          .doc(employeeID)
+          .collection('tasks')
+          .orderBy('date');
 
-      if (employeeID != null) {
-        query = query.where('assignedTo', isEqualTo: employeeID);
-      }
-
-      query.orderBy('date').snapshots().listen((snapshot) {
+      query.snapshots().listen((snapshot) {
         taskList.value = snapshot.docs
             .map((doc) =>
                 TaskModel.fromMap(doc.id, doc.data() as Map<String, dynamic>))
@@ -162,6 +175,7 @@ class TaskController extends GetxController {
       'Wednesday': [],
       'Thursday': [],
       'Friday': [],
+      'Saturday': [],
     };
 
     for (final task in tasks) {
@@ -171,6 +185,7 @@ class TaskController extends GetxController {
         3 => 'Wednesday',
         4 => 'Thursday',
         5 => 'Friday',
+        6 => 'Saturday',
         _ => null,
       };
 
@@ -196,9 +211,15 @@ class TaskController extends GetxController {
     }
   }
 
-  void deleteTask(String id) {
+  void deleteTask(String employeeID, String taskID) async {
     try {
-      _db.collection('tasks').doc(id).delete();
+      await _db
+          .collection('users')
+          .doc(employeeID)
+          .collection('tasks')
+          .doc(taskID)
+          .delete();
+
       Get.back();
     } catch (e) {
       _authController.handleFirebaseError(e);
@@ -207,11 +228,24 @@ class TaskController extends GetxController {
     }
   }
 
-  Future<void> markTaskCompleted(String taskId) async {
-    await FirebaseFirestore.instance.collection('tasks').doc(taskId).update({
-      'progressStatus': 'completed',
-    });
-    Get.snackbar('Task Completed', 'You marked your task as completed');
+  Future<void> markTaskCompleted({
+    required String employeeId,
+    required String taskId,
+  }) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(employeeId)
+          .collection('tasks')
+          .doc(taskId)
+          .update({
+        'progressStatus': 'completed',
+      });
+
+      Get.snackbar('Task Completed', 'You marked your task as completed');
+    } catch (e) {
+      Get.snackbar('Error', 'Could not update task');
+    }
   }
 
   Future<void> uploadSingleImage(TaskModel task, File image) async {
@@ -222,6 +256,8 @@ class TaskController extends GetxController {
       final updatedList = [...(task.imgUrls ?? []), url];
 
       await FirebaseFirestore.instance
+          .collection('users')
+          .doc(task.assignedTo)
           .collection('tasks')
           .doc(task.id)
           .update({'imgUrls': updatedList});
@@ -255,6 +291,8 @@ class TaskController extends GetxController {
   Future<void> deleteImageFromTask(TaskModel task, String url) async {
     final updatedList = (task.imgUrls ?? [])..remove(url);
     await FirebaseFirestore.instance
+        .collection('users')
+        .doc(task.assignedTo)
         .collection('tasks')
         .doc(task.id)
         .update({'imgUrls': updatedList});

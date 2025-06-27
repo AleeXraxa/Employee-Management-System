@@ -1,7 +1,8 @@
 import 'package:employee_management_system/core/app_exports.dart';
 
 class ViewAllTasks extends StatefulWidget {
-  const ViewAllTasks({super.key});
+  final UserModel employee;
+  const ViewAllTasks({super.key, required this.employee});
 
   @override
   State<ViewAllTasks> createState() => _ViewAllTasksState();
@@ -103,8 +104,9 @@ class _ViewAllTasksState extends State<ViewAllTasks> {
                                             user: user,
                                             task: task,
                                             onTap: () {
-                                              Get.to(() =>
-                                                  UpdateTask(tasks: task));
+                                              Get.to(() => UpdateTask(
+                                                  employee: widget.employee,
+                                                  tasks: task));
                                             },
                                             onDelete: () {
                                               showCustomDialog(
@@ -115,8 +117,9 @@ class _ViewAllTasksState extends State<ViewAllTasks> {
                                                     'Do you want to Delete this Task?',
                                                 buttonText: 'Delete',
                                                 onPressed: () {
-                                                  _taskController
-                                                      .deleteTask(task.id!);
+                                                  _taskController.deleteTask(
+                                                      widget.employee.uid,
+                                                      task.id!);
                                                 },
                                               );
                                             },

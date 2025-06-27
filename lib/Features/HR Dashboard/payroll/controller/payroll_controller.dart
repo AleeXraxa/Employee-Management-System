@@ -25,7 +25,6 @@ class PayrollController extends GetxController {
       basicSalary.value = data['basic'];
       totalSalary.value = data['total'];
       bonus.value = data['bonus'];
-      Get.snackbar('Success', 'Payroll generated successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to generate payroll: $e');
     } finally {

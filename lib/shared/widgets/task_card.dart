@@ -98,7 +98,8 @@ class TaskCard extends StatelessWidget {
                       bgcolor: AppColors.red,
                       onTap: () {
                         final taskController = Get.find<TaskController>();
-                        taskController.markTaskCompleted(task.id!);
+                        taskController.markTaskCompleted(
+                            employeeId: user.value!.uid, taskId: task.id!);
                       },
                     )
                   else if (user.value?.role == 'Admin') ...[

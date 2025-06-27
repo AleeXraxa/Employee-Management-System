@@ -2,7 +2,8 @@ import 'package:employee_management_system/core/app_exports.dart';
 
 class UpdateTask extends StatefulWidget {
   final TaskModel tasks;
-  const UpdateTask({super.key, required this.tasks});
+  final UserModel employee;
+  const UpdateTask({super.key, required this.tasks, required this.employee});
 
   @override
   State<UpdateTask> createState() => _UpdateTaskState();
@@ -226,7 +227,9 @@ class _UpdateTaskState extends State<UpdateTask> {
                                         return;
                                       }
                                       _taskController.updateTask(
-                                          widget.tasks.id!, _selectedDate!);
+                                          widget.employee.uid,
+                                          widget.tasks.id!,
+                                          _selectedDate!);
                                     }
                                   }),
                         ),

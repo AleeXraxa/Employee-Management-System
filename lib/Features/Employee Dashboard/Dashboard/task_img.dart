@@ -1,7 +1,8 @@
 import 'package:employee_management_system/core/app_exports.dart';
 
 class UploadTaskImagesScreen extends StatefulWidget {
-  const UploadTaskImagesScreen({super.key});
+  final UserModel employee;
+  const UploadTaskImagesScreen({super.key, required this.employee});
 
   @override
   State<UploadTaskImagesScreen> createState() => _UploadTaskImagesScreenState();
@@ -15,7 +16,7 @@ class _UploadTaskImagesScreenState extends State<UploadTaskImagesScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.fetchTasks();
+      controller.fetchTasks(employeeID: widget.employee.uid);
     });
   }
 

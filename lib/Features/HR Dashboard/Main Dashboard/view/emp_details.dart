@@ -173,7 +173,9 @@ class EmpDetails extends StatelessWidget {
                                 btnText: 'View All',
                                 bgcolor: AppColors.primaryColor,
                                 onTap: () {
-                                  Get.to(ViewAllTasks());
+                                  Get.to(ViewAllTasks(
+                                    employee: employee,
+                                  ));
                                 }),
                           ],
                         ),
@@ -181,7 +183,10 @@ class EmpDetails extends StatelessWidget {
                           user: user,
                           task: completedTask,
                           onTap: () {
-                            Get.to(UpdateTask(tasks: completedTask));
+                            Get.to(UpdateTask(
+                              tasks: completedTask,
+                              employee: employee,
+                            ));
                           },
                           onDelete: () {
                             showCustomDialog(
@@ -190,7 +195,8 @@ class EmpDetails extends StatelessWidget {
                               message: 'Do you want to Delete this Task?',
                               buttonText: 'Delete',
                               onPressed: () {
-                                taskController.deleteTask(completedTask.id!);
+                                taskController.deleteTask(
+                                    employee.uid, completedTask.id!);
                               },
                             );
                           },
@@ -205,7 +211,10 @@ class EmpDetails extends StatelessWidget {
                           user: user,
                           task: tomorrowTask,
                           onTap: () {
-                            Get.to(UpdateTask(tasks: tomorrowTask));
+                            Get.to(UpdateTask(
+                              tasks: tomorrowTask,
+                              employee: employee,
+                            ));
                           },
                           onDelete: () {
                             showCustomDialog(
@@ -214,7 +223,8 @@ class EmpDetails extends StatelessWidget {
                               message: 'Do you want to Delete this Task?',
                               buttonText: 'Delete',
                               onPressed: () {
-                                taskController.deleteTask(tomorrowTask.id!);
+                                taskController.deleteTask(
+                                    employee.uid, tomorrowTask.id!);
                               },
                             );
                           },

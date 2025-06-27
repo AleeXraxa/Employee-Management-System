@@ -38,7 +38,9 @@ class Dashboard extends StatelessWidget {
       case 0:
         return EmpDetails(employee: employee);
       case 1:
-        return ViewAllTasks();
+        return ViewAllTasks(
+          employee: employee,
+        );
       case 2:
         return ViewAllAttendance(
           employeeID: employee.uid,

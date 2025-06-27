@@ -12,7 +12,9 @@ class EmployeeDashboard extends StatelessWidget {
           body: _getScreen(controller.selectedIndex.value),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              Get.to(() => UploadTaskImagesScreen());
+              Get.to(() => UploadTaskImagesScreen(
+                    employee: employee,
+                  ));
             },
             backgroundColor: Colors.green,
             shape: const CircleBorder(),
@@ -36,13 +38,17 @@ class EmployeeDashboard extends StatelessWidget {
       case 0:
         return EmpDetails(employee: employee);
       case 1:
-        return ViewAllTasks();
+        return ViewAllTasks(
+          employee: employee,
+        );
       case 2:
         return ViewAllAttendance(
           employeeID: employee.uid,
         );
       case 3:
-        return UploadTaskImagesScreen();
+        return UploadTaskImagesScreen(
+          employee: employee,
+        );
       default:
         return EmpDetails(employee: employee);
     }
