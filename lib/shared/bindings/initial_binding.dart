@@ -1,3 +1,4 @@
+import 'package:employee_management_system/Features/HR%20Dashboard/payroll/controller/payroll_controller.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 
 class InitialBinding extends Bindings {
@@ -9,6 +10,7 @@ class InitialBinding extends Bindings {
     Get.put(TaskController());
     Get.put(BottomNavBarController());
     Get.put(AttendanceController());
+    Get.put(PayrollController());
 
     Get.put<InternetChecker>(InternetChecker(), permanent: true);
   }

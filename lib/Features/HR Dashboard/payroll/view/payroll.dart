@@ -1,15 +1,30 @@
+import 'package:employee_management_system/Features/HR%20Dashboard/payroll/controller/payroll_controller.dart';
 import 'package:employee_management_system/Features/HR%20Dashboard/payroll/view/weekly_chart.dart';
 import 'package:employee_management_system/core/app_exports.dart';
 import 'package:employee_management_system/shared/widgets/cards.dart';
 
 class Payroll extends StatefulWidget {
-  const Payroll({super.key});
+  final UserModel employee;
+  const Payroll({super.key, required this.employee});
 
   @override
   State<Payroll> createState() => _Payroll();
 }
 
 class _Payroll extends State<Payroll> {
+  final payrollController = Get.find<PayrollController>();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final user = widget.employee.uid;
+      if (user.isNotEmpty) {
+        payrollController.createPayroll(user, 2000);
+        payrollController.fetchMonthlyWorkingHours(user);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,16 +76,22 @@ class _Payroll extends State<Payroll> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Obx(() {
+                                  final total = payrollController.weeklyHours
+                                      .fold(0.0, (a, b) => a + b);
+                                  final h = total.toInt();
+                                  final m = ((total - h) * 60).round();
+                                  return Text(
+                                    '$h h $m min',
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: 'Poppins',
+                                    ),
+                                  );
+                                }),
                                 Text(
-                                  '40 h 45 min',
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: 'Poppins',
-                                  ),
-                                ),
-                                Text(
-                                  'Weekly',
+                                  'Monthly',
                                   style: TextStyle(
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w500,
@@ -79,7 +100,9 @@ class _Payroll extends State<Payroll> {
                                   ),
                                 ),
                                 SizedBox(height: 0.03.sh),
-                                WeeklyBarChart(),
+                                Obx(() => WeeklyBarChart(
+                                    hours: payrollController.weeklyHours
+                                        .toList())),
                               ],
                             ),
                           ),
@@ -103,22 +126,28 @@ class _Payroll extends State<Payroll> {
                                 ],
                               ),
                               SizedBox(height: 0.02.sh),
-                              GridView.count(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 12,
-                                physics: NeverScrollableScrollPhysics(),
-                                childAspectRatio: 1.6,
-                                shrinkWrap: true,
-                                children: [
-                                  PayrollCard(title: 'Present', value: '34'),
-                                  PayrollCard(title: 'Absent', value: '03'),
-                                  PayrollCard(title: 'Holiday', value: '02'),
-                                  PayrollCard(title: 'Half Day', value: '07'),
-                                  PayrollCard(title: 'Week Off', value: '03'),
-                                  PayrollCard(title: 'Leave', value: '05'),
-                                ],
-                              )
+                              Obx(() => GridView.count(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 12,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    childAspectRatio: 1.6,
+                                    shrinkWrap: true,
+                                    children: [
+                                      PayrollCard(
+                                          title: 'Present',
+                                          value:
+                                              '${payrollController.presentDays}'),
+                                      PayrollCard(
+                                          title: 'Absent',
+                                          value:
+                                              '${payrollController.absentDays}'),
+                                      PayrollCard(
+                                          title: 'Leave',
+                                          value:
+                                              '${payrollController.leaveDays}'),
+                                    ],
+                                  )),
                             ],
                           ),
                         ),
@@ -132,19 +161,30 @@ class _Payroll extends State<Payroll> {
                                 style: AppTextStyles.title,
                               ),
                               SizedBox(height: 0.02.sh),
-                              GridView.count(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 12,
-                                physics: NeverScrollableScrollPhysics(),
-                                childAspectRatio: 1.6,
-                                shrinkWrap: true,
-                                children: [
-                                  PayrollCard(title: '50,000', value: 'Basic'),
-                                  PayrollCard(
-                                      title: '20,000', value: 'Extra Bonus'),
-                                  PayrollCard(title: '70,000', value: 'Total'),
-                                ],
+                              Obx(
+                                () => GridView.count(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 12,
+                                  mainAxisSpacing: 12,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  childAspectRatio: 1.6,
+                                  shrinkWrap: true,
+                                  children: [
+                                    PayrollCard(
+                                        title: payrollController.basicSalary
+                                            .toStringAsFixed(0),
+                                        value: 'Basic'),
+                                    PayrollCard(
+                                        title: payrollController.bonus.value
+                                            .toStringAsFixed(0),
+                                        value: 'Extra Bonus'),
+                                    PayrollCard(
+                                        title: payrollController
+                                            .totalSalary.value
+                                            .toStringAsFixed(0),
+                                        value: 'Total'),
+                                  ],
+                                ),
                               ),
                               SizedBox(height: 0.08.sh),
                             ],

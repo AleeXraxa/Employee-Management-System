@@ -1,17 +1,18 @@
 import 'package:employee_management_system/core/app_exports.dart';
 
 class WeeklyBarChart extends StatelessWidget {
-  final List<double> hours = [5.5, 6.5, 4.5, 8, 6.5, 8, 5.5];
+  final List<double> hours;
 
-  WeeklyBarChart({super.key});
+  const WeeklyBarChart({super.key, required this.hours});
 
   @override
   Widget build(BuildContext context) {
+    final maxHour = (hours.reduce((a, b) => a > b ? a : b)).ceilToDouble();
     return AspectRatio(
       aspectRatio: 1.5,
       child: BarChart(
         BarChartData(
-          maxY: 10,
+          maxY: maxHour < 2 ? 2 : maxHour,
           barGroups: hours.asMap().entries.map((entry) {
             int index = entry.key;
             double value = entry.value;

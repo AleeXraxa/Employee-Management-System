@@ -44,7 +44,9 @@ class Dashboard extends StatelessWidget {
           employeeID: employee.uid,
         );
       case 3:
-        return Payroll();
+        return Payroll(
+          employee: employee,
+        );
       default:
         return EmpDetails(employee: employee);
     }
