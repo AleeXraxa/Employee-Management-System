@@ -288,4 +288,57 @@ class AttendanceController extends GetxController {
       }).toList(),
     );
   }
+
+  Future<void> requestLeave() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    final now = DateTime.now();
+    final docId = DateFormat('yyyy-MM-dd').format(now);
+
+    final docRef =
+        _db.collection('users').doc(userId).collection('attendance').doc(docId);
+
+    final snapshot = await docRef.get();
+
+    if (!snapshot.exists) {
+      await docRef.set({
+        'date': Timestamp.fromDate(now),
+        'status': 'leaveRequested',
+        'checkIn': null,
+        'checkOut': null,
+        'employeeId': userId,
+      });
+    } else {
+      await docRef.update({'status': 'leaveRequested'});
+    }
+
+    Get.snackbar('Leave Requested', 'Leave request sent to admin.');
+  }
+
+  Future<void> approveLeave(UserModel user) async {
+    final now = DateTime.now();
+    final docId = DateFormat('yyyy-MM-dd').format(now);
+
+    await _db
+        .collection('users')
+        .doc(user.uid)
+        .collection('attendance')
+        .doc(docId)
+        .update({'status': 'leave'});
+
+    Get.snackbar('Leave Approved', '${user.username} leave approved.');
+  }
+
+  Future<void> rejectLeave(UserModel user) async {
+    final now = DateTime.now();
+    final docId = DateFormat('yyyy-MM-dd').format(now);
+
+    await _db
+        .collection('users')
+        .doc(user.uid)
+        .collection('attendance')
+        .doc(docId)
+        .update({'status': 'present'});
+
+    Get.snackbar('Leave Rejected', '${user.username} leave rejected.');
+  }
 }

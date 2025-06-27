@@ -119,12 +119,38 @@ class Attendancepcard extends StatelessWidget {
                     ),
                   ],
                 ),
-
-                /// 👇 Action Area: Dynamic Button or Nothing
                 Builder(
                   builder: (_) {
                     if (isAdmin) {
-                      if (isPending && !isAbsent) {
+                      if (attendance.status == 'leaveRequested') {
+                        return Row(
+                          children: [
+                            SecondaryBtn(
+                              btnText: 'Approve Leave',
+                              bgcolor: Colors.green,
+                              onTap: () {
+                                attendanceController.approveLeave(employee);
+                              },
+                            ),
+                            SizedBox(width: 10),
+                            SecondaryBtn(
+                              btnText: 'Reject Leave',
+                              bgcolor: Colors.red,
+                              onTap: () {
+                                attendanceController.rejectLeave(employee);
+                              },
+                            ),
+                          ],
+                        );
+                      } else if (isAbsent || attendance.status == 'leave') {
+                        return SecondaryBtn(
+                          btnText: 'Mark Present',
+                          bgcolor: AppColors.primaryColor,
+                          onTap: () {
+                            attendanceController.addTodayAttendance(employee);
+                          },
+                        );
+                      } else if (isPending) {
                         return SecondaryBtn(
                           btnText: 'Mark Absent',
                           bgcolor: Colors.red,
@@ -132,27 +158,31 @@ class Attendancepcard extends StatelessWidget {
                             attendanceController.markAbsent(employee);
                           },
                         );
-                      } else if (isAbsent) {
-                        return SecondaryBtn(
-                          btnText: 'Present',
-                          bgcolor: AppColors.primaryColor,
-                          onTap: () {
-                            attendanceController.addTodayAttendance(employee);
-                          },
-                        );
+                      } else {
+                        return const SizedBox.shrink();
                       }
-                      return const SizedBox.shrink();
                     } else {
-                      // EMPLOYEE side
-                      if (isAbsent) {
-                        return const SizedBox(); // 🔒 No Check In or Out
+                      if (isAbsent || attendance.status == 'leave') {
+                        return const SizedBox();
                       } else if (isPending) {
-                        return SecondaryBtn(
-                          btnText: 'Check In',
-                          bgcolor: AppColors.primaryColor,
-                          onTap: () {
-                            attendanceController.markCheckIn();
-                          },
+                        return Column(
+                          children: [
+                            SecondaryBtn(
+                              btnText: 'Check In',
+                              bgcolor: AppColors.primaryColor,
+                              onTap: () {
+                                attendanceController.markCheckIn();
+                              },
+                            ),
+                            SizedBox(height: 8),
+                            SecondaryBtn(
+                              btnText: 'Request Leave',
+                              bgcolor: Colors.orange,
+                              onTap: () {
+                                attendanceController.requestLeave();
+                              },
+                            ),
+                          ],
                         );
                       } else if (isCheckedIn) {
                         return SecondaryBtn(
