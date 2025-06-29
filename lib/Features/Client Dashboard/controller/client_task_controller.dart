@@ -56,7 +56,7 @@ class ClientTaskController extends GetxController {
           .doc(taskId)
           .collection('feedback')
           .add({
-        'comment': feedback, // ✅ renamed here
+        'comment': feedback,
         'rating': ratingValue,
         'givenAt': Timestamp.now(),
         'givenBy': FirebaseAuth.instance.currentUser?.uid ?? 'anonymous',

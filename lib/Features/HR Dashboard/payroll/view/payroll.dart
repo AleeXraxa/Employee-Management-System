@@ -1,6 +1,4 @@
-import 'package:employee_management_system/Features/HR%20Dashboard/payroll/view/weekly_chart.dart';
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:employee_management_system/shared/widgets/cards.dart';
 
 class Payroll extends StatefulWidget {
   final UserModel employee;
@@ -63,8 +61,7 @@ class _Payroll extends State<Payroll> {
                                 color: Colors.grey.withOpacity(0.2),
                                 spreadRadius: 5,
                                 blurRadius: 7,
-                                offset:
-                                    Offset(0, 3), // changes position of shadow
+                                offset: Offset(0, 3),
                               ),
                             ],
                             borderRadius: BorderRadius.circular(12),

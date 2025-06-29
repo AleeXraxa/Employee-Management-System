@@ -1,6 +1,4 @@
-import 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/view/feedback.dart';
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:employee_management_system/shared/widgets/feedback_card.dart';
 
 class EmpDetails extends StatelessWidget {
   final UserModel employee;

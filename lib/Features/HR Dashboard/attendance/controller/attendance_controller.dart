@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:employee_management_system/core/app_exports.dart';
 import 'package:intl/intl.dart';
 
@@ -171,7 +169,7 @@ class AttendanceController extends GetxController {
         .collection('users')
         .snapshots()
         .listen((usersSnapshot) {
-      todayAttendanceList.clear(); // reset list before repopulating
+      todayAttendanceList.clear();
 
       for (var userDoc in usersSnapshot.docs) {
         FirebaseFirestore.instance
@@ -185,14 +183,11 @@ class AttendanceController extends GetxController {
             final updatedModel = AttendanceModel.fromMap(
                 attendanceDoc.id, attendanceDoc.data()!);
 
-            // remove old if exists
             todayAttendanceList
                 .removeWhere((att) => att.employeeId == userDoc.id);
 
-            // add updated
             todayAttendanceList.add(updatedModel);
           } else {
-            // If deleted or missing, remove from list
             todayAttendanceList
                 .removeWhere((att) => att.employeeId == userDoc.id);
           }

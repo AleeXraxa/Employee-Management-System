@@ -1,6 +1,4 @@
-import 'package:employee_management_system/Features/Client%20Dashboard/View/add_feedback.dart';
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:employee_management_system/shared/widgets/feedback_dialog.dart';
 
 class TaskCard extends StatelessWidget {
   final TaskModel task;

@@ -32,7 +32,7 @@ class TaskController extends GetxController {
   Future<void> addTask({
     required DateTime selectedDate,
     required String employeeID,
-    required String clientId, // 👈 New Param
+    required String clientId,
     String? imageURL,
   }) async {
     try {
@@ -47,7 +47,7 @@ class TaskController extends GetxController {
         createdBy: FirebaseAuth.instance.currentUser!.uid,
         assignedTo: employeeID,
         progressStatus: 'pending',
-        clientId: clientId, // 👈 Assign it here
+        clientId: clientId,
       );
 
       await _db

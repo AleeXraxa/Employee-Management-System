@@ -31,10 +31,9 @@ class AttendancePayrollWidget extends StatelessWidget {
     );
 
     if (applyTransform) {
-      // ✅ Safely apply transform with fixed size
       return Transform(
         alignment: Alignment.center,
-        transform: Matrix4.rotationZ(pi / 30), // Slight rotation as an example
+        transform: Matrix4.rotationZ(pi / 30),
         child: boxContent,
       );
     } else {
@@ -46,12 +45,10 @@ class AttendancePayrollWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        // ✅ Makes layout scrollable in smaller screens
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header Row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -60,8 +57,6 @@ class AttendancePayrollWidget extends StatelessWidget {
               ],
             ),
             SizedBox(height: 12),
-
-            // Attendance Boxes
             Wrap(
               spacing: 12,
               runSpacing: 12,
@@ -75,12 +70,8 @@ class AttendancePayrollWidget extends StatelessWidget {
               ],
             ),
             SizedBox(height: 24),
-
-            // Payroll Title
             Text('Payroll :', style: titleStyle),
             SizedBox(height: 12),
-
-            // Payroll Boxes with a sample transform
             Wrap(
               spacing: 12,
               runSpacing: 12,

@@ -1,5 +1,4 @@
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:employee_management_system/shared/widgets/feedback_card.dart';
 
 class AllFeedbackScreen extends StatelessWidget {
   final UserModel employee;

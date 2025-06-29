@@ -35,8 +35,6 @@ class Attendancepcard extends StatelessWidget {
     final isPending = attendance.checkIn == null && attendance.checkOut == null;
     final isCheckedIn =
         attendance.checkIn != null && attendance.checkOut == null;
-    // final isCheckedOut =
-    //     attendance.checkIn != null && attendance.checkOut != null;
 
     final isAdmin = authController.currentUser.value?.role == 'Admin';
     final isAbsent = attendance.status == 'absent';
@@ -46,7 +44,6 @@ class Attendancepcard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         child: Column(
           children: [
-            // Avatar & Name
             Row(
               children: [
                 Container(
@@ -71,8 +68,6 @@ class Attendancepcard extends StatelessWidget {
               ],
             ),
             SizedBox(height: 0.02.sh),
-
-            // Date, CheckIn, CheckOut
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -82,8 +77,6 @@ class Attendancepcard extends StatelessWidget {
               ],
             ),
             SizedBox(height: 0.03.sh),
-
-            // Work Progress & Action Button
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -81,7 +81,7 @@ class _HRDashboardState extends State<HRDashboard> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
                                 child: Image.asset(
-                                  'assets/images/logo.png', // Replace with your image path
+                                  'assets/images/logo.png',
                                   width: 70,
                                   height: 70,
                                   fit: BoxFit.cover,

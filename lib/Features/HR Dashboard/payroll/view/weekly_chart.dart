@@ -30,8 +30,7 @@ class WeeklyBarChart extends StatelessWidget {
           }).toList(),
           titlesData: FlTitlesData(
             leftTitles: AxisTitles(
-              sideTitles:
-                  SideTitles(showTitles: false), // Hide left-side labels
+              sideTitles: SideTitles(showTitles: false),
             ),
             rightTitles: AxisTitles(
               sideTitles: SideTitles(

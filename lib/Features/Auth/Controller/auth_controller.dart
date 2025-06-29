@@ -19,14 +19,12 @@ class AuthController extends GetxController {
     super.dispose();
   }
 
-// Authentication Logics
   final FirebaseAuth usersDB = FirebaseAuth.instance;
   final AuthServices _authServices = AuthServices();
   RxBool isloading = false.obs;
 
   final Rxn<UserModel> currentUser = Rxn<UserModel>();
 
-// Create user
   final RxnString selectedRole = RxnString();
 
   Future<void> registerUser() async {
@@ -71,8 +69,6 @@ class AuthController extends GetxController {
       isloading.value = false;
     }
   }
-
-// Login User
 
   Future<void> loginUser() async {
     try {
@@ -142,7 +138,6 @@ class AuthController extends GetxController {
     }
   }
 
-// Forgot Password
   Future<void> forgotPass() async {
     try {
       isloading.value = true;
@@ -165,7 +160,6 @@ class AuthController extends GetxController {
     }
   }
 
-  // Login with Google
   Future<void> signInWithGoogle() async {
     try {
       isloading.value = true;
@@ -218,7 +212,6 @@ class AuthController extends GetxController {
     Get.offAll(Login());
   }
 
-  // Firebase Error Handler
   void handleFirebaseError(dynamic error) {
     String message = 'An unexpected error occurred';
 

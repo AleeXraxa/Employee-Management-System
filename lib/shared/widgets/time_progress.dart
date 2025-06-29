@@ -9,8 +9,6 @@ class WorkProgressIndicator extends StatelessWidget {
     const shiftDuration = Duration(hours: 8);
 
     final percent = timeSpent.inSeconds / shiftDuration.inSeconds;
-    // final hours = timeSpent.inHours;
-    // final minutes = timeSpent.inMinutes.remainder(60);
 
     return Center(
       child: CircularPercentIndicator(

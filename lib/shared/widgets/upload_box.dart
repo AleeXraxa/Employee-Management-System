@@ -1,7 +1,4 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:employee_management_system/shared/utils/img_picker.dart';
-import 'package:employee_management_system/shared/widgets/delete_dialog.dart';
 
 class UploadBox extends StatelessWidget {
   final TaskModel task;

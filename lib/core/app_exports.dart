@@ -12,6 +12,9 @@ export 'package:percent_indicator/percent_indicator.dart';
 export 'package:table_calendar/table_calendar.dart';
 export 'package:image_picker/image_picker.dart';
 export 'package:fl_chart/fl_chart.dart';
+export 'package:flutter_rating_bar/flutter_rating_bar.dart';
+export 'package:employee_management_system/shared/utils/img_picker.dart';
+export 'package:dotted_border/dotted_border.dart';
 
 // Views
 export 'package:employee_management_system/splash.dart';
@@ -28,6 +31,8 @@ export 'package:employee_management_system/Features/HR%20Dashboard/attendance/vi
 export 'package:employee_management_system/Features/HR%20Dashboard/payroll/view/payroll.dart';
 export 'package:employee_management_system/Features/Employee%20Dashboard/Dashboard/task_img.dart';
 export 'package:employee_management_system/Features/Client%20Dashboard/View/dashboard.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/view/feedback.dart';
+export 'package:employee_management_system/Features/Client%20Dashboard/View/add_feedback.dart';
 
 // Constants
 export 'package:employee_management_system/constant/app_colors.dart';
@@ -50,6 +55,11 @@ export 'package:employee_management_system/shared/widgets/time_progress.dart';
 export 'package:employee_management_system/shared/widgets/attendance_pcard.dart';
 export 'package:employee_management_system/Features/Employee%20Dashboard/Dashboard/View/emp_bar.dart';
 export 'package:employee_management_system/shared/widgets/upload_box.dart';
+export 'package:employee_management_system/shared/widgets/feedback_card.dart';
+export 'package:employee_management_system/shared/widgets/cards.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/payroll/view/weekly_chart.dart';
+export 'package:employee_management_system/shared/widgets/feedback_dialog.dart';
+export 'package:employee_management_system/shared/widgets/delete_dialog.dart';
 
 // Validator
 export 'package:employee_management_system/shared/utils/validator.dart';
@@ -71,10 +81,13 @@ export 'package:employee_management_system/Features/HR%20Dashboard/task/model/ta
 export 'package:employee_management_system/Features/HR%20Dashboard/attendance/model/attendance_model.dart';
 export 'package:employee_management_system/Features/Client%20Dashboard/model/feedback_model.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/model/feedback_task_model.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/payroll/model/payroll_model.dart';
+
 // Services
 export 'package:employee_management_system/Features/Auth/services/auth_services.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/Services/hr_services.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/task/services/img_upload_service.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/payroll/service/payroll_service.dart';
 
 // Helper
 export 'package:employee_management_system/shared/utils/dialog_helper.dart';

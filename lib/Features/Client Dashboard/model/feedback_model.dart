@@ -28,11 +28,11 @@ class FeedbackModel {
     return FeedbackModel(
       id: id,
       comment: map['comment'] ?? '',
-      rating: (map['rating'] as num).toInt(), // Handles both int and double
+      rating: (map['rating'] as num).toInt(),
       givenBy: map['givenBy'] ?? 'Unknown',
       givenAt: map['givenAt'] != null
           ? (map['givenAt'] as Timestamp).toDate()
-          : DateTime.now(), // Fallback if null
+          : DateTime.now(),
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:employee_management_system/core/app_exports.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class AddFeedback extends StatefulWidget {
   final UserModel client;

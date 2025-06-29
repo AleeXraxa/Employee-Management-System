@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:employee_management_system/Features/HR%20Dashboard/payroll/model/payroll_model.dart';
+import 'package:employee_management_system/core/app_exports.dart';
 import 'package:intl/intl.dart';
 
 class PayrollService {
@@ -139,7 +138,7 @@ class PayrollService {
       final avg = hoursList.isEmpty
           ? 0.0
           : hoursList.reduce((a, b) => a + b) / hoursList.length;
-      averageHours.add(double.parse(avg.toStringAsFixed(1))); // round
+      averageHours.add(double.parse(avg.toStringAsFixed(1)));
     }
 
     return averageHours;

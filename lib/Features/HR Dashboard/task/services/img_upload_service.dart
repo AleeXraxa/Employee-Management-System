@@ -20,7 +20,6 @@ class CloudinaryService {
       final data = jsonDecode(resData);
       return data['secure_url'];
     } else {
-      // print('Upload failed: ${response.statusCode}');
       return null;
     }
   }
