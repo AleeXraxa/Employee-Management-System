@@ -1,4 +1,6 @@
+import 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/view/feedback.dart';
 import 'package:employee_management_system/core/app_exports.dart';
+import 'package:employee_management_system/shared/widgets/feedback_card.dart';
 
 class EmpDetails extends StatelessWidget {
   final UserModel employee;
@@ -233,6 +235,47 @@ class EmpDetails extends StatelessWidget {
                     ],
                   );
                 })),
+                SizedBox(height: 0.01.sh),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Recent Client Feedback",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    SecondaryBtn(
+                        btnText: 'View All',
+                        bgcolor: AppColors.primaryColor,
+                        onTap: () {
+                          Get.to(() => AllFeedbackScreen(employee: employee));
+                        }),
+                  ],
+                ),
+                SizedBox(height: 0.01.sh),
+                Center(
+                  child: FutureBuilder<TaskFeedbackData?>(
+                    future: taskController
+                        .getMostRecentFeedbackOfEmployee(employee.uid),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      if (!snapshot.hasData || snapshot.data == null) {
+                        return const Text('No feedback yet.');
+                      }
+
+                      final data = snapshot.data!;
+                      return FeedbackCard(
+                        taskName: data.taskTitle,
+                        feedback: data.feedback.comment,
+                        rating: data.feedback.rating,
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: 0.02.sh),
                 Obx(() {
                   final attendance =
                       attendanceController.todayAttendanceList.firstWhereOrNull(

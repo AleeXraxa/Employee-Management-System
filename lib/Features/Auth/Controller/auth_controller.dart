@@ -109,7 +109,9 @@ class AuthController extends GetxController {
                   });
             }
           } else if (userData.role == 'Client') {
-            Get.snackbar('Login Success', 'Welcome Client');
+            Get.offAll(() => ClientDashboard(
+                  clientData: userData,
+                ));
           } else {
             showCustomDialog(
                 icon: FontAwesomeIcons.solidCircleXmark,
@@ -189,7 +191,9 @@ class AuthController extends GetxController {
                 });
           }
         } else if (user.role == 'Client') {
-          Get.snackbar('Login Success', 'Welcome Client');
+          Get.offAll(() => ClientDashboard(
+                clientData: user,
+              ));
         } else {
           showCustomDialog(
               icon: FontAwesomeIcons.solidCircleXmark,

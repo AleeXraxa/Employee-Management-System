@@ -1,10 +1,13 @@
+import 'package:employee_management_system/Features/Client%20Dashboard/View/add_feedback.dart';
 import 'package:employee_management_system/core/app_exports.dart';
+import 'package:employee_management_system/shared/widgets/feedback_dialog.dart';
 
 class TaskCard extends StatelessWidget {
   final TaskModel task;
   final VoidCallback onTap;
   final VoidCallback onDelete;
   final Rxn<UserModel> user;
+  final bool showStatus;
 
   const TaskCard({
     super.key,
@@ -12,6 +15,7 @@ class TaskCard extends StatelessWidget {
     required this.onTap,
     required this.onDelete,
     required this.user,
+    this.showStatus = false,
   });
 
   @override
@@ -68,6 +72,12 @@ class TaskCard extends StatelessWidget {
                     task.title,
                     style: AppTextStyles.bodyTextMedium,
                   ),
+                  SizedBox(height: 0.01.sh),
+                  if (showStatus)
+                    Text(
+                      'Status: ${task.progressStatus}',
+                      style: AppTextStyles.bodyTextMedium,
+                    ),
                 ],
               ),
               SizedBox(height: 0.01.sh),
@@ -99,7 +109,9 @@ class TaskCard extends StatelessWidget {
                       onTap: () {
                         final taskController = Get.find<TaskController>();
                         taskController.markTaskCompleted(
-                            employeeId: user.value!.uid, taskId: task.id!);
+                          employeeId: user.value!.uid,
+                          taskId: task.id!,
+                        );
                       },
                     )
                   else if (user.value?.role == 'Admin') ...[
@@ -113,7 +125,50 @@ class TaskCard extends StatelessWidget {
                       bgcolor: AppColors.red,
                       onTap: onDelete,
                     ),
-                  ]
+                  ] else if (user.value?.role == 'Client')
+                    Builder(
+                      builder: (context) {
+                        return FutureBuilder<QuerySnapshot>(
+                          key: ValueKey(task.id), // 🔑 ensure uniqueness
+                          future: FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(task.assignedTo)
+                              .collection('tasks')
+                              .doc(task.id)
+                              .collection('feedback')
+                              .get(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            }
+
+                            final hasFeedback =
+                                snapshot.data?.docs.isNotEmpty ?? false;
+
+                            return SecondaryBtn(
+                              btnText: hasFeedback
+                                  ? 'View Feedback'
+                                  : 'Give Feedback',
+                              bgcolor: AppColors.primaryColor,
+                              onTap: () {
+                                if (hasFeedback) {
+                                  showFeedbackDialog(
+                                    employeeId: task.assignedTo,
+                                    taskId: task.id!,
+                                  );
+                                } else {
+                                  Get.to(() => AddFeedback(
+                                        client: user.value!,
+                                        task: task,
+                                      ));
+                                }
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
                 ],
               )
             ],

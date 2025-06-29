@@ -11,6 +11,7 @@ class TaskModel {
   final String assignedTo;
   final String progressStatus;
   final List<String>? imgUrls;
+  final String clientId; // 👈 NEW FIELD
 
   TaskModel({
     this.id,
@@ -23,6 +24,7 @@ class TaskModel {
     required this.assignedTo,
     this.progressStatus = 'pending',
     this.imgUrls,
+    required this.clientId, // 👈 NEW REQUIRED PARAMETER
   });
 
   Map<String, dynamic> toMap() {
@@ -36,6 +38,7 @@ class TaskModel {
       'assignedTo': assignedTo,
       'progressStatus': progressStatus,
       'imgUrls': imgUrls ?? [],
+      'clientId': clientId, // 👈 SAVE TO FIRESTORE
     };
   }
 
@@ -51,6 +54,7 @@ class TaskModel {
       assignedTo: map['assignedTo'],
       progressStatus: map['progressStatus'] ?? 'pending',
       imgUrls: List<String>.from(map['imgUrls'] ?? []),
+      clientId: map['clientId'] ?? '', // 👈 LOAD FROM FIRESTORE
     );
   }
 

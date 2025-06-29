@@ -15,6 +15,14 @@ class _AddTaskState extends State<AddTask> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    _taskController.fetchClients();
+  }
+
+  UserModel? selectedClient;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -107,6 +115,17 @@ class _AddTaskState extends State<AddTask> {
                           controller: _taskController.titleController,
                           validator: (value) =>
                               AppValidators.validateName(value, 'Title'),
+                        ),
+                        SizedBox(height: 0.02.sh),
+                        CustomDropdown(
+                          label: 'Select Client',
+                          value: selectedClient,
+                          items: _taskController.clientList,
+                          getLabel: (client) =>
+                              '${client.fname} ${client.lname}',
+                          onChanged: (UserModel? value) {
+                            selectedClient = value;
+                          },
                         ),
                         SizedBox(height: 0.02.sh),
                         Row(
@@ -209,8 +228,10 @@ class _AddTaskState extends State<AddTask> {
                                         return;
                                       }
                                       _taskController.addTask(
-                                          selectedDate: _selectedDate!,
-                                          employeeID: widget.employee.uid);
+                                        selectedDate: _selectedDate!,
+                                        employeeID: widget.employee.uid,
+                                        clientId: selectedClient?.uid ?? '',
+                                      );
                                     }
                                   }),
                         ),

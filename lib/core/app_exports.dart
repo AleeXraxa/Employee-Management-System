@@ -27,6 +27,7 @@ export 'package:employee_management_system/Features/HR%20Dashboard/task/view/vie
 export 'package:employee_management_system/Features/HR%20Dashboard/attendance/view/attendance_all.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/payroll/view/payroll.dart';
 export 'package:employee_management_system/Features/Employee%20Dashboard/Dashboard/task_img.dart';
+export 'package:employee_management_system/Features/Client%20Dashboard/View/dashboard.dart';
 
 // Constants
 export 'package:employee_management_system/constant/app_colors.dart';
@@ -61,12 +62,15 @@ export 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashbo
 export 'package:employee_management_system/shared/controllers/navbar_controller.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/task/controller/task_controller.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/attendance/controller/attendance_controller.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/payroll/controller/payroll_controller.dart';
+export '../../Features/Client Dashboard/controller/client_task_controller.dart';
 
 // Models
 export 'package:employee_management_system/Features/Auth/Model/auth_model.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/task/model/task_model.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/attendance/model/attendance_model.dart';
-
+export 'package:employee_management_system/Features/Client%20Dashboard/model/feedback_model.dart';
+export 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/model/feedback_task_model.dart';
 // Services
 export 'package:employee_management_system/Features/Auth/services/auth_services.dart';
 export 'package:employee_management_system/Features/HR%20Dashboard/Main%20Dashboard/Services/hr_services.dart';

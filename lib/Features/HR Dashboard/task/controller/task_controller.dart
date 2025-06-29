@@ -32,6 +32,7 @@ class TaskController extends GetxController {
   Future<void> addTask({
     required DateTime selectedDate,
     required String employeeID,
+    required String clientId, // 👈 New Param
     String? imageURL,
   }) async {
     try {
@@ -46,6 +47,7 @@ class TaskController extends GetxController {
         createdBy: FirebaseAuth.instance.currentUser!.uid,
         assignedTo: employeeID,
         progressStatus: 'pending',
+        clientId: clientId, // 👈 Assign it here
       );
 
       await _db
@@ -275,6 +277,7 @@ class TaskController extends GetxController {
           assignedTo: task.assignedTo,
           progressStatus: task.progressStatus,
           imgUrls: List<String>.from(updatedList),
+          clientId: task.clientId,
         );
 
         taskList.refresh();
@@ -310,9 +313,114 @@ class TaskController extends GetxController {
         assignedTo: task.assignedTo,
         progressStatus: task.progressStatus,
         imgUrls: updatedList,
+        clientId: task.clientId,
       );
     }
 
     Get.snackbar('Deleted', 'Image removed from task');
   }
+
+  final RxList<UserModel> clientList = <UserModel>[].obs;
+
+  Future<void> fetchClients() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('role', isEqualTo: 'Client')
+        .where('isApproved', isEqualTo: true)
+        .get();
+
+    final clients = snapshot.docs.map((doc) {
+      return UserModel.fromMap(doc.id, doc.data());
+    }).toList();
+
+    clientList.assignAll(clients);
+  }
+
+  Future<TaskFeedbackData?> getMostRecentFeedbackOfEmployee(
+      String employeeId) async {
+    try {
+      final taskSnapshot = await _db
+          .collection('users')
+          .doc(employeeId)
+          .collection('tasks')
+          .orderBy('date', descending: true)
+          .get();
+
+      for (final taskDoc in taskSnapshot.docs) {
+        final taskId = taskDoc.id;
+        final taskTitle = taskDoc['title'] ?? 'Unnamed Task';
+        debugPrint('📌 Task Found: $taskTitle');
+
+        final feedbackSnapshot = await _db
+            .collection('users')
+            .doc(employeeId)
+            .collection('tasks')
+            .doc(taskId)
+            .collection('feedback')
+            .orderBy('givenAt', descending: true)
+            .limit(1)
+            .get();
+
+        debugPrint(
+            '📄 Feedback count for task $taskTitle: ${feedbackSnapshot.docs.length}');
+
+        if (feedbackSnapshot.docs.isNotEmpty) {
+          final doc = feedbackSnapshot.docs.first;
+          final feedback = FeedbackModel.fromMap(doc.id, doc.data());
+          debugPrint(
+              '🟢 Feedback: ${feedback.comment} | Rating: ${feedback.rating}');
+          return TaskFeedbackData(taskTitle: taskTitle, feedback: feedback);
+        }
+      }
+
+      return null;
+    } catch (e) {
+      debugPrint('🔥 Error fetching most recent feedback: $e');
+      return null;
+    }
+  }
+
+  Future<List<TaskFeedbackData>> getAllTaskFeedbacks(String employeeId) async {
+    final List<TaskFeedbackData> result = [];
+
+    try {
+      final taskSnapshot = await _db
+          .collection('users')
+          .doc(employeeId)
+          .collection('tasks')
+          .get();
+
+      for (final taskDoc in taskSnapshot.docs) {
+        final taskTitle = taskDoc['title'] ?? 'Unnamed Task';
+
+        final feedbackSnapshot = await _db
+            .collection('users')
+            .doc(employeeId)
+            .collection('tasks')
+            .doc(taskDoc.id)
+            .collection('feedback')
+            .get();
+
+        for (final doc in feedbackSnapshot.docs) {
+          final data = FeedbackModel.fromMap(doc.id, doc.data());
+          result.add(TaskFeedbackData(taskTitle: taskTitle, feedback: data));
+        }
+      }
+
+      return result;
+    } catch (e) {
+      debugPrint('🔥 Error fetching task feedbacks: $e');
+      return [];
+    }
+  }
+}
+
+class FeedbackWithTask {
+  final String taskTitle;
+  final FeedbackModel feedback;
+
+  FeedbackWithTask({
+    required this.taskTitle,
+    required this.feedback,
+  });
 }

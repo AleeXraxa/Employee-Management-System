@@ -26,7 +26,8 @@ dependencies:
   file_picker: ^6.1.1  
   dotted_border: 
   fl_chart: 
-
+  flutter_rating_bar: ^4.0.0
+  
   # Screen Utils for Responsive 
   flutter_screenutil: ^5.9.0
 
